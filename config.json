@@ -1,0 +1,30 @@
+{
+  "name": "Task Management System",
+  "tech": [
+    {
+      "type": "server",
+      "tech": [
+        "Nodejs",
+        "Express",
+        "MongoDB",
+        "socket.io",
+        "oneSignal",
+        "role-based-auth"
+      ]
+    },
+    {
+      "type": "web",
+      "tech": ["ReactJS", "MUI", "socket.io"]
+    },
+    {
+      "type": "mobile",
+      "tech": ["Flutter"]
+    }
+  ],
+  "points":[
+    "create role based users, firstly create org flow",
+    "setup org/compnay based on their profile",
+    "create team/department fror their company",
+    "create position for a team"
+  ]
+}
