@@ -1,21 +1,23 @@
 import { configureStore, ConfigureStoreOptions } from "@reduxjs/toolkit";
 import { TypedUseSelectorHook, useDispatch, useSelector } from "react-redux";
 import { industryApi } from "./services/industry";
-import { authApiService } from "./services/auth";
-// import { industryApi } from "./services/industry";
+import { authApi } from "./services/auth";
+import authReducer from "./features/authSlice";
 
 export const createStore = (
   options?: ConfigureStoreOptions["preloadedState"] | undefined
 ) =>
   configureStore({
     reducer: {
+      authState: authReducer,
       [industryApi.reducerPath]: industryApi.reducer,
-      [authApiService.reducerPath]: authApiService.reducer,
+      [authApi.reducerPath]: authApi.reducer,
     },
     middleware: (getDefaultMiddleware) =>
       getDefaultMiddleware()
         .concat(industryApi.middleware)
-        .concat(authApiService.middleware),
+        .concat(authApi.middleware),
+    devTools: import.meta.env.NODE_ENV !== "production",
     ...options,
   });
 

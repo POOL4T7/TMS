@@ -3,11 +3,14 @@
 import { Request, Response } from "express";
 import CompanyService from "../services/Company.service";
 // import ICompany from "../models/Company.model";
+import TokenService from "../services/Token.service";
 
 class CompanyController {
   private Company;
+  private Token;
   constructor() {
     this.Company = new CompanyService();
+    this.Token = new TokenService("");
     this.createCompany = this.createCompany.bind(this);
   }
   async getAllIndustries(req: Request, res: Response): Promise<Response> {
@@ -53,11 +56,19 @@ class CompanyController {
         password: req.body.password,
         status: req.body.status,
       };
-      const company = await this.Company.createCompany(body);
-       company.password="";
+      const company = await this.Company.create(body);
+      company.password = "";
+      const accessToken = this.Token.generateToken({
+        email: body.email,
+        _id: company._id?.toString(),
+      });
       return res.status(201).json({
         success: true,
-        data: company,
+        data: {
+          accessToken: accessToken,
+          type: "company",
+          status: company.status,
+        },
         message: "New Company created",
       });
     } catch (e: any) {

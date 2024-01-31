@@ -1,5 +1,4 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { RootState } from "../app/store";
 
 const initialState = {
   industryList: [],
@@ -16,8 +15,6 @@ export const industrySlice = createSlice({
 });
 
 export const { getIndustry } = industrySlice.actions;
-
-export const selectCount = (state: RootState) => state.login;
 
 
 export default industrySlice.reducer;

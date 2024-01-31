@@ -13,9 +13,10 @@ import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 
-import {
-  useLoginMutation,
-} from "../../app/services/auth";
+import { useCompanyLoginMutation } from "../../redux/services/auth";
+import { useAppDispatch, useTypedSelector } from "../../redux/store";
+import { userInfo } from "../../redux/features/authSlice";
+import { useNavigate } from "react-router-dom";
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 function Copyright(props: any) {
@@ -36,28 +37,33 @@ function Copyright(props: any) {
   );
 }
 
-// TODO remove, this demo shouldn't need to reset the theme.
 const defaultTheme = createTheme();
 
 export default function SignIn() {
-  
-  const [login] = useLoginMutation();
-  // const {data, isLoading, isError, isFetching, isSuccess} = useIndustryListQuery();
-  // console.log('{data, isLoading, isError, isFetching, isSuccess}', {data, isLoading, isError, isFetching, isSuccess})
+  const [companyLogin] = useCompanyLoginMutation();
+  const dispatch = useAppDispatch();
+  const selector = useTypedSelector((state) => state.authState);
+  const navigate =useNavigate();
+
+  React.useEffect(() => {
+    if (selector.isAuthenticated) {
+      navigate("/");
+    }
+  }, [selector.isAuthenticated, navigate])
+
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
-    const data = new FormData(event.currentTarget);
-    console.log({
-      email: data.get("email"),
-      password: data.get("password"),
-    });
-    const d = await login({
-      email: data.get("email")?.toString() || "",
-      password: data.get("password")?.toString() || "",
-    }).then((data) => {
-      console.log("data", data);
-    });
-    console.log("d", d);
+    try {
+      event.preventDefault();
+      const data = new FormData(event.currentTarget);
+      const response = await companyLogin({
+        email: data.get("email")?.toString() || "",
+        password: data.get("password")?.toString() || "",
+      }).unwrap();
+      dispatch(userInfo(response));
+      navigate("/");
+    } catch (e) {
+      console.log(e);
+    }
   };
 
   return (

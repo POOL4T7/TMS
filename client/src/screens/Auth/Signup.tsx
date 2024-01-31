@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Avatar from "@mui/material/Avatar";
 import Button from "@mui/material/Button";
 import CssBaseline from "@mui/material/CssBaseline";
@@ -12,8 +12,9 @@ import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
-import { useCreateCompanyMutation } from "../../app/services/auth";
-import { useIndustryListQuery } from "../../app/services/industry";
+import { useNavigate } from "react-router-dom";
+import { useCreateCompanyMutation } from "../../redux/services/auth";
+import { useIndustryListQuery } from "../../redux/services/industry";
 import {
   Chip,
   FormControl,
@@ -24,7 +25,9 @@ import {
   Select,
   SelectChangeEvent,
 } from "@mui/material";
-import { redirect } from "react-router-dom";
+import { useAppDispatch } from "../../redux/store";
+import { userInfo } from "../../redux/features/authSlice";
+import { useTypedSelector } from "../../redux/store";
 
 const ITEM_HEIGHT = 48;
 const ITEM_PADDING_TOP = 8;
@@ -36,6 +39,7 @@ const MenuProps = {
     },
   },
 };
+
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 function Copyright(props: any) {
   return (
@@ -58,12 +62,24 @@ function Copyright(props: any) {
 const defaultTheme = createTheme();
 
 export default function SignUp() {
+  const selector = useTypedSelector((state) => state.authState);
+  const navigate =useNavigate();
+  
   const [industryId, setIndustryId] = useState<string[]>([]);
 
   const [createCompany] = useCreateCompanyMutation();
 
   const { data, isFetching } = useIndustryListQuery();
+  const dispatch = useAppDispatch();
 
+  useEffect(() => {
+    if (selector.isAuthenticated) {
+      navigate("/");
+    }
+  
+  }, [selector.isAuthenticated, navigate])
+  
+  
   const handleChange = (event: SelectChangeEvent<typeof industryId>) => {
     const {
       target: { value },
@@ -74,7 +90,6 @@ export default function SignUp() {
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
-
     try {
       const response = await createCompany({
         name: data.get("name")?.toString() || "",
@@ -82,8 +97,8 @@ export default function SignUp() {
         email: data.get("email")?.toString() || "",
         password: data.get("password")?.toString() || "",
       }).unwrap();
-      console.log("company", response.data);
-      redirect("/")
+      dispatch(userInfo(response));
+      navigate("/")
     } catch (e) {
       console.log(e);
     }

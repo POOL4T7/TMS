@@ -1,9 +1,22 @@
 import Company, { ICompany } from "../models/Company.model";
 
+interface Filter {
+  _id?: string;
+  email?: string;
+}
+
 class CompanyService {
-  async createCompany(data: ICompany): Promise<ICompany> {
+  async create(data: ICompany): Promise<ICompany> {
     try {
       const company = await Company.create(data);
+      return company;
+    } catch (error: any) {
+      throw new Error(`Error creating company: ${error.message}`);
+    }
+  }
+  async findOne(filter: Filter): Promise<ICompany | null> {
+    try {
+      const company = await Company.findOne(filter);
       return company;
     } catch (error: any) {
       throw new Error(`Error creating company: ${error.message}`);

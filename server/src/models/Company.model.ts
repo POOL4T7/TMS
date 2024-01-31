@@ -8,6 +8,7 @@ export interface ICompany  {
   phone?: string;
   password?: string;
   status: string;
+  profile?: string;
 }
 
 const companySchema = new Schema<ICompany>(
@@ -32,6 +33,9 @@ const companySchema = new Schema<ICompany>(
     password: {
       type: String,
       required: true,
+    },
+    profile:{
+      type:String,
     },
     status: {
       type: String,

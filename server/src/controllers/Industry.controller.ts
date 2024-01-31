@@ -13,7 +13,12 @@ class IndustryController {
   async getAllIndustries(req: Request, res: Response): Promise<Response> {
     try {
       const industries = await this.Industry.getAllIndustries();
-      return res.json(industries);
+      return res.json({
+        success: true,
+        industryList: industries,
+
+        message: "Industries list",
+      });
     } catch (e: any) {
       return res.status(500).json({
         success: false,
