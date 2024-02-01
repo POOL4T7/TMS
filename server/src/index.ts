@@ -6,8 +6,8 @@ import AuthRoute from "./routes/Auth.route";
 
 const routesV1 = async (app: Express): Promise<void> => {
     app.use('/tms/industry', IndustryRoute);
-    app.use('/auth', UserRoute);
-    // app.use('/company/auth', CompanyRoute);
+    // app.use('/auth', UserRoute);
+    app.use('/company', CompanyRoute);
     app.use('/auth', AuthRoute);
 };
 

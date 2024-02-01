@@ -1,11 +1,10 @@
 import { NextFunction, Response } from "express";
 import TokenService from "../services/Token.service";
-import { IUser } from "../models/User.model";
 
 class Auth {
   private Token: TokenService;
   constructor() {
-    this.Token = new TokenService("gulshan@tms");
+    this.Token = new TokenService("");
     this.isAuth = this.isAuth.bind(this);
   }
   async isAuth(req: any, res: Response, next: NextFunction): Promise<Response | undefined> {
@@ -17,7 +16,7 @@ class Auth {
         if (token?.startsWith(checkBearer)) {
           token = token.slice(checkBearer.length, token.length);
         }
-        const user: IUser | null = this.Token.verifyToken(token);
+        const user = this.Token.verifyToken(token);
         if (user) {
           req.sessionDetails = user;
           next();
@@ -37,7 +36,7 @@ class Auth {
     } catch (e: any) {
       console.log(e);
       return res.status(500).json({
-        success: false,
+        success: true,
         message: "something went wrong, bad authentication",
         error: e.message,
       });
@@ -45,7 +44,7 @@ class Auth {
   }
   roleAuthMiddleware(requiredRoles: string[]) {
     return (req: any, res: Response, next: NextFunction): Response | undefined => {
-      const userRole: string = req?.user?.role;
+      const userRole: string = req?.sessionDetails?.role;
       if(!userRole){
          return res.status(404).json({error:"Invalid Role"});
          

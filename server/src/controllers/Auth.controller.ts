@@ -34,6 +34,7 @@ class CompanyController {
       const accessToken = this.Token.generateToken({
         email: body.email,
         _id: company._id?.toString(),
+        role:"company"
       });
       return res.status(201).json({
         success: true,
@@ -64,6 +65,7 @@ class CompanyController {
       const accessToken = this.Token.generateToken({
         email: company.email,
         _id: company._id?.toString(),
+        role:"company"
       });
       return res.status(201).json({
         success: true,

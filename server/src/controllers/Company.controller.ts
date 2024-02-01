@@ -2,8 +2,18 @@
 
 import { Request, Response } from "express";
 import CompanyService from "../services/Company.service";
-// import ICompany from "../models/Company.model";
 import TokenService from "../services/Token.service";
+
+interface TokenOutput {
+  _id?: string;
+  email?: string;
+  userId?: string;
+  role?: string;
+}
+
+interface RequestWithSessionDetails extends Request {
+  sessionDetails: TokenOutput;
+}
 
 class CompanyController {
   private Company;
@@ -11,7 +21,29 @@ class CompanyController {
   constructor() {
     this.Company = new CompanyService();
     this.Token = new TokenService("");
-    this.createCompany = this.createCompany.bind(this);
+    this.getOwnCompany = this.getOwnCompany.bind(this);
+  }
+  async getOwnCompany(
+    req: Request,
+    res: Response
+  ): Promise<Response> {
+    try {
+      const company = await this.Company.findOne({
+        _id: (req as RequestWithSessionDetails).sessionDetails._id,
+      });
+      return res.status(200).json({
+        success: true,
+        company: company,
+        message: "compnay details",
+      });
+    } catch (e: any) {
+      console.log("e", e);
+      return res.status(500).json({
+        success: false,
+        error: e,
+        message: "server error",
+      });
+    }
   }
   async getAllIndustries(req: Request, res: Response): Promise<Response> {
     try {
@@ -35,42 +67,6 @@ class CompanyController {
       } else {
         return res.status(404).json({ error: "Company not found" });
       }
-    } catch (e: any) {
-      return res.status(500).json({
-        success: false,
-        error: e.message,
-        message: "server error",
-      });
-    }
-  }
-
-  async createCompany(req: Request, res: Response): Promise<Response> {
-    try {
-      const domain = req.body.email.split("@")[1];
-      // integrate the domain verification
-      const body = {
-        name: req.body.name,
-        industry: req.body.industry,
-        email: req.body.email,
-        phone: req.body.phone,
-        password: req.body.password,
-        status: req.body.status,
-      };
-      const company = await this.Company.create(body);
-      company.password = "";
-      const accessToken = this.Token.generateToken({
-        email: body.email,
-        _id: company._id?.toString(),
-      });
-      return res.status(201).json({
-        success: true,
-        data: {
-          accessToken: accessToken,
-          type: "company",
-          status: company.status,
-        },
-        message: "New Company created",
-      });
     } catch (e: any) {
       return res.status(500).json({
         success: false,

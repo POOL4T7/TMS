@@ -3,6 +3,7 @@ import { TypedUseSelectorHook, useDispatch, useSelector } from "react-redux";
 import { industryApi } from "./services/industry";
 import { authApi } from "./services/auth";
 import authReducer from "./features/authSlice";
+import { companyApi } from "./services/company";
 
 export const createStore = (
   options?: ConfigureStoreOptions["preloadedState"] | undefined
@@ -12,16 +13,18 @@ export const createStore = (
       authState: authReducer,
       [industryApi.reducerPath]: industryApi.reducer,
       [authApi.reducerPath]: authApi.reducer,
+      [companyApi.reducerPath]:companyApi.reducer,
     },
     middleware: (getDefaultMiddleware) =>
       getDefaultMiddleware()
         .concat(industryApi.middleware)
-        .concat(authApi.middleware),
+        .concat(authApi.middleware)
+        .concat(companyApi.middleware),
     devTools: import.meta.env.NODE_ENV !== "production",
     ...options,
   });
 
-export const store = createStore();
+export const store = createStore({});
 
 export type AppDispatch = typeof store.dispatch;
 export const useAppDispatch: () => AppDispatch = useDispatch;

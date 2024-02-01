@@ -1,11 +1,19 @@
 import jwt from "jsonwebtoken";
-import { IUser } from "../models/User.model";
 
 interface TokenInput {
-  _id: string;
-  email: string;
-  userId: string;
+  _id?: string;
+  email?: string;
+  userId?: string;
+  role?:string;
 }
+
+interface TokenOutput{
+  _id?:string;
+  email?:string;
+  userId?: string;
+  role?:string;
+}
+
 class JwtService {
   private readonly secretKey: string;
 
@@ -15,23 +23,16 @@ class JwtService {
 
   generateToken(user: Partial<TokenInput>): string {
     const options: jwt.SignOptions = {
-      expiresIn: "1h",
+      expiresIn: "1d",
     };
 
     return jwt.sign(user, this.secretKey, options);
   }
 
-  verifyToken(token: string): IUser | null {
+  verifyToken(token: string): TokenOutput | null {
     try {
-      const decoded = jwt.verify(token, this.secretKey) as {
-        userId: string;
-        username: string;
-      };
-
-      const user: IUser | null =
-        /* Fetch user from the database using decoded.userId */ null;
-
-      return user;
+      const decoded = jwt.verify(token, this.secretKey) as Partial<TokenOutput>;
+      return decoded;
     } catch (error) {
       return null;
     }
