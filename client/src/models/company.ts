@@ -19,3 +19,18 @@ export interface ApiResponse_Company {
   data: CompanyResponse;
   message: string;
 }
+
+export interface Company {
+  _id: string;
+  name: string;
+  industry: Industry[];
+  email: string;
+  status: string;
+  createdAt: string;
+}
+
+export interface CompanyApiResponse {
+  success: boolean;
+  company: Company;
+  message: string;
+}

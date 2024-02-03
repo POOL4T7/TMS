@@ -1,0 +1,22 @@
+body {
+  margin: 0;
+  padding: 0;
+}
+
+a {
+  text-decoration: none;
+  color: #637481;
+}
+
+.active-link {
+  color: #1a77f2;
+}
+
+.active-link:hover {
+  background-color: #e8effa;
+}
+
+.profile-card {
+  cursor: pointer;
+}
+

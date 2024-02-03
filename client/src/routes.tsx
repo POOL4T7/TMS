@@ -3,31 +3,49 @@ import Layout from "./components/Layout/Layout";
 import Home from "./screens/Home/Home";
 import Login from "./screens/Auth/SignIn";
 import Register from "./screens/Auth/Signup";
-import Profile from './screens/Company/Profile'
+import Profile from "./screens/Company/Profile";
+import NotFound from "./screens/NotFound";
+import DashBoard from "./screens/Company/DashBoard";
+import { AuthState } from "./models/custom";
+import CompanyLayout from "./components/Layout/CompanyLayout";
 
-const router = createBrowserRouter([
-  {
-    path: "/",
-    element: <Layout />,
-    children: [
-      {
-        path: "",
-        element: <Home />,
-      },
-      {
-        path: "/profile",
-        element: <Profile />,
-      },
-    ],
-  },
-  {
-    path: "/login",
-    element: <Login />,
-  },
-  {
-    path: "/signup",
-    element: <Register />,
-  },
-]);
+const router = (authState: AuthState) => {
+  return createBrowserRouter([
+    {
+      path: "/",
+      element: authState?.type === "company" ? <CompanyLayout /> : <Layout />,
+      children: [
+        {
+          path: "",
+          element: authState?.type === "company" ? <DashBoard /> : <Home />,
+        },
+        {
+          path: "/profile",
+          element: <Profile />,
+        },
+        {
+          path: "/dashboard",
+          element: <DashBoard />,
+        },
+      ],
+    },
+    {
+      path: "/login",
+      element: <Login />,
+    },
+    {
+      path: "/signup",
+      element: <Register />,
+    },
+    {
+      path: "404",
+      element: <NotFound />,
+    },
+    {
+      path: "*",
+      element: <NotFound />,
+    },
+  ]);
+};
 
 export default router;

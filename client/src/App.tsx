@@ -1,12 +1,17 @@
-import SignUp from './screens/Auth/Signup'
-// import SignUp from './screens/Signup/Signup'
-// https://d34b11tt7vv6r7.cloudfront.net/gojo_saturo/Default/HLS/gojo_saturo.m3u8
+import { RouterProvider } from "react-router-dom";
+
+import { useTypedSelector } from "./redux/store";
+import router from "./routes";
+import { AuthState } from "./models/custom";
 
 function App() {
+  const authState: AuthState = useTypedSelector((state) => state.authState);
 
   return (
-     <SignUp />
-  )
+    <>
+      <RouterProvider router={router(authState)} />
+    </>
+  );
 }
 
 export default App;

@@ -5,6 +5,14 @@ import CompanyService from "../services/Company.service";
 import TokenService from "../services/Token.service";
 import UserService from "../services/User.service";
 
+const waitFiveSeconds = () => {
+  return new Promise((resolve) => {
+    setTimeout(() => {
+      resolve('Operation completed after 5 seconds');
+    }, 5000);
+  });
+};
+
 class CompanyController {
   private Company;
   private Token;
@@ -55,6 +63,7 @@ class CompanyController {
   }
   async companyLogin(req: Request, res: Response): Promise<Response> {
     try {
+      await waitFiveSeconds();
       const company = await this.Company.findOne({ email: req.body.email });
       if (!company) {
         return res.status(404).json({

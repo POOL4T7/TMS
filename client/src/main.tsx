@@ -1,15 +1,22 @@
-import React from 'react'
-import ReactDOM from 'react-dom/client'
-import './index.css'
-import { RouterProvider } from 'react-router-dom'
-import router from './routes.tsx'
-import { Provider } from 'react-redux'
-import { store } from './redux/store.ts'
+import React from "react";
+import ReactDOM from "react-dom/client";
+import "./index.css";
+import { Provider } from "react-redux";
+import { store } from "./redux/store.ts";
+import { CssBaseline } from "@mui/material";
+import { ThemeProvider } from "@emotion/react";
+import { createTheme } from "@mui/material";
+import App from "./App.tsx";
 
-ReactDOM.createRoot(document.getElementById('root')!).render(
+const defaultTheme = createTheme();
+
+ReactDOM.createRoot(document.getElementById("root")!).render(
   <React.StrictMode>
-    <Provider store={store}>
-    <RouterProvider router={router} />
-    </Provider>
-  </React.StrictMode>,
-)
+    <ThemeProvider theme={defaultTheme}>
+      <Provider store={store}>
+        <CssBaseline />
+        <App />
+      </Provider>
+    </ThemeProvider>
+  </React.StrictMode>
+);

@@ -17,6 +17,7 @@ import { useCompanyLoginMutation } from "../../redux/services/auth";
 import { useAppDispatch, useTypedSelector } from "../../redux/store";
 import { userInfo } from "../../redux/features/authSlice";
 import { useNavigate } from "react-router-dom";
+import Loader from "../../components/Loader";
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 function Copyright(props: any) {
@@ -40,16 +41,17 @@ function Copyright(props: any) {
 const defaultTheme = createTheme();
 
 export default function SignIn() {
-  const [companyLogin] = useCompanyLoginMutation();
+  const [companyLogin, { isLoading, isError }] = useCompanyLoginMutation();
+  console.log(isError);
   const dispatch = useAppDispatch();
   const selector = useTypedSelector((state) => state.authState);
-  const navigate =useNavigate();
+  const navigate = useNavigate();
 
   React.useEffect(() => {
     if (selector.isAuthenticated) {
-      navigate("/");
+      navigate("/dashboard");
     }
-  }, [selector.isAuthenticated, navigate])
+  }, [selector.isAuthenticated, navigate]);
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     try {
@@ -60,7 +62,7 @@ export default function SignIn() {
         password: data.get("password")?.toString() || "",
       }).unwrap();
       dispatch(userInfo(response));
-      navigate("/");
+      // navigate("/dashboard");
     } catch (e) {
       console.log(e);
     }
@@ -119,8 +121,9 @@ export default function SignIn() {
               fullWidth
               variant="contained"
               sx={{ mt: 3, mb: 2 }}
+              disabled={isLoading}
             >
-              Sign In
+              {isLoading ? <Loader size={25}  thickness={4}/> : "Sign In"}
             </Button>
             <Grid container>
               <Grid item xs>

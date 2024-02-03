@@ -1,19 +1,13 @@
-// import { Industry } from "../../models/industry";
 import { createApi, fetchBaseQuery, retry } from "@reduxjs/toolkit/query/react";
 import { RootState } from "../store";
-
-// interface ResponseObject {
-//   success: boolean;
-//   message: string;
-//   industryList: Industry[];
-// }
+import { Company, CompanyApiResponse } from "../../models/company";
 
 // Create our baseQuery instance
 const baseQuery = fetchBaseQuery({
   baseUrl: "http://localhost:8080/company",
   prepareHeaders: (headers, { getState }) => {
     const token = (getState() as RootState).authState.accessToken;
-    console.log('token', token)
+    console.log("token", token);
     if (token) {
       headers.set("x-access-token", `Bearer ${token}`);
     }
@@ -28,23 +22,26 @@ export const companyApi = createApi({
 
   baseQuery: baseQueryWithRetry,
   endpoints: (build) => ({
-    // industryList: build.query<Industry[], void>({
-    //   query: () => `tms/industry`,
-    //   transformResponse: (response: ResponseObject) => {
-    //     const responseData = response.industryList;
-    //     return responseData;
-    //   },
-    //   // transformErrorResponse: (response, meta, arg) =>{
-    //   //   return response.error;
-    //   // }
-    // }),
-    companyProfile: build.query<unknown, void>({
+    companyProfile: build.query<Company, void>({
       query: () => "/company-details",
-      transformResponse: (response) => {
+      transformResponse: (response: CompanyApiResponse) => {
         const responseData = response;
-        return responseData;
+        return responseData.company;
       },
     }),
+    updateCompanyDetails:build.mutation({
+      query(data){
+        return {
+          url: "/company/login",
+          method: "POST",
+          body: data,
+        };
+      },
+      transformResponse: (response: CompanyApiResponse) => {
+        const responseData = response;
+        return responseData.company;
+      },
+    })
   }),
 });
 
