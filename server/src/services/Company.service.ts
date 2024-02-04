@@ -33,11 +33,11 @@ class CompanyService {
   }
 
   async updateCompany(
-    companyId: string,
+    filter: Filter,
     data: Partial<ICompany>
   ): Promise<ICompany | null> {
     try {
-      const company = await Company.findByIdAndUpdate(companyId, data, {
+      const company = await Company.findByIdAndUpdate(filter, data, {
         new: true,
       });
       return company;

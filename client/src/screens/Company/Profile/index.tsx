@@ -20,8 +20,10 @@ import {
   Select,
   SelectChangeEvent,
 } from "@mui/material";
-import { useCompanyProfileQuery } from "../../../redux/services/company";
-import { useAppDispatch } from "../../../redux/store";
+import {
+  useCompanyProfileQuery,
+  useUpdateProfileMutation,
+} from "../../../redux/services/company";
 import Loader from "../../../components/Loader";
 const ITEM_HEIGHT = 48;
 const ITEM_PADDING_TOP = 8;
@@ -46,7 +48,9 @@ const Profile = () => {
 
   const { data: industryList, isFetching: industryListFetching } =
     useIndustryListQuery();
-  const dispatch = useAppDispatch();
+
+  const [updateProfile, { isLoading: updateIsLoading }] =
+    useUpdateProfileMutation();
 
   useEffect(() => {
     if (data) {
@@ -71,10 +75,19 @@ const Profile = () => {
     setIndustryId(typeof value === "string" ? value.split(",") : value);
   };
 
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     const data = new FormData(e.currentTarget);
-    console.log('data.get("name")', data.get("name"));
+    try {
+      console.log('data.get("name")', data.get("name"));
+      await updateProfile({
+        name: data.get("name")?.toString(),
+        industry: data.get("industryList")?.toString().split(","),
+        // companyId
+      }).unwrap();
+    } catch (e) {
+      console.log(e);
+    }
   };
 
   return (
@@ -165,8 +178,9 @@ const Profile = () => {
             fullWidth
             variant="contained"
             sx={{ mt: 3, mb: 2 }}
+            disabled={updateIsLoading}
           >
-            Sign Up
+            {updateIsLoading ? <Loader /> : "Update"}
           </Button>
           <Grid container justifyContent="flex-end">
             <Grid item>

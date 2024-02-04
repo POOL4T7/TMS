@@ -1,6 +1,11 @@
 import { createApi, fetchBaseQuery, retry } from "@reduxjs/toolkit/query/react";
 import { RootState } from "../store";
-import { Company, CompanyApiResponse } from "../../models/company";
+import {
+  Company,
+  CompanyApiResponse,
+  CompanyPostApiResponse,
+  PostCompany,
+} from "../../models/company";
 
 // Create our baseQuery instance
 const baseQuery = fetchBaseQuery({
@@ -23,26 +28,28 @@ export const companyApi = createApi({
   baseQuery: baseQueryWithRetry,
   endpoints: (build) => ({
     companyProfile: build.query<Company, void>({
-      query: () => "/company-details",
+      query: () => "/",
       transformResponse: (response: CompanyApiResponse) => {
         const responseData = response;
         return responseData.company;
       },
     }),
-    updateCompanyDetails:build.mutation({
-      query(data){
-        return {
-          url: "/company/login",
-          method: "POST",
-          body: data,
-        };
-      },
-      transformResponse: (response: CompanyApiResponse) => {
-        const responseData = response;
-        return responseData.company;
-      },
-    })
+    updateProfile: build.mutation<CompanyPostApiResponse, Partial<PostCompany>>(
+      {
+        query(data) {
+          return {
+            url: "/",
+            method: "PATCH",
+            body: data,
+          };
+        },
+        transformResponse: (response: CompanyPostApiResponse) => {
+          const responseData = response;
+          return responseData;
+        },
+      }
+    ),
   }),
 });
 
-export const { useCompanyProfileQuery } = companyApi;
+export const { useCompanyProfileQuery, useUpdateProfileMutation } = companyApi;

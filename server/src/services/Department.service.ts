@@ -1,5 +1,14 @@
 import DepartmentModel, { IDepartment } from "../models/Department.model";
 
+interface Filter {
+  _id?: string;
+  companyId?: string;
+}
+
+interface Sort {
+  [key: string]: 1 | -1;
+}
+
 class DepartmentService {
   async createDepartment(data: IDepartment): Promise<IDepartment> {
     try {
@@ -10,47 +19,56 @@ class DepartmentService {
     }
   }
 
-  async getDepartmentById(departmentId: string): Promise<IDepartment | null> {
+  async findOne(filter: Filter): Promise<IDepartment | null> {
     try {
-      const department = await DepartmentModel.findById(departmentId);
+      const department = await DepartmentModel.findOne(filter).lean();
       return department;
+    } catch (error: any) {
+      throw new Error(`Error getting department: ${error.message}`);
+    }
+  }
+  async find(
+    filter: Filter,
+    select: string,
+    skip: number,
+    limit: number,
+    sort: Sort = { _id: -1 }
+  ): Promise<IDepartment[] | null> {
+    try {
+      const departments = await DepartmentModel.find(filter)
+        .select(select)
+        .sort(sort)
+        .skip(skip)
+        .limit(limit)
+        .lean();
+      return departments;
     } catch (error: any) {
       throw new Error(`Error getting department: ${error.message}`);
     }
   }
 
   async updateDepartment(
-    departmentId: string,
+    filter: Filter,
     data: Partial<IDepartment>
   ): Promise<IDepartment | null> {
     try {
-      const department = await DepartmentModel.findByIdAndUpdate(
-        departmentId,
-        data,
-        { new: true }
-      );
+      const department = await DepartmentModel.findByIdAndUpdate(filter, data, {
+        new: true,
+      });
       return department;
     } catch (error: any) {
       throw new Error(`Error updating department: ${error.message}`);
     }
   }
 
-  async deleteDepartment(departmentId: string): Promise<void> {
+  async deleteDepartment(filter:Filter): Promise<void> {
     try {
-      await DepartmentModel.findByIdAndDelete(departmentId);
+      await DepartmentModel.findOneAndDelete(filter);
     } catch (error: any) {
       throw new Error(`Error deleting department: ${error.message}`);
     }
   }
 
-  async getAllDepartments(): Promise<IDepartment[]> {
-    try {
-      const departments = await DepartmentModel.find();
-      return departments;
-    } catch (error: any) {
-      throw new Error(`Error getting departments: ${error.message}`);
-    }
-  }
 }
 
 export default DepartmentService;

@@ -1,6 +1,6 @@
 import { Express } from "express";
 import IndustryRoute from './routes/Industry.route';
-import UserRoute from './routes/User.route';
+// import UserRoute from './routes/User.route';
 import CompanyRoute from "./routes/Company.route";
 import AuthRoute from "./routes/Auth.route";
 

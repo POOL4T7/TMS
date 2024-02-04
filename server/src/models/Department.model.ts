@@ -1,11 +1,11 @@
-import { Schema, Document, model } from 'mongoose';
+import { Schema, Document, model } from "mongoose";
 
-export interface IDepartment extends Document {
+export interface IDepartment {
   name: string;
   slug: string;
-  createdBy: string;
   companyId: Schema.Types.ObjectId;
-  status: 'active' | 'inactive' | 'deleted';
+  status: "active" | "inactive" | "deleted";
+  image?: string;
 }
 
 const departmentSchema = new Schema<IDepartment>(
@@ -18,21 +18,20 @@ const departmentSchema = new Schema<IDepartment>(
       type: String,
       required: true,
     },
-    createdBy: {
-      type: String,
-      required: true,
-    },
     companyId: {
       type: Schema.Types.ObjectId,
-      ref: 'Company',
+      ref: "Company",
     },
     status: {
       type: String,
-      enum: ['active', 'inactive', 'deleted'],
-      default: 'inactive',
+      enum: ["active", "inactive", "deleted"],
+      default: "inactive",
+    },
+    image: {
+      type: String,
     },
   },
   { timestamps: true }
 );
 
-export default model<IDepartment>('Department', departmentSchema);
+export default model<IDepartment>("Department", departmentSchema);

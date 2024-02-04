@@ -83,7 +83,7 @@ class CompanyController {
           type: "company",
           status: company.status,
         },
-        message: "New Company created",
+        message: "loggedin as a company",
       });
     } catch (e:any) {
       return res.status(500).json({

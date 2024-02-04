@@ -7,11 +7,11 @@ interface ICompany {
   password: string;
 }
 
-export interface PostCompany extends ICompany{
-    industry: string[];
+export interface PostCompany extends ICompany {
+  industry: string[];
 }
-export interface CompanyResponse extends ICompany{
-    industry: Industry;
+export interface CompanyResponse extends ICompany {
+  industry: Industry;
 }
 
 export interface ApiResponse_Company {
@@ -32,5 +32,10 @@ export interface Company {
 export interface CompanyApiResponse {
   success: boolean;
   company: Company;
+  message: string;
+}
+
+export interface CompanyPostApiResponse {
+  success: boolean;
   message: string;
 }

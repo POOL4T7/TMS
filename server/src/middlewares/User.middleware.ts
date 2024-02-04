@@ -7,7 +7,11 @@ class Auth {
     this.Token = new TokenService("");
     this.isAuth = this.isAuth.bind(this);
   }
-  async isAuth(req: any, res: Response, next: NextFunction): Promise<Response | undefined> {
+  async isAuth(
+    req: any,
+    res: Response,
+    next: NextFunction
+  ): Promise<Response | undefined> {
     try {
       let token: string =
         req.headers["x-access-token"] || req.headers["authorization"] || "";
@@ -21,14 +25,15 @@ class Auth {
           req.sessionDetails = user;
           next();
         } else {
-          return res.status(404).json({
+          return res.status(401).json({
             success: false,
-            message: "invalid access token",
+            message: "invalid access token, please login again",
             error: "BAD REQUEST",
+            code: 401.1,
           });
         }
       } else {
-      return  res.status(400).json({
+        return res.status(400).json({
           success: false,
           message: "Token not found",
         });
@@ -43,18 +48,23 @@ class Auth {
     }
   }
   roleAuthMiddleware(requiredRoles: string[]) {
-    return (req: any, res: Response, next: NextFunction): Response | undefined => {
+    return (
+      req: any,
+      res: Response,
+      next: NextFunction
+    ): Response | undefined => {
       const userRole: string = req?.sessionDetails?.role;
-      if(!userRole){
-         return res.status(404).json({error:"Invalid Role"});
-         
+      if (!userRole) {
+        return res.status(404).json({ error: "Invalid Role" });
       }
-      const hasRequiredRole=requiredRoles.includes(userRole);
+      const hasRequiredRole = requiredRoles.includes(userRole);
 
       if (hasRequiredRole) {
         next();
       } else {
-        return res.status(403).json({ error: "Forbidden - Insufficient permissions" });
+        return res
+          .status(403)
+          .json({ error: "Forbidden - Insufficient permissions" });
       }
     };
   }

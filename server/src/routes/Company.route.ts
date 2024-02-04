@@ -7,11 +7,16 @@ import Auth from "../middlewares/User.middleware";
 const router: Router = express.Router();
 
 router
-  .route("/company-details")
+  .route("/")
   .get(
     Auth.isAuth,
     Auth.roleAuthMiddleware(["company"]),
     CompanyController.getOwnCompany
+  )
+  .patch(
+    Auth.isAuth,
+    Auth.roleAuthMiddleware(["company"]),
+    CompanyController.updateCompanyDetails
   );
 
 export default router;

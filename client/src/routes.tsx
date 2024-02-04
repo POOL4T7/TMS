@@ -8,6 +8,7 @@ import NotFound from "./screens/NotFound";
 import DashBoard from "./screens/Company/DashBoard";
 import { AuthState } from "./models/custom";
 import CompanyLayout from "./components/Layout/CompanyLayout";
+import Team from "./screens/Company/Team";
 
 const router = (authState: AuthState) => {
   return createBrowserRouter([
@@ -26,6 +27,10 @@ const router = (authState: AuthState) => {
         {
           path: "/dashboard",
           element: <DashBoard />,
+        },
+        {
+          path: "/teams",
+          element: <Team />,
         },
       ],
     },
