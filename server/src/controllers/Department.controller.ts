@@ -26,7 +26,7 @@ class DepartmentController {
     this.Token = new TokenService("");
     this.Department = new DepartmentService();
     this.updateCompanyDetails = this.updateCompanyDetails.bind(this);
-    this.getDepartmentForCompany = this.getDepartmentForCompany.bind(this);
+    this.getDepartments = this.getDepartments.bind(this);
   }
   async createDepartment(req: Request, res: Response): Promise<Response> {
     try {
@@ -52,7 +52,7 @@ class DepartmentController {
       });
     }
   }
-  async getDepartmentForCompany(
+  async getDepartments(
     req: Request,
     res: Response
   ): Promise<Response> {
@@ -66,7 +66,7 @@ class DepartmentController {
       );
       return res.json({
         success: true,
-        departmentList: departments,
+        teamList: departments,
         message: "Company Department List",
       });
     } catch (e: any) {

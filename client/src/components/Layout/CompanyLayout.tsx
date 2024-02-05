@@ -18,7 +18,7 @@ const CompanyLayout = () => {
             backgroundColor: "#F9FAFB",
             position: "relative",
             left: isMobile ? "0px" : "280px",
-            top: 69,
+            top: 70,
             maxWidth: isMobile ? "100vw" : "calc(100vw - 296px)",
             width: "100%",
             height: "100vh",

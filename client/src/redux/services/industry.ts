@@ -10,7 +10,7 @@ interface ResponseObject {
 
 // Create our baseQuery instance
 const baseQuery = fetchBaseQuery({
-  baseUrl: "http://localhost:8080/",
+  baseUrl: `${import.meta.env.VITE_SERVER_URL}`,
   // prepareHeaders: (headers, { getState }) => {
   //   console.log(getState() as RootState);
   //   const token = (getState() as RootState);
@@ -22,10 +22,10 @@ const baseQuery = fetchBaseQuery({
   // },
 });
 
-const baseQueryWithRetry = retry(baseQuery, { maxRetries: 0 });
+const baseQueryWithRetry = retry(baseQuery, { maxRetries: 2 });
 
 export const industryApi = createApi({
-  reducerPath: "api",
+  reducerPath: "industry",
 
   baseQuery: baseQueryWithRetry,
   endpoints: (build) => ({

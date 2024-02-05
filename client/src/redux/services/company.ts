@@ -9,7 +9,7 @@ import {
 
 // Create our baseQuery instance
 const baseQuery = fetchBaseQuery({
-  baseUrl: "http://localhost:8080/company",
+  baseUrl: `${import.meta.env.VITE_SERVER_URL}/company`,
   prepareHeaders: (headers, { getState }) => {
     const token = (getState() as RootState).authState.accessToken;
     console.log("token", token);

@@ -4,7 +4,7 @@ import { LoginData, AuthResponse } from "../../models/auth";
 
 // Create our baseQuery instance
 const baseQuery = fetchBaseQuery({
-  baseUrl: "http://localhost:8080/auth/",
+  baseUrl: `${import.meta.env.VITE_SERVER_URL}/auth/`,
 });
 
 export const authApi = createApi({
