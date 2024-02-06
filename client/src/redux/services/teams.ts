@@ -5,17 +5,15 @@ import { TeamList } from "../../models/Team";
 interface ResponseObject {
   success: boolean;
   message: string;
-  teamList: TeamList[];
+  teamList?: TeamList[];
 }
 
 const baseQuery = fetchBaseQuery({
   baseUrl: `${import.meta.env.VITE_SERVER_URL}/teams`,
   prepareHeaders: (headers, { getState }) => {
-    console.log(getState() as RootState);
-    const token = (getState() as RootState);
-    console.log('token', token)
+    const token = (getState() as RootState).authState.accessToken;
     if (token) {
-      headers.set("authentication", `Bearer ${token}`);
+      headers.set("x-access-token", `Bearer ${token}`);
     }
     return headers;
   },
@@ -31,7 +29,7 @@ export const teamsApi = createApi({
       query: () => `all`,
       transformResponse: (response: ResponseObject) => {
         const responseData = response.teamList;
-        return responseData;
+        return responseData!;
       },
     }),
   }),

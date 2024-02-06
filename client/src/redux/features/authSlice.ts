@@ -1,5 +1,6 @@
 import { createSlice } from "@reduxjs/toolkit";
 import type { RootState } from "../store";
+import { getCookie, getSessionStorage } from "../../utils/storage";
 
 interface AuthInitialState {
   accessToken: string;
@@ -8,13 +9,14 @@ interface AuthInitialState {
   status: "";
   isAuthenticated: boolean;
 }
-const data=JSON.parse(localStorage.getItem("auth") || '{}');
+
+const data = JSON.parse(getCookie("auth") || getSessionStorage("auth") || "{}");
 
 const initialState: AuthInitialState = {
-  type: data.type ||"",
-  accessToken: data.accessToken ||"",
+  type: data.type || "",
+  accessToken: data.accessToken || "",
   error: "",
-  status: data.status ||"",
+  status: data.status || "",
   isAuthenticated: data?.accessToken && true,
 };
 
@@ -28,7 +30,7 @@ const slice = createSlice({
       state.type = action.payload.type;
       state.status = action.payload.status;
       state.error = action.payload.error || "";
-      state.isAuthenticated= action.payload.accessToken && true;
+      state.isAuthenticated = action.payload.accessToken && true;
     },
   },
 });

@@ -1,9 +1,9 @@
-import { Schema, Document, model } from "mongoose";
+import { Schema, Types, model, ObjectId } from "mongoose";
 
 export interface IDepartment {
   name: string;
   slug: string;
-  companyId: Schema.Types.ObjectId;
+  companyId: Types.ObjectId;
   status: "active" | "inactive" | "deleted";
   image?: string;
 }

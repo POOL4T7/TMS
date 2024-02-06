@@ -26,6 +26,7 @@ import {
 import { useAppDispatch } from "../../redux/store";
 import { userInfo } from "../../redux/features/authSlice";
 import { useTypedSelector } from "../../redux/store";
+import { addToStrorage } from "../../utils/storage";
 
 const ITEM_HEIGHT = 48;
 const ITEM_PADDING_TOP = 8;
@@ -93,8 +94,13 @@ export default function SignUp() {
         email: data.get("email")?.toString() || "",
         password: data.get("password")?.toString() || "",
       }).unwrap();
+      addToStrorage(
+        "auth",
+        JSON.stringify(response),
+        data.get("remember") ? 2 : -1
+      );
       dispatch(userInfo(response));
-      navigate("/")
+      // navigate("/")
     } catch (e) {
       console.log(e);
     }
@@ -196,9 +202,10 @@ export default function SignUp() {
               <Grid item xs={12}>
                 <FormControlLabel
                   control={
-                    <Checkbox value="allowExtraEmails" color="primary" />
+                    <Checkbox value={true} color="primary" />
                   }
                   label="I accept the terms and conditions"
+                  name="remember"
                 />
               </Grid>
             </Grid>

@@ -6,7 +6,13 @@ import Auth from "../middlewares/User.middleware";
 
 const router: Router = express.Router();
 
-router.route("/").post(DepartmentController.createDepartment);
+router
+  .route("/")
+  .post(
+    Auth.isAuth,
+    Auth.roleAuthMiddleware(["company"]),
+    DepartmentController.createDepartment
+  );
 
 router.get(
   "/all",

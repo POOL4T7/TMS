@@ -12,7 +12,6 @@ const baseQuery = fetchBaseQuery({
   baseUrl: `${import.meta.env.VITE_SERVER_URL}/company`,
   prepareHeaders: (headers, { getState }) => {
     const token = (getState() as RootState).authState.accessToken;
-    console.log("token", token);
     if (token) {
       headers.set("x-access-token", `Bearer ${token}`);
     }

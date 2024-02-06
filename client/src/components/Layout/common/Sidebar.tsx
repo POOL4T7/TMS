@@ -7,9 +7,12 @@ import ListItem from "@mui/material/ListItem";
 import ListItemButton from "@mui/material/ListItemButton";
 import ListItemIcon from "@mui/material/ListItemIcon";
 import ListItemText from "@mui/material/ListItemText";
-import InboxIcon from "@mui/icons-material/MoveToInbox";
-import MailIcon from "@mui/icons-material/Mail";
 import MenuIcon from "@mui/icons-material/Menu";
+import { Groups, QueryStats, WebStories } from "@mui/icons-material";
+import { NavLink, useNavigate } from "react-router-dom";
+import { Avatar, Typography } from "@mui/material";
+import Loader from "../../Loader";
+import { useCompanyProfileQuery } from "../../../redux/services/company";
 
 type Anchor = "left";
 
@@ -18,7 +21,8 @@ export default function TemporaryDrawer() {
     left: false,
     bottom: false,
   });
-
+  const navigate = useNavigate();
+  const { data, isLoading } = useCompanyProfileQuery();
   const toggleDrawer =
     (anchor: Anchor, open: boolean) =>
     (event: React.KeyboardEvent | React.MouseEvent) => {
@@ -40,24 +44,68 @@ export default function TemporaryDrawer() {
       onClick={toggleDrawer(anchor, false)}
       onKeyDown={toggleDrawer(anchor, false)}
     >
+      <Box
+        sx={{
+          margin: "24px 20px",
+          padding: "16px 20px",
+          backgroundColor: "#EDEFF2",
+          borderRadius: "12px",
+          display: "flex",
+          alignItems: "center",
+        }}
+        className="profile-card"
+        onClick={() => navigate("/profile")}
+      >
+        <Avatar alt={"User"} src={"/"} sx={{ marginRight: "10px" }} />
+        {isLoading ? <Loader /> : <Typography>{data?.name}</Typography>}
+      </Box>
       <List>
-        {["Inbox", "Starred", "Send email", "Drafts"].map((text, index) => (
-          <ListItem key={text} disablePadding>
-            <ListItemButton>
-              <ListItemIcon>
-                {index % 2 === 0 ? <InboxIcon /> : <MailIcon />}
-              </ListItemIcon>
-              <ListItemText primary={text} />
-            </ListItemButton>
-          </ListItem>
-        ))}
+        <ListItem>
+          <ListItemButton sx={{ "&:hover": { backgroundColor: "#e8effa" } }}>
+            <ListItemIcon>
+              <QueryStats />
+            </ListItemIcon>
+            <NavLink
+              to={"/"}
+              className={({ isActive }) => (isActive ? "active-link" : "")}
+            >
+              <ListItemText primary="Dashboard" />
+            </NavLink>
+          </ListItemButton>
+        </ListItem>
+        <ListItem>
+          <ListItemButton sx={{ "&:hover": { backgroundColor: "#e8effa" } }}>
+            <ListItemIcon>
+              <Groups />
+            </ListItemIcon>
+            <NavLink
+              to={"/teams"}
+              className={({ isActive }) => (isActive ? "active-link" : "")}
+            >
+              <ListItemText primary="Teams" />
+            </NavLink>
+          </ListItemButton>
+        </ListItem>
+        <ListItem>
+          <ListItemButton sx={{ "&:hover": { backgroundColor: "#e8effa" } }}>
+            <ListItemIcon>
+              <WebStories />
+            </ListItemIcon>
+            <NavLink
+              to={"/projects"}
+              className={({ isActive }) => (isActive ? "active-link" : "")}
+            >
+              <ListItemText primary="Projects" />
+            </NavLink>
+          </ListItemButton>
+        </ListItem>
       </List>
     </Box>
   );
 
   return (
     <div>
-      <Button onClick={toggleDrawer("left", true)} >
+      <Button sx={{ color: "#fff" }} onClick={toggleDrawer("left", true)}>
         <MenuIcon />
       </Button>
       <Drawer

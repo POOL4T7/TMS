@@ -19,7 +19,7 @@ class UserController {
         firstName: req.body.firstName,
         lastName: req.body.lastName,
         employeeId: req.body.employeeId,
-        department: req.body.department,
+        departmentId: req.body.department,
         position: req.body.position,
         companyId: req.body.companyId,
         hireDate: req.body.hireDate,

@@ -9,7 +9,7 @@ export interface IUser {
   lastName?: string;
   profilePicture?: string;
   employeeId?: string;
-  department?: Schema.Types.ObjectId | null;
+  departmentId?: Schema.Types.ObjectId | null;
   position?: Schema.Types.ObjectId | null;
   companyId?: Schema.Types.ObjectId | null;
   hireDate?: Date;
@@ -47,7 +47,7 @@ const userSchema: Schema<IUser> = new Schema(
       type: String,
       unique: true,
     },
-    department: {
+    departmentId: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "Department",
       default: null,

@@ -9,6 +9,7 @@ import DashBoard from "./screens/Company/DashBoard";
 import { AuthState } from "./models/custom";
 import CompanyLayout from "./components/Layout/CompanyLayout";
 import Team from "./screens/Company/Team";
+import Users from "./screens/Company/Users";
 
 const router = (authState: AuthState) => {
   return createBrowserRouter([
@@ -31,6 +32,10 @@ const router = (authState: AuthState) => {
         {
           path: "/teams",
           element: <Team />,
+        },
+        {
+          path: "/users",
+          element: <Users />,
         },
       ],
     },

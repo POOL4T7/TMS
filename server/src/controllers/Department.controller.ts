@@ -1,7 +1,7 @@
 // controllers/CompanyController.ts
 
 import { Request, Response } from "express";
-import { Schema } from "mongoose";
+import { Types, ObjectId, Schema } from "mongoose";
 import CompanyService from "../services/Company.service";
 import TokenService from "../services/Token.service";
 import DepartmentService from "../services/Department.service";
@@ -27,6 +27,7 @@ class DepartmentController {
     this.Department = new DepartmentService();
     this.updateCompanyDetails = this.updateCompanyDetails.bind(this);
     this.getDepartments = this.getDepartments.bind(this);
+    this.createDepartment = this.createDepartment.bind(this);
   }
   async createDepartment(req: Request, res: Response): Promise<Response> {
     try {
@@ -34,17 +35,17 @@ class DepartmentController {
       const body = {
         name: req.body.name,
         slug: req.body.slug,
-        companyId: new Schema.Types.ObjectId(companyId!),
+        companyId: new Types.ObjectId(companyId!),
         status: req.body.status,
         image: req.body.image,
       };
       const department = await this.Department.createDepartment(body);
-      console.log('department', department)
       return res.status(201).json({
         success: true,
         message: "Department created successfully",
       });
     } catch (e: any) {
+      console.log(e);
       return res.status(500).json({
         success: false,
         error: e.message,
@@ -52,14 +53,15 @@ class DepartmentController {
       });
     }
   }
+
   async getDepartments(
     req: Request,
     res: Response
   ): Promise<Response> {
     try {
       const companyId = (req as RequestWithSessionDetails).sessionDetails._id;
-      const departments = await this.Department.find(
-        { companyId: companyId },
+      const departments = await this.Department.departmentList(
+        { companyId: new Types.ObjectId(companyId!) as unknown as ObjectId }, // need thinking
         "",
         0,
         10

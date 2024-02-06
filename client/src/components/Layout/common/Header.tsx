@@ -12,10 +12,11 @@ import Button from "@mui/material/Button";
 import Tooltip from "@mui/material/Tooltip";
 import MenuItem from "@mui/material/MenuItem";
 import AdbIcon from "@mui/icons-material/Adb";
+import { Link, NavLink } from "react-router-dom";
 import SideBar from "./Sidebar";
 import { useAppDispatch, useTypedSelector } from "../../../redux/store";
 import { userInfo } from "../../../redux/features/authSlice";
-import { Link, NavLink, useNavigate } from "react-router-dom";
+import { emptyStorage } from "../../../utils/storage";
 
 const pages = ["Products", "Pricing", "Blog"];
 
@@ -27,7 +28,6 @@ function Navbar() {
     null
   );
   const dispatch = useAppDispatch();
-  const navigate = useNavigate();
 
   const authState = useTypedSelector((state) => state.authState);
 
@@ -41,9 +41,9 @@ function Navbar() {
 
   const handleCloseUserMenu = () => {
     setAnchorElUser(null);
-    localStorage.removeItem("auth");
+    emptyStorage();
     dispatch(userInfo({}));
-    navigate("/login");
+    window.location.href = "/login";
   };
 
   return (

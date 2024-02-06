@@ -63,7 +63,7 @@ class CompanyController {
   }
   async companyLogin(req: Request, res: Response): Promise<Response> {
     try {
-      await waitFiveSeconds();
+      // await waitFiveSeconds();
       const company = await this.Company.findOne({ email: req.body.email });
       if (!company) {
         return res.status(404).json({

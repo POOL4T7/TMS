@@ -5,19 +5,19 @@ import CssBaseline from "@mui/material/CssBaseline";
 import TextField from "@mui/material/TextField";
 import FormControlLabel from "@mui/material/FormControlLabel";
 import Checkbox from "@mui/material/Checkbox";
-import Link from "@mui/material/Link";
 import Grid from "@mui/material/Grid";
 import Box from "@mui/material/Box";
 import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
-
+import { Link } from "react-router-dom";
 import { useCompanyLoginMutation } from "../../redux/services/auth";
 import { useAppDispatch, useTypedSelector } from "../../redux/store";
 import { userInfo } from "../../redux/features/authSlice";
 import { useNavigate } from "react-router-dom";
 import Loader from "../../components/Loader";
+import { addToStrorage } from "../../utils/storage";
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 function Copyright(props: any) {
@@ -29,7 +29,7 @@ function Copyright(props: any) {
       {...props}
     >
       {"Copyright © "}
-      <Link color="inherit" href="https://mui.com/">
+      <Link color="inherit" to="https://mui.com/">
         Your Website
       </Link>{" "}
       {new Date().getFullYear()}
@@ -41,8 +41,7 @@ function Copyright(props: any) {
 const defaultTheme = createTheme();
 
 export default function SignIn() {
-  const [companyLogin, { isLoading, isError }] = useCompanyLoginMutation();
-  console.log(isError);
+  const [companyLogin, { isLoading }] = useCompanyLoginMutation();
   const dispatch = useAppDispatch();
   const selector = useTypedSelector((state) => state.authState);
   const navigate = useNavigate();
@@ -61,8 +60,12 @@ export default function SignIn() {
         email: data.get("email")?.toString() || "",
         password: data.get("password")?.toString() || "",
       }).unwrap();
+      addToStrorage(
+        "auth",
+        JSON.stringify(response),
+        data.get("remember") ? 2 : -1
+      );
       dispatch(userInfo(response));
-      // navigate("/dashboard");
     } catch (e) {
       console.log(e);
     }
@@ -113,8 +116,9 @@ export default function SignIn() {
               autoComplete="current-password"
             />
             <FormControlLabel
-              control={<Checkbox value="remember" color="primary" />}
+              control={<Checkbox value={true} color="primary" />}
               label="Remember me"
+              name="remember"
             />
             <Button
               type="submit"
@@ -123,16 +127,16 @@ export default function SignIn() {
               sx={{ mt: 3, mb: 2 }}
               disabled={isLoading}
             >
-              {isLoading ? <Loader size={25}  thickness={4}/> : "Sign In"}
+              {isLoading ? <Loader size={25} thickness={4} /> : "Sign In"}
             </Button>
             <Grid container>
               <Grid item xs>
-                <Link href="#" variant="body2">
+                <Link to="#">
                   Forgot password?
                 </Link>
               </Grid>
               <Grid item>
-                <Link href="#" variant="body2">
+                <Link to="/signup">
                   {"Don't have an account? Sign Up"}
                 </Link>
               </Grid>

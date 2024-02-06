@@ -1,8 +1,9 @@
+import { ObjectId } from "mongoose";
 import DepartmentModel, { IDepartment } from "../models/Department.model";
 
 interface Filter {
   _id?: string;
-  companyId?: string;
+  companyId?: string | ObjectId;
 }
 
 interface Sort {
@@ -61,7 +62,7 @@ class DepartmentService {
     }
   }
 
-  async deleteDepartment(filter:Filter): Promise<void> {
+  async deleteDepartment(filter: Filter): Promise<void> {
     try {
       await DepartmentModel.findOneAndDelete(filter);
     } catch (error: any) {
@@ -69,6 +70,46 @@ class DepartmentService {
     }
   }
 
+  async departmentList(
+    filter: Filter,
+    select: string,
+    skip: number,
+    limit: number,
+    sort: Sort = { _id: -1 }
+  ): Promise<IDepartment[] | null> {
+    try {
+      const departmentList = await DepartmentModel.aggregate([
+        {
+          $match:filter,
+        },
+        {
+          $skip: skip,
+        },
+        {
+          $limit: limit,
+        },
+        {
+          $lookup: {
+            from: "users",
+            localField: "_id",
+            foreignField: "departmentId",
+            as: "members",
+          },
+        },
+        {
+          $project: {
+            _id: 1,
+            name: 1,
+            image:1,
+            totalMembers: { $size: "$members" },
+          },
+        },
+      ]);
+      return departmentList;
+    } catch (error: any) {
+      throw new Error(`Error getting department: ${error.message}`);
+    }
+  }
 }
 
 export default DepartmentService;

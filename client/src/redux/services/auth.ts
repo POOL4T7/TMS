@@ -25,7 +25,7 @@ export const authApi = createApi({
         };
       },
       transformResponse(baseQueryReturnValue: AuthResponse) {
-        localStorage.setItem("auth", JSON.stringify(baseQueryReturnValue.data));
+        // localStorage.setItem("auth", JSON.stringify(baseQueryReturnValue.data));
         return baseQueryReturnValue.data;
       },
     }),
@@ -38,7 +38,6 @@ export const authApi = createApi({
         };
       },
       transformResponse(baseQueryReturnValue: AuthResponse) {
-        localStorage.setItem("auth", JSON.stringify(baseQueryReturnValue.data));
         return baseQueryReturnValue.data;
       },
     }),

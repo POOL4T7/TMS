@@ -10,7 +10,7 @@ const CompanyLayout = () => {
   return (
     <>
       <Header />
-      <Stack direction="row" spacing={2}>
+      <Stack direction="row" spacing={0.5}>
         <SideNav />
         <Box
           flex={8}
@@ -19,7 +19,7 @@ const CompanyLayout = () => {
             position: "relative",
             left: isMobile ? "0px" : "280px",
             top: 70,
-            maxWidth: isMobile ? "100vw" : "calc(100vw - 296px)",
+            maxWidth: isMobile ? "100vw" : "calc(100vw - 284px)",
             width: "100%",
             height: "100vh",
           }}
