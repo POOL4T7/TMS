@@ -26,7 +26,7 @@ export const teamsApi = createApi({
   baseQuery: baseQueryWithRetry,
   endpoints: (build) => ({
     teamList: build.query<TeamList[], void>({
-      query: () => `all`,
+      query: () => `/all`,
       transformResponse: (response: ResponseObject) => {
         const responseData = response.teamList;
         return responseData!;

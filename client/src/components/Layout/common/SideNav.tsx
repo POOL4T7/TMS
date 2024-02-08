@@ -9,7 +9,13 @@ import {
   Stack,
   Typography,
 } from "@mui/material";
-import { Groups, WebStories, QueryStats } from "@mui/icons-material";
+import {
+  Groups,
+  WebStories,
+  QueryStats,
+  FolderShared,
+  People,
+} from "@mui/icons-material";
 import { NavLink, useNavigate } from "react-router-dom";
 import { useCompanyProfileQuery } from "../../../redux/services/company";
 import Loader from "../../Loader";
@@ -71,6 +77,21 @@ const SideNav = () => {
                 sx={{ "&:hover": { backgroundColor: "#e8effa" } }}
               >
                 <ListItemIcon>
+                  <WebStories />
+                </ListItemIcon>
+                <NavLink
+                  to={"/projects"}
+                  className={({ isActive }) => (isActive ? "active-link" : "")}
+                >
+                  <ListItemText primary="Projects" />
+                </NavLink>
+              </ListItemButton>
+            </ListItem>
+            <ListItem>
+              <ListItemButton
+                sx={{ "&:hover": { backgroundColor: "#e8effa" } }}
+              >
+                <ListItemIcon>
                   <Groups />
                 </ListItemIcon>
                 <NavLink
@@ -81,18 +102,34 @@ const SideNav = () => {
                 </NavLink>
               </ListItemButton>
             </ListItem>
+            
             <ListItem>
               <ListItemButton
                 sx={{ "&:hover": { backgroundColor: "#e8effa" } }}
               >
                 <ListItemIcon>
-                  <WebStories />
+                  <FolderShared />
                 </ListItemIcon>
                 <NavLink
-                  to={"/projects"}
+                  to={"/positions"}
                   className={({ isActive }) => (isActive ? "active-link" : "")}
                 >
-                  <ListItemText primary="Projects" />
+                  <ListItemText primary="Position & Roles" />
+                </NavLink>
+              </ListItemButton>
+            </ListItem>
+            <ListItem>
+              <ListItemButton
+                sx={{ "&:hover": { backgroundColor: "#e8effa" } }}
+              >
+                <ListItemIcon>
+                  <People />
+                </ListItemIcon>
+                <NavLink
+                  to={"/users"}
+                  className={({ isActive }) => (isActive ? "active-link" : "")}
+                >
+                  <ListItemText primary="Users" />
                 </NavLink>
               </ListItemButton>
             </ListItem>

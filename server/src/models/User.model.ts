@@ -10,7 +10,7 @@ export interface IUser {
   profilePicture?: string;
   employeeId?: string;
   departmentId?: Schema.Types.ObjectId | null;
-  position?: Schema.Types.ObjectId | null;
+  positionId?: Schema.Types.ObjectId | null;
   companyId?: Schema.Types.ObjectId | null;
   hireDate?: Date;
   qualification?: string[];
@@ -52,7 +52,7 @@ const userSchema: Schema<IUser> = new Schema(
       ref: "Department",
       default: null,
     },
-    position: {
+    positionId: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "Position",
       default: null,
@@ -69,6 +69,10 @@ const userSchema: Schema<IUser> = new Schema(
       type: String,
       default: "inactive",
       enum: ["active", "inactive", "deleted", "suspended"],
+    },
+    hireDate: {
+      type: Date,
+      default: Date.now(),
     },
   },
   { timestamps: true }

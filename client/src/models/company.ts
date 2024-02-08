@@ -1,4 +1,4 @@
-import { Industry } from "./industry";
+import { Industry } from "./Industry";
 
 interface ICompany {
   name: string;

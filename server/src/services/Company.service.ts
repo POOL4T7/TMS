@@ -16,7 +16,7 @@ class CompanyService {
   }
   async findOne(filter: Filter): Promise<ICompany | null> {
     try {
-      const company = await Company.findOne(filter).populate({path:"industry", select:"name"})
+      const company = await Company.findOne(filter).populate({path:"industry", select:"name"}).lean();
       return company;
     } catch (error: any) {
       throw new Error(`Error creating company: ${error.message}`);

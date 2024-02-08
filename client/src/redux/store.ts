@@ -5,6 +5,7 @@ import { authApi } from "./services/auth";
 import authReducer from "./features/authSlice";
 import { companyApi } from "./services/company";
 import { teamsApi } from "./services/teams";
+import { positionApi } from "./services/position";
 
 export const createStore = (
   options?: ConfigureStoreOptions["preloadedState"] | undefined
@@ -16,13 +17,15 @@ export const createStore = (
       [authApi.reducerPath]: authApi.reducer,
       [companyApi.reducerPath]:companyApi.reducer,
       [teamsApi.reducerPath]:teamsApi.reducer,
+      [positionApi.reducerPath]:positionApi.reducer,
     },
     middleware: (getDefaultMiddleware) =>
       getDefaultMiddleware()
         .concat(industryApi.middleware)
         .concat(authApi.middleware)
         .concat(companyApi.middleware)
-        .concat(teamsApi.middleware),
+        .concat(teamsApi.middleware)
+        .concat(positionApi.middleware),
     devTools: import.meta.env.NODE_ENV !== "production",
     ...options,
   });

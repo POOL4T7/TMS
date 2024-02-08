@@ -10,6 +10,7 @@ import { AuthState } from "./models/custom";
 import CompanyLayout from "./components/Layout/CompanyLayout";
 import Team from "./screens/Company/Team";
 import Users from "./screens/Company/Users";
+import Position from "./screens/Company/Position";
 
 const router = (authState: AuthState) => {
   return createBrowserRouter([
@@ -36,6 +37,10 @@ const router = (authState: AuthState) => {
         {
           path: "/users",
           element: <Users />,
+        },
+        {
+          path: "/positions",
+          element: <Position />,
         },
       ],
     },

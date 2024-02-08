@@ -27,7 +27,7 @@ export const companyApi = createApi({
   baseQuery: baseQueryWithRetry,
   endpoints: (build) => ({
     companyProfile: build.query<Company, void>({
-      query: () => "/",
+      query: () => "",
       transformResponse: (response: CompanyApiResponse) => {
         const responseData = response;
         return responseData.company;
@@ -37,7 +37,7 @@ export const companyApi = createApi({
       {
         query(data) {
           return {
-            url: "/",
+            url: "",
             method: "PATCH",
             body: data,
           };
