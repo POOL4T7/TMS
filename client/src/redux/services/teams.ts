@@ -32,7 +32,14 @@ export const teamsApi = createApi({
         return responseData!;
       },
     }),
+    allTeams: build.query<TeamList[], void>({
+      query: () => `/get-list`,
+      transformResponse: (response: ResponseObject) => {
+        const responseData = response.teamList;
+        return responseData!;
+      },
+    }),
   }),
 });
 
-export const { useTeamListQuery } = teamsApi;
+export const { useTeamListQuery, useAllTeamsQuery } = teamsApi;

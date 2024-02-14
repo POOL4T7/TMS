@@ -26,10 +26,10 @@ const router = (authState: AuthState) => {
           path: "/profile",
           element: <Profile />,
         },
-        {
-          path: "/dashboard",
-          element: <DashBoard />,
-        },
+        // {
+        //   path: "/dashboard",
+        //   element: <DashBoard />,
+        // },
         {
           path: "/teams",
           element: <Team />,

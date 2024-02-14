@@ -1,9 +1,7 @@
 // controllers/CompanyController.ts
 
 import { Request, Response } from "express";
-import { Types, ObjectId, Schema } from "mongoose";
-import CompanyService from "../services/Company.service";
-import TokenService from "../services/Token.service";
+import { Types, ObjectId } from "mongoose";
 import DepartmentService from "../services/Department.service";
 
 interface TokenOutput {
@@ -18,14 +16,8 @@ interface RequestWithSessionDetails extends Request {
 }
 
 class DepartmentController {
-  private Company;
-  private Token;
-  private Department;
   constructor() {
-    this.Company = new CompanyService();
-    this.Token = new TokenService("");
-    this.Department = new DepartmentService();
-    this.updateCompanyDetails = this.updateCompanyDetails.bind(this);
+    // this.Department = new DepartmentService();
     this.getDepartments = this.getDepartments.bind(this);
     this.createDepartment = this.createDepartment.bind(this);
   }
@@ -39,7 +31,7 @@ class DepartmentController {
         status: req.body.status,
         image: req.body.image,
       };
-      const department = await this.Department.createDepartment(body);
+      const department = await DepartmentService.createDepartment(body);
       return res.status(201).json({
         success: true,
         message: "Department created successfully",
@@ -54,22 +46,18 @@ class DepartmentController {
     }
   }
 
-  async getDepartments(
-    req: Request,
-    res: Response
-  ): Promise<Response> {
+  async getDepartments(req: Request, res: Response): Promise<Response> {
     try {
       const companyId = (req as RequestWithSessionDetails).sessionDetails._id;
-      const departments = await this.Department.departmentList(
+      const departments = await DepartmentService.departmentListWithStats(
         { companyId: new Types.ObjectId(companyId!) as unknown as ObjectId }, // need thinking
-        "",
         0,
         10
       );
       return res.json({
         success: true,
         teamList: departments,
-        message: "Company Department List",
+        message: "Department List",
       });
     } catch (e: any) {
       return res.status(500).json({
@@ -79,58 +67,21 @@ class DepartmentController {
       });
     }
   }
-
-  async getIndustryById(req: Request, res: Response): Promise<Response> {
-    const industryId = req.params.id;
+  async getDepartmentList(req: Request, res: Response): Promise<Response> {
     try {
-      const industry = await this.Company.getCompanyById(industryId);
-      if (industry) {
-        return res.json(industry);
-      } else {
-        return res.status(404).json({ error: "Company not found" });
-      }
-    } catch (e: any) {
-      return res.status(500).json({
-        success: false,
-        error: e.message,
-        message: "server error",
-      });
-    }
-  }
+      const companyId = new Types.ObjectId(
+        (req as RequestWithSessionDetails).sessionDetails._id!
+      ) as unknown as ObjectId;
 
-  async updateCompanyDetails(req: Request, res: Response): Promise<Response> {
-    const companyId = (req as RequestWithSessionDetails).sessionDetails._id;
-    const departmentData = {
-      name: req.body.name,
-      industry: req.body.industry,
-    };
-    try {
-      const updatedCompany = await this.Company.updateCompany(
-        { _id: companyId },
-        departmentData
+      const departments = await DepartmentService.findAll(
+        { companyId: companyId },
+        "name"
       );
-      if (updatedCompany) {
-        return res.status(200).json({
-          success: true,
-          message: "Company Updated successfully",
-        });
-      } else {
-        return res.status(404).json({ error: "Company not found" });
-      }
-    } catch (e: any) {
-      return res.status(500).json({
-        success: false,
-        error: e.message,
-        message: "server error",
+      return res.json({
+        success: true,
+        teamList: departments,
+        message: "Department List",
       });
-    }
-  }
-
-  async deleteIndustry(req: Request, res: Response): Promise<Response> {
-    const industryId = req.params.id;
-    try {
-      await this.Company.deleteCompany(industryId);
-      return res.status(204).send(); // No content
     } catch (e: any) {
       return res.status(500).json({
         success: false,

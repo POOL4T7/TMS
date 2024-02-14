@@ -1,12 +1,19 @@
-import { Delete, FilterList } from "@mui/icons-material";
+import { Delete } from "@mui/icons-material";
 import { IconButton, Toolbar, Tooltip, Typography, alpha } from "@mui/material";
 
 interface EnhancedTableToolbarProps {
   numSelected: number;
-  title:string;
+  title: string;
+  component: () => JSX.Element;
+  toolTipText:string;
 }
 
-const TableToolBar = ({ numSelected, title }: EnhancedTableToolbarProps) => {
+const TableToolBar = ({
+  numSelected,
+  title,
+  component,
+}: EnhancedTableToolbarProps) => {
+  console.log("TableToolBar...");
   return (
     <Toolbar
       sx={{
@@ -48,12 +55,7 @@ const TableToolBar = ({ numSelected, title }: EnhancedTableToolbarProps) => {
           </IconButton>
         </Tooltip>
       ) : (
-        <Tooltip title="Filter list">
-          <IconButton>
-            {/* <FilterListIcon /> */}
-            <FilterList />
-          </IconButton>
-        </Tooltip>
+        <Tooltip title="Add New">{component()}</Tooltip>
       )}
     </Toolbar>
   );

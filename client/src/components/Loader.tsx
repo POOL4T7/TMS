@@ -10,7 +10,7 @@ interface PropType {
 export default function Loader({
   size = 25,
   thickness = 4,
-  margin = "0px",
+  margin = "auto",
 }: PropType) {
   return (
     <Box

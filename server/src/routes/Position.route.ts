@@ -16,6 +16,11 @@ PositionRouter.route("/")
     Auth.isAuth,
     Auth.roleAuthMiddleware(["company"]),
     PositionController.getAllPosition
+  )
+  .delete(
+    Auth.isAuth,
+    Auth.roleAuthMiddleware(["company"]),
+    PositionController.deletePosition
   );
 
 export default PositionRouter;

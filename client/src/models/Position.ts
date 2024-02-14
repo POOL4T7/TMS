@@ -1,10 +1,3 @@
-export interface Position_Post {
-  name: string;
-  slug: string;
-  companyId: string;
-  status: "active" | "inactive" | "deleted";
-}
-
 interface Team {
   name: string;
   _id: string;
@@ -15,6 +8,7 @@ export interface PositionList {
   name: string;
   team: Team;
   totalMembers: number;
+  slug: string;
   status: "active" | "inactive" | "deleted";
 }
 
@@ -26,4 +20,33 @@ export interface PositionGetApiData {
 export interface PositionGetApiResponse extends PositionGetApiData {
   success: boolean;
   message: string;
+}
+
+export interface PositionPostData {
+  name: string;
+  teamId: string;
+  companyId: string;
+  status: string;
+  slug: string;
+}
+
+
+
+export interface ReturnObject{
+  success:boolean;
+  message:string
+}
+
+export interface PositionPostResponse extends ReturnObject {
+  position: PositionObject;
+}
+
+
+export interface PositionObject {
+  name: string;
+  teamId: string;
+  companyId: string;
+  status: "active" | "inactive" | "deleted";
+  slug: string;
+  createdBy: string;
 }

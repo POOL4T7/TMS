@@ -11,7 +11,7 @@ interface Sort {
 }
 
 class DepartmentService {
-  async createDepartment(data: IDepartment): Promise<IDepartment> {
+ static async createDepartment(data: IDepartment): Promise<IDepartment> {
     try {
       const department = await DepartmentModel.create(data);
       return department;
@@ -20,7 +20,7 @@ class DepartmentService {
     }
   }
 
-  async findOne(filter: Filter): Promise<IDepartment | null> {
+ static async findOne(filter: Filter): Promise<IDepartment | null> {
     try {
       const department = await DepartmentModel.findOne(filter).lean();
       return department;
@@ -28,7 +28,7 @@ class DepartmentService {
       throw new Error(`Error getting department: ${error.message}`);
     }
   }
-  async find(
+  static async findWithPagination(
     filter: Filter,
     select: string,
     skip: number,
@@ -70,9 +70,8 @@ class DepartmentService {
     }
   }
 
-  async departmentList(
+ static async departmentListWithStats(
     filter: Filter,
-    select: string,
     skip: number,
     limit: number,
     sort: Sort = { _id: -1 }
@@ -80,7 +79,10 @@ class DepartmentService {
     try {
       const departmentList = await DepartmentModel.aggregate([
         {
-          $match:filter,
+          $match: filter,
+        },
+        {
+          $sort: sort,
         },
         {
           $skip: skip,
@@ -93,6 +95,13 @@ class DepartmentService {
             from: "users",
             localField: "_id",
             foreignField: "departmentId",
+            pipeline: [
+              {
+                $project: {
+                  _id: 1,
+                },
+              },
+            ],
             as: "members",
           },
         },
@@ -100,11 +109,21 @@ class DepartmentService {
           $project: {
             _id: 1,
             name: 1,
-            image:1,
+            image: 1,
             totalMembers: { $size: "$members" },
           },
         },
       ]);
+      return departmentList;
+    } catch (error: any) {
+      throw new Error(`Error getting department: ${error.message}`);
+    }
+  }
+  static async findAll(filter: Filter, select: string): Promise<IDepartment[] | null> {
+    try {
+      const departmentList = await DepartmentModel.find(filter)
+        .select("")
+        .lean();
       return departmentList;
     } catch (error: any) {
       throw new Error(`Error getting department: ${error.message}`);

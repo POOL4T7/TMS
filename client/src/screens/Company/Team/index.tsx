@@ -5,8 +5,8 @@ import { useTeamListQuery } from "../../../redux/services/teams";
 import Loader from "../../../components/Loader";
 
 const Team = () => {
+  console.log("Team page rendering")
   const { data, isLoading } = useTeamListQuery();
-
   return (
     <Box p={5}>
       <Stack

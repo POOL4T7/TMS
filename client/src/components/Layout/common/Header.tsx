@@ -17,6 +17,7 @@ import SideBar from "./Sidebar";
 import { useAppDispatch, useTypedSelector } from "../../../redux/store";
 import { userInfo } from "../../../redux/features/authSlice";
 import { emptyStorage } from "../../../utils/storage";
+import { Theme, useMediaQuery } from "@mui/material";
 
 const pages = ["Products", "Pricing", "Blog"];
 
@@ -26,6 +27,9 @@ function Navbar() {
   );
   const [anchorElUser, setAnchorElUser] = React.useState<null | HTMLElement>(
     null
+  );
+  const isMobile = useMediaQuery((theme: Theme) =>
+    theme.breakpoints.down("md")
   );
   const dispatch = useAppDispatch();
 
@@ -62,7 +66,7 @@ function Navbar() {
           </Typography>
 
           <Box sx={{ flexGrow: 1, display: { xs: "flex", md: "none" } }}>
-            <SideBar />
+            {isMobile && <SideBar />}
             <Menu
               id="menu-appbar"
               anchorEl={anchorElNav}

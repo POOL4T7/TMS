@@ -21,4 +21,11 @@ router.get(
   DepartmentController.getDepartments
 );
 
+router.get(
+  "/get-list",
+  Auth.isAuth,
+  Auth.roleAuthMiddleware(["company"]),
+  DepartmentController.getDepartmentList
+);
+
 export default router;

@@ -121,6 +121,7 @@ class PositionService {
             team: 1,
             status: 1,
             name:1,
+            slug:1,
             totalMembers: { $size: "$members" },
           },
         },
@@ -155,9 +156,9 @@ class PositionService {
     }
   }
 
-  async deletePosition(positionId: string): Promise<void> {
+ static async deletePosition(filter: Filter): Promise<void> {
     try {
-      await Position.findByIdAndDelete(positionId);
+      await Position.findOneAndDelete(filter);
     } catch (error: any) {
       throw new Error(`Error deleting position: ${error.message}`);
     }
