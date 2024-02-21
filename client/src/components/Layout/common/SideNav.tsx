@@ -16,6 +16,11 @@ import {
   FolderShared,
   People,
 } from "@mui/icons-material";
+// import Accordion from "@mui/material/Accordion";
+// import AccordionActions from "@mui/material/AccordionActions";
+// import AccordionSummary from "@mui/material/AccordionSummary";
+// import AccordionDetails from "@mui/material/AccordionDetails";
+// import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import { NavLink, useNavigate } from "react-router-dom";
 import { useCompanyProfileQuery } from "../../../redux/services/company";
 import Loader from "../../Loader";
@@ -102,7 +107,7 @@ const SideNav = () => {
                 </NavLink>
               </ListItemButton>
             </ListItem>
-            
+
             <ListItem>
               <ListItemButton
                 sx={{ "&:hover": { backgroundColor: "#e8effa" } }}
@@ -132,6 +137,23 @@ const SideNav = () => {
                   <ListItemText primary="Users" />
                 </NavLink>
               </ListItemButton>
+            </ListItem>
+            <ListItem>
+              <ListItemButton
+                sx={{ "&:hover": { backgroundColor: "#e8effa" } }}
+                
+              >
+                <ListItemIcon>
+                  <People />
+                </ListItemIcon>
+                <NavLink
+                  to={"/users"}
+                  className={({ isActive }) => (isActive ? "active-link" : "")}
+                >
+                  <ListItemText primary="Users" />
+                </NavLink>
+              </ListItemButton>
+              
             </ListItem>
           </List>
         </Box>

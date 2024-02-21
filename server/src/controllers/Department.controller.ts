@@ -3,17 +3,7 @@
 import { Request, Response } from "express";
 import { Types, ObjectId } from "mongoose";
 import DepartmentService from "../services/Department.service";
-
-interface TokenOutput {
-  _id?: string;
-  email?: string;
-  userId?: string;
-  role?: string;
-}
-
-interface RequestWithSessionDetails extends Request {
-  sessionDetails: TokenOutput;
-}
+import { RequestWithSessionDetails } from "../interfaces/Custum.inteface";
 
 class DepartmentController {
   constructor() {
@@ -23,7 +13,7 @@ class DepartmentController {
   }
   async createDepartment(req: Request, res: Response): Promise<Response> {
     try {
-      const companyId = (req as RequestWithSessionDetails).sessionDetails._id;
+      const companyId = (req as unknown as RequestWithSessionDetails).sessionDetails.companyId;
       const body = {
         name: req.body.name,
         slug: req.body.slug,
@@ -48,7 +38,7 @@ class DepartmentController {
 
   async getDepartments(req: Request, res: Response): Promise<Response> {
     try {
-      const companyId = (req as RequestWithSessionDetails).sessionDetails._id;
+      const companyId = (req as unknown as RequestWithSessionDetails).sessionDetails.companyId;
       const departments = await DepartmentService.departmentListWithStats(
         { companyId: new Types.ObjectId(companyId!) as unknown as ObjectId }, // need thinking
         0,
@@ -70,7 +60,7 @@ class DepartmentController {
   async getDepartmentList(req: Request, res: Response): Promise<Response> {
     try {
       const companyId = new Types.ObjectId(
-        (req as RequestWithSessionDetails).sessionDetails._id!
+        (req as unknown as RequestWithSessionDetails).sessionDetails.companyId!
       ) as unknown as ObjectId;
 
       const departments = await DepartmentService.findAll(

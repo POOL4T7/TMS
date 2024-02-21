@@ -1,19 +1,11 @@
 import { ObjectId } from "mongoose";
 import Position, { IPosition } from "../models/Position.model";
+import { Sort, PaginationData } from "../interfaces/Custum.inteface";
 
 interface Filter {
   _id?: string;
   companyId?: string | ObjectId;
   status?: string;
-}
-
-interface Sort {
-  [key: string]: 1 | -1;
-}
-
-interface PaginationData {
-  positionList: IPosition[];
-  totalPosition: number;
 }
 
 class PositionService {
@@ -120,8 +112,8 @@ class PositionService {
             _id: 1,
             team: 1,
             status: 1,
-            name:1,
-            slug:1,
+            name: 1,
+            slug: 1,
             totalMembers: { $size: "$members" },
           },
         },
@@ -156,9 +148,16 @@ class PositionService {
     }
   }
 
- static async deletePosition(filter: Filter): Promise<void> {
+  static async deletePosition(filter: Filter): Promise<void> {
     try {
       await Position.findOneAndDelete(filter);
+    } catch (error: any) {
+      throw new Error(`Error deleting position: ${error.message}`);
+    }
+  }
+  static async findOneAndUpdate(filter: Filter, formData: any): Promise<void> {
+    try {
+      await Position.findOneAndUpdate(filter, formData);
     } catch (error: any) {
       throw new Error(`Error deleting position: ${error.message}`);
     }

@@ -3,34 +3,36 @@
 import { Request, Response } from "express";
 import UserService from "../services/User.service";
 import { IUser } from "../models/User.model";
+import { RequestWithSessionDetails, Sort } from "../interfaces/Custum.inteface";
+import { ObjectId, Types } from "mongoose";
 
 class UserController {
-  private User;
   constructor() {
-    this.User = new UserService();
     this.registerUser = this.registerUser.bind(this);
   }
   async registerUser(req: Request, res: Response): Promise<Response> {
     try {
+      const companyId = new Types.ObjectId(
+        (req as unknown as RequestWithSessionDetails).sessionDetails.companyId!
+      ) as unknown as ObjectId;
       const user: IUser = {
         email: req.body.email,
         password: req.body.password, // need to be hashed
-        role: "employee",
+        role: req.body.role,
         firstName: req.body.firstName,
         lastName: req.body.lastName,
         employeeId: req.body.employeeId,
-        departmentId: req.body.department,
-        positionId: req.body.position,
-        companyId: req.body.companyId,
+        departmentId: req.body.departmentId,
+        positionId: req.body.positionId,
+        companyId: companyId,
         hireDate: req.body.hireDate,
         qualification: req.body.qualification,
         status: req.body.status,
       };
-      const data: IUser = await this.User.createUser(user);
+      await UserService.createUser(user);
       return res.status(201).json({
         success: true,
         message: "User registred successfully",
-        data: data,
       });
     } catch (e: any) {
       return res.status(500).json({
@@ -47,7 +49,7 @@ class UserController {
       // if (req.body.department) updatedData.department = req.body.department;
       // if (req.body.position) updatedData.position = req.body.position;
       // if (req.body.hireDate) updatedData.hireDate = req.body.hireDate;
-      // const user: IUser | null = await this.User.updateUser(req.params.id, {});
+      // const user: IUser | null = await UserService.updateUser(req.params.id, {});
       // if (!user) {
       //   return res.status(404).json({
       //     success: true,
@@ -67,9 +69,41 @@ class UserController {
       });
     }
   }
+
+  async getCompanyUsers(req: Request, res: Response): Promise<Response> {
+    try {
+      const companyId = new Types.ObjectId(
+        (req as unknown as RequestWithSessionDetails).sessionDetails.companyId!
+      ) as unknown as ObjectId;
+      const page: number = parseInt(req.query.page as string) || 1;
+      const pageSize: number = parseInt(req.query.pageSize as string) || 10;
+      const skip = (page - 1) * pageSize;
+      const orderby = req.query.orderby;
+      const order = req.query.order;
+      const sort: Sort = {};
+      if (orderby == "id") {
+        sort["_id"] = order === "asc" ? 1 : -1;
+      } else if (orderby == "name") sort["name"] = order === "asc" ? 1 : -1;
+      else if (orderby == "team") sort["team.name"] = order === "asc" ? 1 : -1;
+      else if (orderby == "totalMember")
+        sort["totalMember"] = order === "asc" ? 1 : -1;
+      else if (orderby == "status") sort["status"] = order === "asc" ? 1 : -1;
+
+      const users = await UserService.find(
+        { companyId: companyId },
+        "-password",
+        skip,
+        pageSize,
+        sort
+      );
+      return res.status(200).json(users);
+    } catch (error: any) {
+      return res.status(500).json({ error: error.message });
+    }
+  }
   async getAllUsers(req: Request, res: Response): Promise<void> {
     try {
-      const users = await this.User.getAllUsers();
+      const users = await UserService.getAllUsers();
       res.json(users);
     } catch (error: any) {
       res.status(500).json({ error: error.message });
@@ -79,7 +113,7 @@ class UserController {
   async getUserById(req: Request, res: Response): Promise<void> {
     const userId = req.params.id;
     try {
-      const user = await this.User.getUserById(userId);
+      const user = await UserService.getUserById(userId);
       if (user) {
         res.json(user);
       } else {

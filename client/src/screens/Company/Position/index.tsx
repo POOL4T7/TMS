@@ -1,18 +1,22 @@
 import { useState } from "react";
-import Paper from "@mui/material/Paper";
-import Table from "@mui/material/Table";
-import TableBody from "@mui/material/TableBody";
-import TableCell from "@mui/material/TableCell";
-import TableContainer from "@mui/material/TableContainer";
-import TableHead from "@mui/material/TableHead";
-import TablePagination from "@mui/material/TablePagination";
-import TableRow from "@mui/material/TableRow";
+import {
+  Box,
+  IconButton,
+  TableSortLabel,
+  Paper,
+  Table,
+  TableBody,
+  TableCell,
+  TableContainer,
+  TableHead,
+  TablePagination,
+  TableRow,
+} from "@mui/material";
+import { Delete } from "@mui/icons-material";
 import {
   useDeletePostMutation,
   usePositionListQuery,
 } from "../../../redux/services/position";
-import { Box, IconButton, TableSortLabel } from "@mui/material";
-import { Delete, ModeEdit } from "@mui/icons-material";
 import TableToolBar from "../../../components/TableToolBar";
 import Loader from "../../../components/Loader";
 import AddPosition from "../../../components/Position/AddPosition";
@@ -73,9 +77,14 @@ export default function Position() {
     setOrder(isAsc ? "desc" : "asc");
     setOrderBy(property);
   };
+
   const deletePositionHandler = (id: string) => async () => {
     console.log(id);
-    await deletePosition(id);
+    try {
+      await deletePosition(id);
+    } catch (e) {
+      console.log(e);
+    }
   };
 
   return (
@@ -90,7 +99,7 @@ export default function Position() {
           <TableToolBar
             numSelected={0}
             title="Position & Roles"
-            component={AddPosition}
+            PositionModal={<AddPosition positionId="" />}
             toolTipText="Add Position"
           />
           <TableContainer sx={{ maxHeight: 440 }}>
@@ -116,7 +125,13 @@ export default function Position() {
                   <TableCell align="left">Action</TableCell>
                 </TableRow>
               </TableHead>
-              {/* {true && <Loader size={50} thickness={2} />} */}
+              {/* <TableBody>
+                <TableRow sx={{}}>
+                  <TableCell>
+                    {true && <Loader size={50} thickness={2} />}
+                  </TableCell>
+                </TableRow>
+              </TableBody> */}
               <TableBody>
                 {!isFetching &&
                   data.positionList?.map((row) => {
@@ -130,9 +145,7 @@ export default function Position() {
                         <TableCell>{row.totalMembers || 0}</TableCell>
                         <TableCell>{row.status}</TableCell>
                         <TableCell>
-                          <IconButton aria-label="delete" color="success">
-                            <ModeEdit />
-                          </IconButton>
+                          <AddPosition positionId={row._id} />
                           <IconButton
                             aria-label="delete"
                             color="error"

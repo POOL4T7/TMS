@@ -2,32 +2,17 @@
 
 import { Request, Response } from "express";
 import CompanyService from "../services/Company.service";
-import TokenService from "../services/Token.service";
-
-interface TokenOutput {
-  _id?: string;
-  email?: string;
-  userId?: string;
-  role?: string;
-}
-
-interface RequestWithSessionDetails extends Request {
-  sessionDetails: TokenOutput;
-}
+import { RequestWithSessionDetails } from "../interfaces/Custum.inteface";
 
 class CompanyController {
-  private Company;
-  private Token;
   constructor() {
-    this.Company = new CompanyService();
-    this.Token = new TokenService("");
     this.getOwnCompany = this.getOwnCompany.bind(this);
     this.updateCompanyDetails = this.updateCompanyDetails.bind(this);
   }
   async getOwnCompany(req: Request, res: Response): Promise<Response> {
     try {
-      const company = await this.Company.findOne({
-        _id: (req as RequestWithSessionDetails).sessionDetails._id,
+      const company = await CompanyService.findOne({
+        _id: (req as unknown as RequestWithSessionDetails).sessionDetails._id,
       });
       return res.status(200).json({
         success: true,
@@ -45,7 +30,7 @@ class CompanyController {
   }
   async getAllIndustries(req: Request, res: Response): Promise<Response> {
     try {
-      const industries = await this.Company.getAllCompanies();
+      const industries = await CompanyService.getAllCompanies();
       return res.json(industries);
     } catch (e: any) {
       return res.status(500).json({
@@ -59,7 +44,7 @@ class CompanyController {
   async getIndustryById(req: Request, res: Response): Promise<Response> {
     const industryId = req.params.id;
     try {
-      const industry = await this.Company.getCompanyById(industryId);
+      const industry = await CompanyService.getCompanyById(industryId);
       if (industry) {
         return res.json(industry);
       } else {
@@ -75,13 +60,14 @@ class CompanyController {
   }
 
   async updateCompanyDetails(req: Request, res: Response): Promise<Response> {
-    const companyId = (req as RequestWithSessionDetails).sessionDetails._id;
+    const companyId = (req as unknown as RequestWithSessionDetails)
+      .sessionDetails._id;
     const companyData = {
       name: req.body.name,
       industry: req.body.industry,
     };
     try {
-      const updatedCompany = await this.Company.updateCompany(
+      const updatedCompany = await CompanyService.updateCompany(
         { _id: companyId },
         companyData
       );
@@ -105,7 +91,7 @@ class CompanyController {
   async deleteIndustry(req: Request, res: Response): Promise<Response> {
     const industryId = req.params.id;
     try {
-      await this.Company.deleteCompany(industryId);
+      await CompanyService.deleteCompany(industryId);
       return res.status(204).send(); // No content
     } catch (e: any) {
       return res.status(500).json({

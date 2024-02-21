@@ -8,21 +8,15 @@ import UserService from "../services/User.service";
 const waitFiveSeconds = () => {
   return new Promise((resolve) => {
     setTimeout(() => {
-      resolve('Operation completed after 5 seconds');
+      resolve("Operation completed after 5 seconds");
     }, 5000);
   });
 };
 
 class CompanyController {
-  private Company;
-  private Token;
-  private User;
   constructor() {
-    this.Company = new CompanyService();
-    this.Token = new TokenService();
-    this.User = new UserService();
     this.createCompany = this.createCompany.bind(this);
-    this.companyLogin=this.companyLogin.bind(this);
+    this.companyLogin = this.companyLogin.bind(this);
   }
 
   async createCompany(req: Request, res: Response): Promise<Response> {
@@ -37,12 +31,13 @@ class CompanyController {
         password: req.body.password,
         status: req.body.status,
       };
-      const company = await this.Company.create(body);
+      const company = await CompanyService.create(body);
       company.password = "";
-      const accessToken = this.Token.generateToken({
+      const accessToken = TokenService.generateToken({
         email: body.email,
         _id: company._id?.toString(),
-        role:"company"
+        role: "company",
+        companyId: company._id?.toString(),
       });
       return res.status(201).json({
         success: true,
@@ -64,17 +59,18 @@ class CompanyController {
   async companyLogin(req: Request, res: Response): Promise<Response> {
     try {
       // await waitFiveSeconds();
-      const company = await this.Company.findOne({ email: req.body.email });
+      const company = await CompanyService.findOne({ email: req.body.email });
       if (!company) {
         return res.status(404).json({
           success: false,
           messsage: "invalid credentials",
         });
       }
-      const accessToken = this.Token.generateToken({
+      const accessToken = TokenService.generateToken({
         email: company.email,
         _id: company._id?.toString(),
-        role:"company"
+        role: "company",
+        companyId: company._id?.toString(),
       });
       return res.status(201).json({
         success: true,
@@ -85,7 +81,7 @@ class CompanyController {
         },
         message: "loggedin as a company",
       });
-    } catch (e:any) {
+    } catch (e: any) {
       return res.status(500).json({
         success: false,
         error: e.message,

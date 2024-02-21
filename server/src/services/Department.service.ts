@@ -1,14 +1,12 @@
 import { ObjectId } from "mongoose";
 import DepartmentModel, { IDepartment } from "../models/Department.model";
+import { Sort } from "../interfaces/Custum.inteface";
 
 interface Filter {
   _id?: string;
   companyId?: string | ObjectId;
 }
 
-interface Sort {
-  [key: string]: 1 | -1;
-}
 
 class DepartmentService {
  static async createDepartment(data: IDepartment): Promise<IDepartment> {

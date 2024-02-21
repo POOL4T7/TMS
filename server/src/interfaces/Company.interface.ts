@@ -1,11 +1,21 @@
-import  { Document,  Types } from 'mongoose';
+import { Types } from "mongoose";
 
-interface ICompany  {
-  name: string;
-  industry: Types.ObjectId;
-  email: string;
-  phone: string;
-  user: Types.ObjectId;
+interface Industry{
+  _id?:string;
+  name?:string;
 }
 
-export default ICompany;
+interface Company {
+  name: string;
+  // industry: Industry[];
+  industry?: Types.ObjectId[];
+  email: string;
+  phone?: string;
+}
+
+export interface CompanyPaginationData {
+  companyList: Company[];
+  totalPosition: number;
+}
+
+export default Company;

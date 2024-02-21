@@ -1,6 +1,8 @@
 import { createApi, fetchBaseQuery, retry } from "@reduxjs/toolkit/query/react";
 import { RootState } from "../store";
 import {
+  PositionAddData,
+  PositionDetailsResponse,
   PositionGetApiData,
   PositionGetApiResponse,
   PositionObject,
@@ -54,10 +56,19 @@ export const positionApi = createApi({
         };
       },
       transformResponse(baseQueryReturnValue: PositionPostResponse) {
-        // localStorage.setItem("auth", JSON.stringify(baseQueryReturnValue.data));
         return baseQueryReturnValue.position;
       },
       invalidatesTags: ["Position"],
+    }),
+    getPosition: build.query<PositionDetailsResponse, string>({
+      query: (id) => `/${id}`,
+      // transformResponse: (response: PositionGetApiResponse) => {
+      //   return {
+      //     positionList: response.positionList,
+      //     totalPosition: response.totalPosition,
+      //   };
+      // },
+      // providesTags: ["Position"],
     }),
     deletePost: build.mutation<ReturnObject, string>({
       query(id) {
@@ -71,7 +82,23 @@ export const positionApi = createApi({
       },
       invalidatesTags: ["Position"],
     }),
+    updatePosition: build.mutation<ReturnObject, PositionAddData>({
+      query(formData) {
+        return {
+          url: ``,
+          method: "PATCH",
+          body: formData,
+        };
+      },
+      invalidatesTags: ["Position"],
+    }),
   }),
 });
 
-export const { usePositionListQuery, useAddPositionMutation, useDeletePostMutation } = positionApi;
+export const {
+  usePositionListQuery,
+  useAddPositionMutation,
+  useDeletePostMutation,
+  useGetPositionQuery,
+  useUpdatePositionMutation,
+} = positionApi;

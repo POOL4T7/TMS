@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Button from "@mui/material/Button";
 import TextField from "@mui/material/TextField";
 import Dialog from "@mui/material/Dialog";
@@ -15,13 +15,21 @@ import {
   Select,
   SelectChangeEvent,
 } from "@mui/material";
-import { Add } from "@mui/icons-material";
+import { Add, ModeEdit } from "@mui/icons-material";
 import { useAllTeamsQuery } from "../../redux/services/teams";
 import Loader from "../Loader";
 import { useCompanyProfileQuery } from "../../redux/services/company";
-import { useAddPositionMutation } from "../../redux/services/position";
+import {
+  useAddPositionMutation,
+  useGetPositionQuery,
+  useUpdatePositionMutation,
+} from "../../redux/services/position";
 
-export default function AddPosition() {
+interface PropTypes {
+  positionId?: string;
+}
+
+export default function AddPosition({ positionId }: PropTypes) {
   const [open, setOpen] = useState(false);
   const [team, setTeam] = useState("");
   const [status, setStatus] = useState("");
@@ -29,6 +37,25 @@ export default function AddPosition() {
   const { data: teamList, isFetching } = useAllTeamsQuery();
   const { data: companyDetails } = useCompanyProfileQuery();
   const [addPosition, { isError, isLoading }] = useAddPositionMutation();
+  const [
+    updatePosition,
+    { isError: updateIsError, isLoading: updateIsLoading },
+  ] = useUpdatePositionMutation();
+  const { data: positionDetails } = useGetPositionQuery(positionId || "", {
+    skip: !positionId || !open,
+  });
+  
+
+
+  useEffect(() => {
+    if (open && positionId && positionDetails?.position) {
+      setTeam(positionDetails.position.teamId?._id || "");
+      setStatus(positionDetails.position.status || "");
+      setPositionName(positionDetails.position.name || "");
+    }
+  }, [open, positionId, positionDetails]);
+
+
   const handleChange = (event: SelectChangeEvent) => {
     setTeam(event.target.value);
   };
@@ -46,30 +73,31 @@ export default function AddPosition() {
 
   const handlesubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    const formData = new FormData(e.currentTarget);
-    console.log(
-      formData.get("status"),
-      formData.get("team"),
-      formData.get("positionName")
-    );
-    const body = {
-      name: formData.get("positionName")!.toString(),
-      teamId: formData.get("team")!.toString(),
-      status: formData.get("status")!.toString() || "active",
-      companyId: companyDetails!._id.toString(),
-      slug: `${companyDetails!._id.slice(-6)}-${positionName
-        .split(" ")
-        .join("-")}`,
-    };
-    await addPosition(body);
-    console.log(body);
-    handleClose();
+    try {
+      const formData = new FormData(e.currentTarget);
+      const body = {
+        name: formData.get("positionName")!.toString(),
+        teamId: formData.get("team")!.toString(),
+        status: formData.get("status")!.toString() || "active",
+        companyId: companyDetails!._id.toString(),
+        slug: `${companyDetails!._id.slice(-6)}-${positionName
+          .split(" ")
+          .join("-")}`,
+        positionId
+      };
+      if (positionId) await updatePosition(body);
+      else await addPosition(body);
+      console.log(body);
+      handleClose();
+    } catch (e) {
+      console.log(e);
+    }
   };
 
   return (
     <>
-      <IconButton onClick={handleClickOpen}>
-        <Add />
+      <IconButton onClick={handleClickOpen} color="success">
+        {positionId ? <ModeEdit /> : <Add />}
       </IconButton>
       <Dialog
         open={open}
@@ -84,7 +112,7 @@ export default function AddPosition() {
         <DialogTitle>Add New Position</DialogTitle>
         <DialogContent>
           <DialogContentText color={"error"}>
-            {isError && "something went wrong"}
+            {isError || updateIsError && "something went wrong"}
           </DialogContentText>
           <TextField
             margin="normal"
@@ -154,7 +182,7 @@ export default function AddPosition() {
             type="submit"
             disabled={isLoading}
           >
-            {isLoading ? <Loader /> : "Add"}
+            {isLoading || updateIsLoading ? <Loader /> : positionId ? "Update" : "Add"}
           </Button>
         </DialogActions>
       </Dialog>

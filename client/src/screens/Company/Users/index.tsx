@@ -7,57 +7,66 @@ import TableContainer from "@mui/material/TableContainer";
 import TableHead from "@mui/material/TableHead";
 import TablePagination from "@mui/material/TablePagination";
 import TableRow from "@mui/material/TableRow";
-import {
-  useDeletePostMutation,
-  usePositionListQuery,
-} from "../../../redux/services/position";
-import { Box, Checkbox, IconButton, TableSortLabel } from "@mui/material";
-import { Delete, ModeEdit } from "@mui/icons-material";
+import { Box, IconButton, TableSortLabel } from "@mui/material";
+import { ModeEdit } from "@mui/icons-material";
 import TableToolBar from "../../../components/TableToolBar";
 import Loader from "../../../components/Loader";
-import AddPosition from "../../../components/Position/AddPosition";
+import { useUserListQuery } from "../../../redux/services/user";
 
 interface Column {
-  id: "id" | "name" | "totalMembers" | "status" | "action" | "team";
+  id: "id" | "name" | "position" | "status" | "action" | "team" | "employeId";
   label: string;
   maxWidth?: number;
-  align?: "right";
+  align?: "right" | "center";
   status?: string;
+  showSorting: boolean;
 }
 
 const columns: readonly Column[] = [
-  { id: "id", label: "#id", maxWidth: 100 },
-  { id: "name", label: "Name", maxWidth: 100 },
-  { id: "team", label: "Team Name", maxWidth: 100 },
+  { id: "id", label: "#id", maxWidth: 100, showSorting: true },
+  { id: "name", label: "Name", maxWidth: 100, showSorting: false },
   {
-    id: "totalMembers",
-    label: "Total Members",
+    id: "team",
+    label: "Team Name",
     maxWidth: 100,
+    showSorting: false,
+    // align: "center",
+  },
+  {
+    id: "position",
+    label: "Position",
+    maxWidth: 100,
+    showSorting: false,
+  },
+  {
+    id: "employeId",
+    label: "EmployeId",
+    maxWidth: 100,
+    showSorting: true,
   },
   {
     id: "status",
     label: "Status",
+    showSorting: true,
   },
 ];
 type Order = "asc" | "desc";
 
-export default function Position() {
-  console.log("Position page is rendering");
+export default function User() {
+  console.log("Users page is rendering");
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(10);
   const [order, setOrder] = useState<Order>("asc");
   const [orderBy, setOrderBy] = useState<string>("id");
-  const { data, isFetching, isLoading } = usePositionListQuery({
+  const { data, isFetching, isLoading } = useUserListQuery({
     page,
     rowsPerPage,
     orderBy,
     order,
   });
 
-  const [deletePosition, { isLoading: deletePostLoading }] =
-    useDeletePostMutation();
-
-  const [selected, setSelected] = useState<readonly string[]>([]);
+  // const [deletePosition, { isLoading: deletePostLoading }] =
+  //   useDeletePostMutation();
 
   const handleChangePage = (event: unknown, newPage: number) => {
     setPage(newPage);
@@ -70,34 +79,15 @@ export default function Position() {
     setPage(0);
   };
 
-  const handleClick = (id: string) => {
-    const selectedIndex = selected.indexOf(id);
-    let newSelected: readonly string[] = [];
-
-    if (selectedIndex === -1) {
-      newSelected = newSelected.concat(selected, id);
-    } else if (selectedIndex === 0) {
-      newSelected = newSelected.concat(selected.slice(1));
-    } else if (selectedIndex === selected.length - 1) {
-      newSelected = newSelected.concat(selected.slice(0, -1));
-    } else if (selectedIndex > 0) {
-      newSelected = newSelected.concat(
-        selected.slice(0, selectedIndex),
-        selected.slice(selectedIndex + 1)
-      );
-    }
-    setSelected(newSelected);
-  };
-
   const handleRequestSort = (property: string) => {
     const isAsc = orderBy === property && order === "asc";
     setOrder(isAsc ? "desc" : "asc");
     setOrderBy(property);
   };
-  const deletePositionHandler = (id: string) => async () => {
-    console.log(id);
-    await deletePosition(id);
-  };
+  // const deletePositionHandler = (id: string) => async () => {
+  //   console.log(id);
+  //   await deletePosition(id);
+  // };
   // const handleSelectAllClick = (event: React.ChangeEvent<HTMLInputElement>) => {
   //   if (event.target.checked) {
   //     const newSelected = data?.positionList.map(
@@ -109,8 +99,7 @@ export default function Position() {
   //   setSelected([]);
   // };
 
-  const isSelected = (id: string) => selected?.indexOf(id) != -1;
-
+  console.log(data?.userList, "&&&&&&");
   return (
     <Box
       sx={{
@@ -123,7 +112,7 @@ export default function Position() {
           <TableToolBar
             numSelected={0}
             title="Position & Roles"
-            component={AddPosition}
+            // component={<></>}
             toolTipText="Add Position"
           />
           <TableContainer sx={{ maxHeight: 440 }}>
@@ -131,17 +120,6 @@ export default function Position() {
               <caption>Team listing with stats</caption>
               <TableHead>
                 <TableRow>
-                  <TableCell padding="checkbox">
-                    <Checkbox
-                      color="primary"
-                      indeterminate={false}
-                      checked={false}
-                      // onChange={onSelectAllClick}
-                      inputProps={{
-                        "aria-label": "select all desserts",
-                      }}
-                    />
-                  </TableCell>
                   {columns.map((column) => (
                     <TableCell
                       key={column.id}
@@ -149,7 +127,7 @@ export default function Position() {
                       sortDirection={orderBy === column.id ? order : "asc"}
                     >
                       <TableSortLabel
-                        active={orderBy === column.id}
+                        active={orderBy === column.id && column.showSorting}
                         direction={orderBy === column.id ? order : "asc"}
                         onClick={() => handleRequestSort(column.id)}
                       >
@@ -162,47 +140,22 @@ export default function Position() {
               </TableHead>
               {/* {true && <Loader size={50} thickness={2} />} */}
               <TableBody>
-                {!isFetching &&
-                  data.positionList?.map((row, index) => {
-                    const isItemSelected = isSelected(row._id);
-                    const labelId = `enhanced-table-checkbox-${index}`;
+                {(!isFetching || !isLoading) &&
+                  data.userList?.map((row) => {
+                    console.log(row, "*****");
                     return (
-                      <TableRow
-                        hover
-                        role="checkbox"
-                        tabIndex={-1}
-                        aria-checked={isItemSelected}
-                        selected={isItemSelected}
-                        key={row._id}
-                        onClick={() => handleClick(row._id)}
-                      >
-                        <TableCell padding="checkbox">
-                          <Checkbox
-                            color="primary"
-                            checked={isItemSelected}
-                            inputProps={{
-                              "aria-labelledby": labelId,
-                            }}
-                            onClick={() => handleClick(row._id)}
-                          />
-                        </TableCell>
+                      <TableRow hover tabIndex={-1} key={row._id}>
                         <TableCell>
                           {row._id.substring(row._id.length - 6)}
                         </TableCell>
-                        <TableCell>{row.name}</TableCell>
-                        <TableCell>{row.team.name || "null"}</TableCell>
-                        <TableCell>{row.totalMembers || 0}</TableCell>
+                        <TableCell>{`${row.firstName} ${row.lastName}`}</TableCell>
+                        <TableCell>{row.teamId?.name || "-"}</TableCell>
+                        <TableCell>{row.positionId?.name || "-"}</TableCell>
+                        <TableCell>{row.employeeId || "-"}</TableCell>
                         <TableCell>{row.status}</TableCell>
                         <TableCell>
                           <IconButton aria-label="delete" color="success">
                             <ModeEdit />
-                          </IconButton>
-                          <IconButton
-                            aria-label="delete"
-                            color="error"
-                            onClick={deletePositionHandler(row._id)}
-                          >
-                            {deletePostLoading ? <Loader /> : <Delete />}
                           </IconButton>
                         </TableCell>
                       </TableRow>
@@ -214,7 +167,7 @@ export default function Position() {
           <TablePagination
             rowsPerPageOptions={[5, 10, 25, 100]}
             component="div"
-            count={data?.totalPosition || 0}
+            count={data?.totalCount || 0}
             rowsPerPage={rowsPerPage}
             page={page}
             onPageChange={handleChangePage}

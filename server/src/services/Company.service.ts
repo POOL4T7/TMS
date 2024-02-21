@@ -1,3 +1,5 @@
+import { CompanyPaginationData } from "../interfaces/Company.interface";
+import {   Sort } from "../interfaces/Custum.inteface";
 import Company, { ICompany } from "../models/Company.model";
 
 interface Filter {
@@ -6,7 +8,7 @@ interface Filter {
 }
 
 class CompanyService {
-  async create(data: ICompany): Promise<ICompany> {
+  static async create(data: ICompany): Promise<ICompany> {
     try {
       const company = await Company.create(data);
       return company;
@@ -14,16 +16,18 @@ class CompanyService {
       throw new Error(`Error creating company: ${error.message}`);
     }
   }
-  async findOne(filter: Filter): Promise<ICompany | null> {
+  static async findOne(filter: Filter): Promise<ICompany | null> {
     try {
-      const company = await Company.findOne(filter).populate({path:"industry", select:"name"}).lean();
+      const company = await Company.findOne(filter)
+        .populate({ path: "industry", select: "name" })
+        .lean();
       return company;
     } catch (error: any) {
       throw new Error(`Error creating company: ${error.message}`);
     }
   }
 
-  async getCompanyById(companyId: string): Promise<ICompany | null> {
+  static async getCompanyById(companyId: string): Promise<ICompany | null> {
     try {
       const company = await Company.findById(companyId);
       return company;
@@ -32,7 +36,29 @@ class CompanyService {
     }
   }
 
-  async updateCompany(
+  static async find(
+    filter: Filter,
+    select: string = "",
+    skip: number = 0,
+    limit: number = 10,
+    sort: Sort = { _id: -1 }
+  ): Promise<CompanyPaginationData | null> {
+    try {
+      const companyList = await Company.find(filter)
+        .populate({ path: "industry", select: "name" })
+        .select(select)
+        .sort(sort)
+        .skip(skip)
+        .limit(limit)
+        .lean();
+      const totalCount = await Company.countDocuments(filter);
+      return { companyList: companyList, totalPosition: totalCount };
+    } catch (error: any) {
+      throw new Error(`Error getting position: ${error.message}`);
+    }
+  }
+
+  static async updateCompany(
     filter: Filter,
     data: Partial<ICompany>
   ): Promise<ICompany | null> {
@@ -46,7 +72,7 @@ class CompanyService {
     }
   }
 
-  async deleteCompany(companyId: string): Promise<void> {
+  static async deleteCompany(companyId: string): Promise<void> {
     try {
       await Company.findByIdAndDelete(companyId);
     } catch (error: any) {
@@ -54,7 +80,7 @@ class CompanyService {
     }
   }
 
-  async getAllCompanies(): Promise<ICompany[]> {
+  static async getAllCompanies(): Promise<ICompany[]> {
     try {
       const companies = await Company.find();
       return companies;

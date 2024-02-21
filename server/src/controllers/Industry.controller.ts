@@ -16,7 +16,6 @@ class IndustryController {
       return res.json({
         success: true,
         industryList: industries,
-
         message: "Industries list",
       });
     } catch (e: any) {

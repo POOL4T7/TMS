@@ -22,15 +22,16 @@ export interface PositionGetApiResponse extends PositionGetApiData {
   message: string;
 }
 
-export interface PositionPostData {
+export interface PositionAddData{
   name: string;
   teamId: string;
-  companyId: string;
   status: string;
   slug: string;
 }
 
-
+export interface PositionPostData extends PositionAddData {
+  companyId: string;
+}
 
 export interface ReturnObject{
   success:boolean;
@@ -49,4 +50,17 @@ export interface PositionObject {
   status: "active" | "inactive" | "deleted";
   slug: string;
   createdBy: string;
+}
+
+export interface PositionDetails{
+  name: string;
+  teamId: Team;
+  // companyId: string;
+  status: "active" | "inactive" | "deleted";
+  slug: string;
+  createdBy: string;
+}
+
+export interface PositionDetailsResponse extends ReturnObject{
+  position:PositionDetails
 }

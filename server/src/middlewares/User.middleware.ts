@@ -22,6 +22,11 @@ class Auth {
         }
         const user = this.Token.verifyToken(token);
         if (user) {
+          // if(user.role=="company"){
+          //   req.comapnyId=user._id;
+          // }else if(user.role=="admin"){
+             
+          // }
           req.sessionDetails = user;
           next();
         } else {
