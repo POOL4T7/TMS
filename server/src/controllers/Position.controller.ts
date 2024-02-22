@@ -64,7 +64,6 @@ class PositionController {
         totalPosition: data?.totalPosition,
         message: "Position list",
       });
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (e: any) {
       return res.status(500).json({
         success: false,
@@ -91,7 +90,6 @@ class PositionController {
         position: position,
         message: "New Position created",
       });
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (e: any) {
       return res.status(500).json({
         success: false,
@@ -116,7 +114,6 @@ class PositionController {
         success: true,
         message: "Position deleted",
       });
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (e: any) {
       return res.status(500).json({
         success: false,
@@ -141,7 +138,6 @@ class PositionController {
         message: "Position Details",
         position,
       });
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (e: any) {
       return res.status(500).json({
         success: false,
@@ -189,7 +185,6 @@ class PositionController {
         success: true,
         message: "Position Details Updated",
       });
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (e: any) {
       return res.status(500).json({
         success: false,

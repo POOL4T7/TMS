@@ -13,7 +13,6 @@ class PositionService {
     try {
       const position = await Position.create(data);
       return position;
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (error: any) {
       throw new Error(`Error creating position: ${error.message}`);
     }
@@ -25,7 +24,6 @@ class PositionService {
         .populate({ path: "teamId", select: "name" })
         .lean();
       return position;
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (error: any) {
       throw new Error(`Error getting position: ${error.message}`);
     }
@@ -48,7 +46,6 @@ class PositionService {
         .lean();
       const totalCount = await Position.countDocuments(filter);
       return { positionList: position, totalPosition: totalCount };
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (error: any) {
       throw new Error(`Error getting position: ${error.message}`);
     }
@@ -123,7 +120,6 @@ class PositionService {
       ]);
       const totalCount = await Position.countDocuments(filter);
       return { positionList: position, totalPosition: totalCount };
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (error: any) {
       throw new Error(`Error getting position: ${error.message}`);
     }
@@ -133,7 +129,6 @@ class PositionService {
     try {
       const position = await Position.countDocuments(filter);
       return position;
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (error: any) {
       throw new Error(`Error getting position: ${error.message}`);
     }
@@ -148,7 +143,6 @@ class PositionService {
         new: true,
       });
       return position;
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (error: any) {
       throw new Error(`Error updating position: ${error.message}`);
     }
@@ -157,7 +151,6 @@ class PositionService {
   static async deletePosition(filter: Filter): Promise<void> {
     try {
       await Position.findOneAndDelete(filter);
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (error: any) {
       throw new Error(`Error deleting position: ${error.message}`);
     }
@@ -165,7 +158,6 @@ class PositionService {
   static async findOneAndUpdate(filter: Filter, formData: any): Promise<void> {
     try {
       await Position.findOneAndUpdate(filter, formData);
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (error: any) {
       throw new Error(`Error deleting position: ${error.message}`);
     }

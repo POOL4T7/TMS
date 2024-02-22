@@ -27,7 +27,6 @@ class DepartmentController {
         success: true,
         message: "Department created successfully",
       });
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (e: any) {
       console.log(e);
       return res.status(500).json({
@@ -52,7 +51,6 @@ class DepartmentController {
         teamList: departments,
         message: "Department List",
       });
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (e: any) {
       return res.status(500).json({
         success: false,
@@ -76,7 +74,6 @@ class DepartmentController {
         teamList: departments,
         message: "Department List",
       });
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (e: any) {
       return res.status(500).json({
         success: false,

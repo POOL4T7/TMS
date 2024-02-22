@@ -34,7 +34,6 @@ class UserController {
         success: true,
         message: "User registred successfully",
       });
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (e: any) {
       return res.status(500).json({
         success: true,
@@ -62,7 +61,6 @@ class UserController {
         success: true,
         message: "Profile updated successfully",
       });
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (e: any) {
       return res.status(500).json({
         success: true,
@@ -103,7 +101,6 @@ class UserController {
         sort,
       );
       return res.status(200).json(users);
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (error: any) {
       return res.status(500).json({ error: error.message });
     }
@@ -112,7 +109,6 @@ class UserController {
     try {
       const users = await UserService.getAllUsers();
       res.json(users);
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (error: any) {
       res.status(500).json({ error: error.message });
     }
@@ -127,7 +123,6 @@ class UserController {
       } else {
         res.status(404).json({ error: "User not found" });
       }
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (error: any) {
       res.status(500).json({ error: error.message });
     }

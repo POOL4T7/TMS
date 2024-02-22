@@ -47,7 +47,6 @@ class CompanyController {
         },
         message: "New Company created",
       });
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (e: any) {
       return res.status(500).json({
         success: false,
@@ -81,7 +80,6 @@ class CompanyController {
         },
         message: "loggedin as a company",
       });
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (e: any) {
       return res.status(500).json({
         success: false,

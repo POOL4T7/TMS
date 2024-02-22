@@ -12,7 +12,6 @@ class CompanyService {
     try {
       const company = await Company.create(data);
       return company;
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (error: any) {
       throw new Error(`Error creating company: ${error.message}`);
     }
@@ -23,7 +22,6 @@ class CompanyService {
         .populate({ path: "industry", select: "name" })
         .lean();
       return company;
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (error: any) {
       throw new Error(`Error creating company: ${error.message}`);
     }
@@ -33,7 +31,6 @@ class CompanyService {
     try {
       const company = await Company.findById(companyId);
       return company;
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (error: any) {
       throw new Error(`Error getting company: ${error.message}`);
     }
@@ -56,7 +53,6 @@ class CompanyService {
         .lean();
       const totalCount = await Company.countDocuments(filter);
       return { companyList: companyList, totalPosition: totalCount };
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (error: any) {
       throw new Error(`Error getting position: ${error.message}`);
     }
@@ -71,7 +67,6 @@ class CompanyService {
         new: true,
       });
       return company;
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (error: any) {
       throw new Error(`Error updating company: ${error.message}`);
     }
@@ -80,7 +75,6 @@ class CompanyService {
   static async deleteCompany(companyId: string): Promise<void> {
     try {
       await Company.findByIdAndDelete(companyId);
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (error: any) {
       throw new Error(`Error deleting company: ${error.message}`);
     }
@@ -90,7 +84,6 @@ class CompanyService {
     try {
       const companies = await Company.find();
       return companies;
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (error: any) {
       throw new Error(`Error getting companies: ${error.message}`);
     }

@@ -14,7 +14,6 @@ class UserService {
     try {
       const user = await User.create(data);
       return user;
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (error: any) {
       throw new Error(`Error creating user: ${error.message}`);
     }
@@ -26,7 +25,6 @@ class UserService {
         .populate({ path: "industry", select: "name" })
         .lean();
       return company;
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (error: any) {
       throw new Error(`Error creating company: ${error.message}`);
     }
@@ -36,7 +34,6 @@ class UserService {
     try {
       const user = await User.findById(userId);
       return user;
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (error: any) {
       throw new Error(`Error getting user: ${error.message}`);
     }
@@ -60,7 +57,6 @@ class UserService {
         .lean();
       const totalCount = await User.countDocuments(filter);
       return { userList: companyList, totalCount: totalCount };
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (error: any) {
       throw new Error(`Error getting position: ${error.message}`);
     }
@@ -73,7 +69,6 @@ class UserService {
     try {
       const user = await User.findByIdAndUpdate(userId, data, { new: true });
       return user;
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (error: any) {
       throw new Error(`Error updating user: ${error.message}`);
     }
@@ -82,7 +77,6 @@ class UserService {
   static async deleteUser(userId: string): Promise<void> {
     try {
       await User.findByIdAndDelete(userId);
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (error: any) {
       throw new Error(`Error deleting user: ${error.message}`);
     }
@@ -92,7 +86,6 @@ class UserService {
     try {
       const users = await User.find();
       return users;
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (error: any) {
       throw new Error(`Error getting users: ${error.message}`);
     }

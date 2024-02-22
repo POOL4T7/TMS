@@ -41,7 +41,6 @@ class Auth {
           message: "Token not found",
         });
       }
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (e: any) {
       console.log(e);
       return res.status(500).json({
