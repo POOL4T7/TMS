@@ -19,6 +19,7 @@ class CompanyController {
         company: company,
         message: "compnay details",
       });
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (e: any) {
       console.log("e", e);
       return res.status(500).json({
@@ -32,6 +33,7 @@ class CompanyController {
     try {
       const industries = await CompanyService.getAllCompanies();
       return res.json(industries);
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (e: any) {
       return res.status(500).json({
         success: false,
@@ -50,6 +52,7 @@ class CompanyController {
       } else {
         return res.status(404).json({ error: "Company not found" });
       }
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (e: any) {
       return res.status(500).json({
         success: false,
@@ -69,7 +72,7 @@ class CompanyController {
     try {
       const updatedCompany = await CompanyService.updateCompany(
         { _id: companyId },
-        companyData
+        companyData,
       );
       if (updatedCompany) {
         return res.status(200).json({
@@ -79,6 +82,7 @@ class CompanyController {
       } else {
         return res.status(404).json({ error: "Company not found" });
       }
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (e: any) {
       return res.status(500).json({
         success: false,
@@ -93,6 +97,7 @@ class CompanyController {
     try {
       await CompanyService.deleteCompany(industryId);
       return res.status(204).send(); // No content
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (e: any) {
       return res.status(500).json({
         success: false,

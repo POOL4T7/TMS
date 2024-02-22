@@ -1,5 +1,5 @@
 import { CompanyPaginationData } from "../interfaces/Company.interface";
-import {   Sort } from "../interfaces/Custum.inteface";
+import { Sort } from "../interfaces/Custum.inteface";
 import Company, { ICompany } from "../models/Company.model";
 
 interface Filter {
@@ -12,6 +12,7 @@ class CompanyService {
     try {
       const company = await Company.create(data);
       return company;
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (error: any) {
       throw new Error(`Error creating company: ${error.message}`);
     }
@@ -22,6 +23,7 @@ class CompanyService {
         .populate({ path: "industry", select: "name" })
         .lean();
       return company;
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (error: any) {
       throw new Error(`Error creating company: ${error.message}`);
     }
@@ -31,6 +33,7 @@ class CompanyService {
     try {
       const company = await Company.findById(companyId);
       return company;
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (error: any) {
       throw new Error(`Error getting company: ${error.message}`);
     }
@@ -41,7 +44,7 @@ class CompanyService {
     select: string = "",
     skip: number = 0,
     limit: number = 10,
-    sort: Sort = { _id: -1 }
+    sort: Sort = { _id: -1 },
   ): Promise<CompanyPaginationData | null> {
     try {
       const companyList = await Company.find(filter)
@@ -53,6 +56,7 @@ class CompanyService {
         .lean();
       const totalCount = await Company.countDocuments(filter);
       return { companyList: companyList, totalPosition: totalCount };
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (error: any) {
       throw new Error(`Error getting position: ${error.message}`);
     }
@@ -60,13 +64,14 @@ class CompanyService {
 
   static async updateCompany(
     filter: Filter,
-    data: Partial<ICompany>
+    data: Partial<ICompany>,
   ): Promise<ICompany | null> {
     try {
       const company = await Company.findByIdAndUpdate(filter, data, {
         new: true,
       });
       return company;
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (error: any) {
       throw new Error(`Error updating company: ${error.message}`);
     }
@@ -75,6 +80,7 @@ class CompanyService {
   static async deleteCompany(companyId: string): Promise<void> {
     try {
       await Company.findByIdAndDelete(companyId);
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (error: any) {
       throw new Error(`Error deleting company: ${error.message}`);
     }
@@ -84,6 +90,7 @@ class CompanyService {
     try {
       const companies = await Company.find();
       return companies;
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (error: any) {
       throw new Error(`Error getting companies: ${error.message}`);
     }

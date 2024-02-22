@@ -10,15 +10,15 @@ router
   .post(
     Auth.isAuth,
     Auth.roleAuthMiddleware(["company"]),
-    UserController.registerUser
-  )
+    UserController.registerUser,
+  );
 
 router
   .route("/users-list")
   .get(
     Auth.isAuth,
     Auth.roleAuthMiddleware(["company"]),
-    UserController.getCompanyUsers
-  )
+    UserController.getCompanyUsers,
+  );
 
 export default router;

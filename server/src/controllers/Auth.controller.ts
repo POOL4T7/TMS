@@ -3,15 +3,14 @@
 import { Request, Response } from "express";
 import CompanyService from "../services/Company.service";
 import TokenService from "../services/Token.service";
-import UserService from "../services/User.service";
 
-const waitFiveSeconds = () => {
-  return new Promise((resolve) => {
-    setTimeout(() => {
-      resolve("Operation completed after 5 seconds");
-    }, 5000);
-  });
-};
+// const waitFiveSeconds = () => {
+//   return new Promise((resolve) => {
+//     setTimeout(() => {
+//       resolve("Operation completed after 5 seconds");
+//     }, 5000);
+//   });
+// };
 
 class CompanyController {
   constructor() {
@@ -21,7 +20,7 @@ class CompanyController {
 
   async createCompany(req: Request, res: Response): Promise<Response> {
     try {
-      const domain = req.body.email.split("@")[1];
+      // const domain = req.body.email.split("@")[1];
       // integrate the domain verification
       const body = {
         name: req.body.name,
@@ -48,6 +47,7 @@ class CompanyController {
         },
         message: "New Company created",
       });
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (e: any) {
       return res.status(500).json({
         success: false,
@@ -81,6 +81,7 @@ class CompanyController {
         },
         message: "loggedin as a company",
       });
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (e: any) {
       return res.status(500).json({
         success: false,

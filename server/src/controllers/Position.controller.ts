@@ -13,13 +13,13 @@ interface FormData {
   slug?: string;
 }
 
-const waitFiveSeconds = () => {
-  return new Promise((resolve) => {
-    setTimeout(() => {
-      resolve("Operation completed after 5 seconds");
-    }, 5000);
-  });
-};
+// const waitFiveSeconds = () => {
+//   return new Promise((resolve) => {
+//     setTimeout(() => {
+//       resolve("Operation completed after 5 seconds");
+//     }, 5000);
+//   });
+// };
 
 class PositionController {
   constructor() {
@@ -30,7 +30,7 @@ class PositionController {
     try {
       // await waitFiveSeconds();
       const companyId = new Types.ObjectId(
-        (req as unknown as RequestWithSessionDetails).sessionDetails.companyId!
+        (req as unknown as RequestWithSessionDetails).sessionDetails.companyId!,
       ) as unknown as ObjectId;
       const page: number = parseInt(req.query.page as string) || 1;
       const pageSize: number = parseInt(req.query.pageSize as string) || 10;
@@ -40,11 +40,15 @@ class PositionController {
       const sort: Sort = {};
       if (orderby == "id") {
         sort["_id"] = order === "asc" ? 1 : -1;
-      } else if (orderby == "name") sort["name"] = order === "asc" ? 1 : -1;
-      else if (orderby == "team") sort["team.name"] = order === "asc" ? 1 : -1;
-      else if (orderby == "totalMember")
+      } else if (orderby == "name") {
+        sort["name"] = order === "asc" ? 1 : -1;
+      } else if (orderby == "team") {
+        sort["team.name"] = order === "asc" ? 1 : -1;
+      } else if (orderby == "totalMember") {
         sort["totalMember"] = order === "asc" ? 1 : -1;
-      else if (orderby == "status") sort["status"] = order === "asc" ? 1 : -1;
+      } else if (orderby == "status") {
+        sort["status"] = order === "asc" ? 1 : -1;
+      }
       const data = await PositionService.findWithStats(
         {
           companyId,
@@ -52,7 +56,7 @@ class PositionController {
         "",
         skip,
         pageSize,
-        sort
+        sort,
       );
       return res.json({
         success: true,
@@ -60,6 +64,7 @@ class PositionController {
         totalPosition: data?.totalPosition,
         message: "Position list",
       });
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (e: any) {
       return res.status(500).json({
         success: false,
@@ -73,7 +78,8 @@ class PositionController {
     const positionData: IPosition = {
       name: req.body.name,
       slug: req.body.slug,
-      createdBy: (req as unknown as RequestWithSessionDetails).sessionDetails.companyId!,
+      createdBy: (req as unknown as RequestWithSessionDetails).sessionDetails
+        .companyId!,
       teamId: req.body.teamId,
       status: req.body.status,
       companyId: req.body.companyId,
@@ -85,6 +91,7 @@ class PositionController {
         position: position,
         message: "New Position created",
       });
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (e: any) {
       return res.status(500).json({
         success: false,
@@ -97,7 +104,7 @@ class PositionController {
   async deletePosition(req: Request, res: Response): Promise<Response> {
     try {
       const companyId = new Types.ObjectId(
-        (req as unknown as RequestWithSessionDetails).sessionDetails.companyId!
+        (req as unknown as RequestWithSessionDetails).sessionDetails.companyId!,
       ) as unknown as ObjectId;
 
       await PositionService.deletePosition({
@@ -109,6 +116,7 @@ class PositionController {
         success: true,
         message: "Position deleted",
       });
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (e: any) {
       return res.status(500).json({
         success: false,
@@ -121,7 +129,7 @@ class PositionController {
   async getPosition(req: Request, res: Response): Promise<Response> {
     try {
       const companyId = new Types.ObjectId(
-        (req as unknown as RequestWithSessionDetails).sessionDetails.companyId!
+        (req as unknown as RequestWithSessionDetails).sessionDetails.companyId!,
       ) as unknown as ObjectId;
       const position = await PositionService.findOne({
         _id: req.params.positionId as string,
@@ -133,6 +141,7 @@ class PositionController {
         message: "Position Details",
         position,
       });
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (e: any) {
       return res.status(500).json({
         success: false,
@@ -145,10 +154,10 @@ class PositionController {
   async updatePosition(req: Request, res: Response): Promise<Response> {
     try {
       const companyId = new Types.ObjectId(
-        (req as unknown as RequestWithSessionDetails).sessionDetails.companyId!
+        (req as unknown as RequestWithSessionDetails).sessionDetails.companyId!,
       ) as unknown as ObjectId;
 
-      let formData: FormData = {};
+      const formData: FormData = {};
 
       if (req.body.status) {
         formData.status = req.body.status;
@@ -173,13 +182,14 @@ class PositionController {
         },
         {
           $set: formData,
-        }
+        },
       );
 
       return res.status(200).json({
         success: true,
         message: "Position Details Updated",
       });
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (e: any) {
       return res.status(500).json({
         success: false,

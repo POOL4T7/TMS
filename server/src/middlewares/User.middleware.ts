@@ -1,33 +1,31 @@
-import { NextFunction, Response } from "express";
+import { NextFunction, Response, Request } from "express";
 import TokenService from "../services/Token.service";
+import { RequestWithSessionDetails } from "../interfaces/Custum.inteface";
 
 class Auth {
-  private Token: TokenService;
   constructor() {
-    this.Token = new TokenService("");
     this.isAuth = this.isAuth.bind(this);
   }
+
   async isAuth(
-    req: any,
+    req: Request,
     res: Response,
-    next: NextFunction
+    next: NextFunction,
   ): Promise<Response | undefined> {
     try {
       let token: string =
-        req.headers["x-access-token"] || req.headers["authorization"] || "";
+        (req as unknown as RequestWithSessionDetails).headers[
+          "x-access-token"
+        ] ||
+        (req as unknown as RequestWithSessionDetails).headers["authorization"];
       const checkBearer = "Bearer ";
       if (token) {
         if (token?.startsWith(checkBearer)) {
           token = token.slice(checkBearer.length, token.length);
         }
-        const user = this.Token.verifyToken(token);
+        const user = TokenService.verifyToken(token);
         if (user) {
-          // if(user.role=="company"){
-          //   req.comapnyId=user._id;
-          // }else if(user.role=="admin"){
-             
-          // }
-          req.sessionDetails = user;
+          (req as unknown as RequestWithSessionDetails).sessionDetails = user;
           next();
         } else {
           return res.status(401).json({
@@ -43,6 +41,7 @@ class Auth {
           message: "Token not found",
         });
       }
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (e: any) {
       console.log(e);
       return res.status(500).json({
@@ -52,13 +51,16 @@ class Auth {
       });
     }
   }
+
   roleAuthMiddleware(requiredRoles: string[]) {
     return (
-      req: any,
+      req: Request,
       res: Response,
-      next: NextFunction
+      next: NextFunction,
     ): Response | undefined => {
-      const userRole: string = req?.sessionDetails?.role;
+      const userRole: string | undefined = (
+        req as unknown as RequestWithSessionDetails
+      )?.sessionDetails?.role;
       if (!userRole) {
         return res.status(404).json({ error: "Invalid Role" });
       }

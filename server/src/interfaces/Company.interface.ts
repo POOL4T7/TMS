@@ -1,9 +1,9 @@
 import { Types } from "mongoose";
 
-interface Industry{
-  _id?:string;
-  name?:string;
-}
+// interface Industry {
+//   _id?: string;
+//   name?: string;
+// }
 
 interface Company {
   name: string;

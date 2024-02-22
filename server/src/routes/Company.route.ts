@@ -11,12 +11,12 @@ router
   .get(
     Auth.isAuth,
     Auth.roleAuthMiddleware(["company"]),
-    CompanyController.getOwnCompany
+    CompanyController.getOwnCompany,
   )
   .patch(
     Auth.isAuth,
     Auth.roleAuthMiddleware(["company"]),
-    CompanyController.updateCompanyDetails
+    CompanyController.updateCompanyDetails,
   );
 
 export default router;

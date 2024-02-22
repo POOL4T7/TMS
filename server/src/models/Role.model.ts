@@ -1,4 +1,4 @@
-import mongoose, { Schema, Document, ObjectId } from "mongoose";
+import mongoose, { Schema } from "mongoose";
 
 export interface IRole {
   name: string;
@@ -9,11 +9,10 @@ const roleSchema = new Schema<IRole>(
   {
     name: { type: String, required: true, unique: true },
     description: { type: String, required: true },
-    
   },
   {
     timestamps: true,
-  }
+  },
 );
 
 const Role = mongoose.model<IRole>("Role", roleSchema);

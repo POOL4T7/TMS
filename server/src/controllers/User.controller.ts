@@ -13,7 +13,7 @@ class UserController {
   async registerUser(req: Request, res: Response): Promise<Response> {
     try {
       const companyId = new Types.ObjectId(
-        (req as unknown as RequestWithSessionDetails).sessionDetails.companyId!
+        (req as unknown as RequestWithSessionDetails).sessionDetails.companyId!,
       ) as unknown as ObjectId;
       const user: IUser = {
         email: req.body.email,
@@ -34,6 +34,7 @@ class UserController {
         success: true,
         message: "User registred successfully",
       });
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (e: any) {
       return res.status(500).json({
         success: true,
@@ -61,6 +62,7 @@ class UserController {
         success: true,
         message: "Profile updated successfully",
       });
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (e: any) {
       return res.status(500).json({
         success: true,
@@ -73,7 +75,7 @@ class UserController {
   async getCompanyUsers(req: Request, res: Response): Promise<Response> {
     try {
       const companyId = new Types.ObjectId(
-        (req as unknown as RequestWithSessionDetails).sessionDetails.companyId!
+        (req as unknown as RequestWithSessionDetails).sessionDetails.companyId!,
       ) as unknown as ObjectId;
       const page: number = parseInt(req.query.page as string) || 1;
       const pageSize: number = parseInt(req.query.pageSize as string) || 10;
@@ -83,20 +85,25 @@ class UserController {
       const sort: Sort = {};
       if (orderby == "id") {
         sort["_id"] = order === "asc" ? 1 : -1;
-      } else if (orderby == "name") sort["name"] = order === "asc" ? 1 : -1;
-      else if (orderby == "team") sort["team.name"] = order === "asc" ? 1 : -1;
-      else if (orderby == "totalMember")
+      } else if (orderby == "name") {
+        sort["name"] = order === "asc" ? 1 : -1;
+      } else if (orderby == "team") {
+        sort["team.name"] = order === "asc" ? 1 : -1;
+      } else if (orderby == "totalMember") {
         sort["totalMember"] = order === "asc" ? 1 : -1;
-      else if (orderby == "status") sort["status"] = order === "asc" ? 1 : -1;
+      } else if (orderby == "status") {
+        sort["status"] = order === "asc" ? 1 : -1;
+      }
 
       const users = await UserService.find(
         { companyId: companyId },
         "-password",
         skip,
         pageSize,
-        sort
+        sort,
       );
       return res.status(200).json(users);
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (error: any) {
       return res.status(500).json({ error: error.message });
     }
@@ -105,6 +112,7 @@ class UserController {
     try {
       const users = await UserService.getAllUsers();
       res.json(users);
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (error: any) {
       res.status(500).json({ error: error.message });
     }
@@ -119,6 +127,7 @@ class UserController {
       } else {
         res.status(404).json({ error: "User not found" });
       }
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (error: any) {
       res.status(500).json({ error: error.message });
     }

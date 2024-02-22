@@ -18,6 +18,7 @@ class IndustryController {
         industryList: industries,
         message: "Industries list",
       });
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (e: any) {
       return res.status(500).json({
         success: false,
@@ -36,6 +37,7 @@ class IndustryController {
       } else {
         return res.status(404).json({ error: "Industry not found" });
       }
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (e: any) {
       return res.status(500).json({
         success: false,
@@ -54,6 +56,7 @@ class IndustryController {
         data: industry,
         message: "New Industry created",
       });
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (e: any) {
       return res.status(500).json({
         success: false,
@@ -69,13 +72,14 @@ class IndustryController {
     try {
       const updatedIndustry = await this.Industry.updateIndustry(
         industryId,
-        industryData
+        industryData,
       );
       if (updatedIndustry) {
         return res.json(updatedIndustry);
       } else {
         return res.status(404).json({ error: "Industry not found" });
       }
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (e: any) {
       return res.status(500).json({
         success: false,
@@ -90,6 +94,7 @@ class IndustryController {
     try {
       await this.Industry.deleteIndustry(industryId);
       return res.status(204).send(); // No content
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (e: any) {
       return res.status(500).json({
         success: false,

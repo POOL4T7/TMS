@@ -13,7 +13,8 @@ class DepartmentController {
   }
   async createDepartment(req: Request, res: Response): Promise<Response> {
     try {
-      const companyId = (req as unknown as RequestWithSessionDetails).sessionDetails.companyId;
+      const companyId = (req as unknown as RequestWithSessionDetails)
+        .sessionDetails.companyId;
       const body = {
         name: req.body.name,
         slug: req.body.slug,
@@ -21,11 +22,12 @@ class DepartmentController {
         status: req.body.status,
         image: req.body.image,
       };
-      const department = await DepartmentService.createDepartment(body);
+      await DepartmentService.createDepartment(body);
       return res.status(201).json({
         success: true,
         message: "Department created successfully",
       });
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (e: any) {
       console.log(e);
       return res.status(500).json({
@@ -38,17 +40,19 @@ class DepartmentController {
 
   async getDepartments(req: Request, res: Response): Promise<Response> {
     try {
-      const companyId = (req as unknown as RequestWithSessionDetails).sessionDetails.companyId;
+      const companyId = (req as unknown as RequestWithSessionDetails)
+        .sessionDetails.companyId;
       const departments = await DepartmentService.departmentListWithStats(
         { companyId: new Types.ObjectId(companyId!) as unknown as ObjectId }, // need thinking
         0,
-        10
+        10,
       );
       return res.json({
         success: true,
         teamList: departments,
         message: "Department List",
       });
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (e: any) {
       return res.status(500).json({
         success: false,
@@ -60,18 +64,19 @@ class DepartmentController {
   async getDepartmentList(req: Request, res: Response): Promise<Response> {
     try {
       const companyId = new Types.ObjectId(
-        (req as unknown as RequestWithSessionDetails).sessionDetails.companyId!
+        (req as unknown as RequestWithSessionDetails).sessionDetails.companyId!,
       ) as unknown as ObjectId;
 
       const departments = await DepartmentService.findAll(
         { companyId: companyId },
-        "name"
+        "name",
       );
       return res.json({
         success: true,
         teamList: departments,
         message: "Department List",
       });
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (e: any) {
       return res.status(500).json({
         success: false,

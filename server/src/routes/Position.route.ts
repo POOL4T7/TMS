@@ -10,28 +10,28 @@ PositionRouter.route("/")
   .post(
     Auth.isAuth,
     Auth.roleAuthMiddleware(["company"]),
-    PositionController.createPosition
+    PositionController.createPosition,
   )
   .get(
     Auth.isAuth,
     Auth.roleAuthMiddleware(["company"]),
-    PositionController.getAllPosition
+    PositionController.getAllPosition,
   )
   .delete(
     Auth.isAuth,
     Auth.roleAuthMiddleware(["company"]),
-    PositionController.deletePosition
+    PositionController.deletePosition,
   )
   .patch(
     Auth.isAuth,
     Auth.roleAuthMiddleware(["company"]),
-    PositionController.updatePosition
+    PositionController.updatePosition,
   );
 
 PositionRouter.route("/:positionId").get(
   Auth.isAuth,
   Auth.roleAuthMiddleware(["company"]),
-  PositionController.getPosition
+  PositionController.getPosition,
 );
 
 export default PositionRouter;

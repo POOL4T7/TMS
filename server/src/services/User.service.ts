@@ -6,7 +6,7 @@ import User, { IUser } from "../models/User.model";
 interface Filter {
   _id?: string;
   email?: string;
-  companyId?:Schema.Types.ObjectId
+  companyId?: Schema.Types.ObjectId;
 }
 
 class UserService {
@@ -14,6 +14,7 @@ class UserService {
     try {
       const user = await User.create(data);
       return user;
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (error: any) {
       throw new Error(`Error creating user: ${error.message}`);
     }
@@ -25,16 +26,17 @@ class UserService {
         .populate({ path: "industry", select: "name" })
         .lean();
       return company;
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (error: any) {
       throw new Error(`Error creating company: ${error.message}`);
     }
   }
 
-
   static async getUserById(userId: string): Promise<IUser | null> {
     try {
       const user = await User.findById(userId);
       return user;
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (error: any) {
       throw new Error(`Error getting user: ${error.message}`);
     }
@@ -45,7 +47,7 @@ class UserService {
     select: string = "",
     skip: number = 0,
     limit: number = 10,
-    sort: Sort = { _id: -1 }
+    sort: Sort = { _id: -1 },
   ): Promise<UserPaginationData | null> {
     try {
       const companyList = await User.find(filter)
@@ -58,6 +60,7 @@ class UserService {
         .lean();
       const totalCount = await User.countDocuments(filter);
       return { userList: companyList, totalCount: totalCount };
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (error: any) {
       throw new Error(`Error getting position: ${error.message}`);
     }
@@ -65,11 +68,12 @@ class UserService {
 
   static async updateUser(
     userId: string,
-    data: Partial<IUser>
+    data: Partial<IUser>,
   ): Promise<IUser | null> {
     try {
       const user = await User.findByIdAndUpdate(userId, data, { new: true });
       return user;
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (error: any) {
       throw new Error(`Error updating user: ${error.message}`);
     }
@@ -78,6 +82,7 @@ class UserService {
   static async deleteUser(userId: string): Promise<void> {
     try {
       await User.findByIdAndDelete(userId);
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (error: any) {
       throw new Error(`Error deleting user: ${error.message}`);
     }
@@ -87,6 +92,7 @@ class UserService {
     try {
       const users = await User.find();
       return users;
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (error: any) {
       throw new Error(`Error getting users: ${error.message}`);
     }

@@ -1,4 +1,4 @@
-import { Schema, Types, model, ObjectId } from "mongoose";
+import { Schema, Types, model } from "mongoose";
 
 export interface IDepartment {
   name: string;
@@ -31,7 +31,7 @@ const departmentSchema = new Schema<IDepartment>(
       type: String,
     },
   },
-  { timestamps: true }
+  { timestamps: true },
 );
 
 export default model<IDepartment>("Department", departmentSchema);

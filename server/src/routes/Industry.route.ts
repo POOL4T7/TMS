@@ -1,6 +1,6 @@
 // routes/industryRoutes.ts
 
-import express, { Router, Request, Response } from "express";
+import express, { Router } from "express";
 import IndustryController from "../controllers/Industry.controller";
 // import Auth from "../middlewares/User.middleware";
 
@@ -17,9 +17,8 @@ router
   .post(
     // Auth.isAuth,
     // Auth.roleAuthMiddleware(["admin"]),
-    IndustryController.createIndustry
+    IndustryController.createIndustry,
   )
   .get(IndustryController.getAllIndustries);
-
 
 export default router;

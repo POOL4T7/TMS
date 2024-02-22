@@ -1,5 +1,6 @@
 import ICompany from "./Company.interface";
 import IPosition from "./Position.interface";
+import { Request } from "express";
 
 export interface TokenOutput {
   _id?: string;
@@ -19,6 +20,7 @@ export interface TokenInput {
 
 export interface RequestWithSessionDetails extends Request {
   sessionDetails: TokenOutput;
+  headers: Record<string, string>;
 }
 
 export interface Sort {

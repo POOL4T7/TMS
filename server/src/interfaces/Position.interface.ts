@@ -1,4 +1,4 @@
-import { Document, Schema, Model, model } from "mongoose";
+import { Schema } from "mongoose";
 
 interface IPosition {
   name: string;

@@ -7,21 +7,22 @@ interface Filter {
   companyId?: string | ObjectId;
 }
 
-
 class DepartmentService {
- static async createDepartment(data: IDepartment): Promise<IDepartment> {
+  static async createDepartment(data: IDepartment): Promise<IDepartment> {
     try {
       const department = await DepartmentModel.create(data);
       return department;
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (error: any) {
       throw new Error(`Error creating department: ${error.message}`);
     }
   }
 
- static async findOne(filter: Filter): Promise<IDepartment | null> {
+  static async findOne(filter: Filter): Promise<IDepartment | null> {
     try {
       const department = await DepartmentModel.findOne(filter).lean();
       return department;
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (error: any) {
       throw new Error(`Error getting department: ${error.message}`);
     }
@@ -31,7 +32,7 @@ class DepartmentService {
     select: string,
     skip: number,
     limit: number,
-    sort: Sort = { _id: -1 }
+    sort: Sort = { _id: -1 },
   ): Promise<IDepartment[] | null> {
     try {
       const departments = await DepartmentModel.find(filter)
@@ -41,6 +42,7 @@ class DepartmentService {
         .limit(limit)
         .lean();
       return departments;
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (error: any) {
       throw new Error(`Error getting department: ${error.message}`);
     }
@@ -48,13 +50,14 @@ class DepartmentService {
 
   async updateDepartment(
     filter: Filter,
-    data: Partial<IDepartment>
+    data: Partial<IDepartment>,
   ): Promise<IDepartment | null> {
     try {
       const department = await DepartmentModel.findByIdAndUpdate(filter, data, {
         new: true,
       });
       return department;
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (error: any) {
       throw new Error(`Error updating department: ${error.message}`);
     }
@@ -63,16 +66,17 @@ class DepartmentService {
   async deleteDepartment(filter: Filter): Promise<void> {
     try {
       await DepartmentModel.findOneAndDelete(filter);
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (error: any) {
       throw new Error(`Error deleting department: ${error.message}`);
     }
   }
 
- static async departmentListWithStats(
+  static async departmentListWithStats(
     filter: Filter,
     skip: number,
     limit: number,
-    sort: Sort = { _id: -1 }
+    sort: Sort = { _id: -1 },
   ): Promise<IDepartment[] | null> {
     try {
       const departmentList = await DepartmentModel.aggregate([
@@ -113,16 +117,21 @@ class DepartmentService {
         },
       ]);
       return departmentList;
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (error: any) {
       throw new Error(`Error getting department: ${error.message}`);
     }
   }
-  static async findAll(filter: Filter, select: string): Promise<IDepartment[] | null> {
+  static async findAll(
+    filter: Filter,
+    select: string,
+  ): Promise<IDepartment[] | null> {
     try {
       const departmentList = await DepartmentModel.find(filter)
-        .select("")
+        .select(select)
         .lean();
       return departmentList;
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (error: any) {
       throw new Error(`Error getting department: ${error.message}`);
     }

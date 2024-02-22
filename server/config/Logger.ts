@@ -1,4 +1,4 @@
-import winston from 'winston';
+import winston from "winston";
 
 class Logger {
   private levels = {
@@ -9,11 +9,11 @@ class Logger {
     debug: 4,
   };
   private colors = {
-    error: 'red',
-    warn: 'yellow',
-    info: 'green',
-    http: 'magenta',
-    debug: 'white',
+    error: "red",
+    warn: "yellow",
+    info: "green",
+    http: "magenta",
+    debug: "white",
   };
   public log;
   constructor() {
@@ -26,26 +26,26 @@ class Logger {
     });
   }
   private level() {
-    const env = process.env.NODE_ENV || 'development';
-    const isDevelopment = env === 'development';
-    return isDevelopment ? 'debug' : 'warn';
+    const env = process.env.NODE_ENV || "development";
+    const isDevelopment = env === "development";
+    return isDevelopment ? "debug" : "warn";
   }
   private winstonFormat() {
     return winston.format.combine(
-      winston.format.timestamp({ format: 'YYYY-MM-DD HH:mm:ss:ms' }),
+      winston.format.timestamp({ format: "YYYY-MM-DD HH:mm:ss:ms" }),
       // winston.format.colorize({ all: true }),
       // winston.format.printf((info) => `{ level: ${info.level},  timestamps: [${info.timestamp}], message: ${info.message} }`),
-      winston.format.json()
+      winston.format.json(),
     );
   }
   private winstonTransports() {
     return [
       new winston.transports.Console(),
       new winston.transports.File({
-        filename: 'logs/error.log',
-        level: 'error',
+        filename: "logs/error.log",
+        level: "error",
       }),
-      new winston.transports.File({ filename: 'logs/all.log' }),
+      new winston.transports.File({ filename: "logs/all.log" }),
     ];
   }
 }

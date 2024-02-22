@@ -1,7 +1,7 @@
-import mongoose, { Schema, Types, Document } from "mongoose";
+import mongoose, { Schema, Types } from "mongoose";
 
-export interface ICompany  {
-  _id?:Types.ObjectId;
+export interface ICompany {
+  _id?: Types.ObjectId;
   name: string;
   industry: Types.ObjectId[];
   email: string;
@@ -18,11 +18,13 @@ const companySchema = new Schema<ICompany>(
       required: true,
       unique: true,
     },
-    industry: [{
-      type: Schema.Types.ObjectId,
-      ref: "Industry",
-      required: true,
-    }],
+    industry: [
+      {
+        type: Schema.Types.ObjectId,
+        ref: "Industry",
+        required: true,
+      },
+    ],
     email: {
       type: String,
       required: true,
@@ -34,8 +36,8 @@ const companySchema = new Schema<ICompany>(
       type: String,
       required: true,
     },
-    profile:{
-      type:String,
+    profile: {
+      type: String,
     },
     status: {
       type: String,
@@ -43,7 +45,7 @@ const companySchema = new Schema<ICompany>(
       default: "inactive",
     },
   },
-  { timestamps: true }
+  { timestamps: true },
 );
 
 export default mongoose.model<ICompany>("Company", companySchema);

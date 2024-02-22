@@ -1,7 +1,7 @@
 import jwt from "jsonwebtoken";
 import { TokenInput, TokenOutput } from "../interfaces/Custum.inteface";
 
-const secretKey="tms@2024";
+const secretKey = "tms@2024";
 class JwtService {
   static generateToken(user: Partial<TokenInput>): string {
     const options: jwt.SignOptions = {
@@ -11,7 +11,7 @@ class JwtService {
     return jwt.sign(user, secretKey, options);
   }
 
-  verifyToken(token: string): TokenOutput | null {
+  static verifyToken(token: string): TokenOutput | null {
     try {
       const decoded = jwt.verify(token, secretKey) as Partial<TokenOutput>;
       return decoded;
