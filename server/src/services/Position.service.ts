@@ -6,6 +6,7 @@ interface Filter {
   _id?: string;
   companyId?: string | ObjectId;
   status?: string;
+  teamId?: string | ObjectId;
 }
 
 class PositionService {

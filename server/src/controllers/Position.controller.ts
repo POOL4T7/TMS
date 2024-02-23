@@ -24,9 +24,10 @@ interface FormData {
 class PositionController {
   constructor() {
     this.createPosition = this.createPosition.bind(this);
-    this.getAllPosition = this.getAllPosition.bind(this);
+    this.getPositionWithStats = this.getPositionWithStats.bind(this);
+    this.getPositionByDepartmentId = this.getPositionByDepartmentId.bind(this);
   }
-  async getAllPosition(req: Request, res: Response): Promise<Response> {
+  async getPositionWithStats(req: Request, res: Response): Promise<Response> {
     try {
       // await waitFiveSeconds();
       const companyId = new Types.ObjectId(
@@ -53,6 +54,56 @@ class PositionController {
         {
           companyId,
         },
+        skip,
+        pageSize,
+        sort,
+      );
+      return res.json({
+        success: true,
+        positionList: data?.positionList,
+        totalPosition: data?.totalPosition,
+        message: "Position list",
+      });
+    } catch (e: any) {
+      return res.status(500).json({
+        success: false,
+        error: e.message,
+        message: "server error",
+      });
+    }
+  }
+  async getPositionByDepartmentId(
+    req: Request,
+    res: Response,
+  ): Promise<Response> {
+    try {
+      // await waitFiveSeconds();
+      const companyId = new Types.ObjectId(
+        (req as unknown as RequestWithSessionDetails).sessionDetails.companyId!,
+      ) as unknown as ObjectId;
+      const page: number = parseInt(req.query.page as string) || 1;
+      const pageSize: number = parseInt(req.query.pageSize as string) || 10;
+      const skip = (page - 1) * pageSize;
+      const orderby = req.query.orderby;
+      const order = req.query.order;
+      const sort: Sort = {};
+      if (orderby == "id") {
+        sort["_id"] = order === "asc" ? 1 : -1;
+      } else if (orderby == "name") {
+        sort["name"] = order === "asc" ? 1 : -1;
+      } else if (orderby == "team") {
+        sort["team.name"] = order === "asc" ? 1 : -1;
+      } else if (orderby == "totalMember") {
+        sort["totalMember"] = order === "asc" ? 1 : -1;
+      } else if (orderby == "status") {
+        sort["status"] = order === "asc" ? 1 : -1;
+      }
+      const data = await PositionService.find(
+        {
+          companyId,
+          teamId: req.params.teamId,
+        },
+        "",
         skip,
         pageSize,
         sort,

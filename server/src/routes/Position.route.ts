@@ -15,7 +15,7 @@ PositionRouter.route("/")
   .get(
     Auth.isAuth,
     Auth.roleAuthMiddleware(["company"]),
-    PositionController.getAllPosition,
+    PositionController.getPositionWithStats,
   )
   .delete(
     Auth.isAuth,
@@ -32,6 +32,12 @@ PositionRouter.route("/:positionId").get(
   Auth.isAuth,
   Auth.roleAuthMiddleware(["company"]),
   PositionController.getPosition,
+);
+
+PositionRouter.route("/team/:teamId").get(
+  Auth.isAuth,
+  Auth.roleAuthMiddleware(["company"]),
+  PositionController.getPositionByDepartmentId,
 );
 
 export default PositionRouter;

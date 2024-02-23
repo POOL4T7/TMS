@@ -13,6 +13,7 @@ import {
   MenuItem,
   OutlinedInput,
   Select,
+  SelectChangeEvent,
 } from "@mui/material";
 import { Add, ModeEdit } from "@mui/icons-material";
 import { useAllTeamsQuery } from "../../redux/services/teams";
@@ -22,6 +23,7 @@ import {
   useUpdateUserMutation,
   useRegisterUserMutation,
 } from "../../redux/services/user";
+import { usePositionListByTeamIdQuery } from "../../redux/services/position";
 
 interface PropTypes {
   userId: string;
@@ -41,6 +43,19 @@ export default function AddUpdate({ userId }: PropTypes) {
   });
 
   const { data: teamList, isFetching: teamListIsFetching } = useAllTeamsQuery();
+
+  const { data: positionList, isLoading: positionListLoading } =
+    usePositionListByTeamIdQuery(
+      {
+        page: 1,
+        rowsPerPage: 100,
+        order: "asc",
+        orderBy: "name",
+        teamId: user.departmentId,
+      },
+      { skip: !user.departmentId }
+    );
+
   const { data: userDetails, isFetching: userDetailsIsFetching } =
     useUserDetailsQuery(userId, {
       skip: !userId || !open,
@@ -61,9 +76,15 @@ export default function AddUpdate({ userId }: PropTypes) {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [open, userId, userDetails]);
 
-  const changeHandler = (name: string) => (e) => {
-    setUser({ ...user, [name]: e.target.value });
-  };
+  const changeHandler =
+    (name: string) =>
+    (
+      e:
+        | React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+        | SelectChangeEvent
+    ) => {
+      setUser({ ...user, [name]: e.target.value });
+    };
 
   const handleClickOpen = () => {
     setOpen(true);
@@ -91,7 +112,7 @@ export default function AddUpdate({ userId }: PropTypes) {
         firstName: formData.get("firstName")!.toString(),
         lastName: formData.get("lastName")!.toString(),
         departmentId: formData.get("team")!.toString(),
-        positionId: formData.get("team")!.toString(),
+        positionId: formData.get("positionId")!.toString(),
         status: formData.get("status")!.toString() || "active",
         _id: userId,
         employeeId: formData.get("employeeId")!.toString(),
@@ -186,6 +207,28 @@ export default function AddUpdate({ userId }: PropTypes) {
               {teamList?.map((team) => (
                 <MenuItem value={team._id} key={team._id}>
                   {team.name}
+                </MenuItem>
+              ))}
+            </Select>
+          </FormControl>
+          <FormControl sx={{ width: "100%" }} margin="normal">
+            <InputLabel id="team-select-label">Position</InputLabel>
+            <Select
+              labelId="team-select-label"
+              id="team-select"
+              value={user.positionId}
+              onChange={changeHandler("positionId")}
+              input={<OutlinedInput label="Team" />}
+              name="positionId"
+            >
+              {positionListLoading && (
+                <MenuItem value={""} disabled>
+                  <Loader size={20} thickness={2} />
+                </MenuItem>
+              )}
+              {positionList?.positionList?.map((position) => (
+                <MenuItem value={position._id} key={position._id}>
+                  {position.name}
                 </MenuItem>
               ))}
             </Select>

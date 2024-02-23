@@ -16,6 +16,7 @@ interface Pagination {
   rowsPerPage: number;
   orderBy: string;
   order: "asc" | "desc";
+  teamId?:string;
 }
 
 const baseQuery = fetchBaseQuery({
@@ -46,6 +47,16 @@ export const positionApi = createApi({
         };
       },
       providesTags: ["Position"],
+    }),
+    positionListByTeamId: build.query<PositionGetApiData, Pagination>({
+      query: ({ page = 1, rowsPerPage = 1, orderBy = "name", order = "asc", teamId }) =>
+        `team/${teamId}?page=${page}&perPage=${rowsPerPage}&orderby=${orderBy}&order=${order}`,
+      transformResponse: (response: PositionGetApiResponse) => {
+        return {
+          positionList: response.positionList,
+          totalPosition: response.totalPosition,
+        };
+      },
     }),
     addPosition: build.mutation<PositionObject, PositionPostData>({
       query(data) {
@@ -101,4 +112,5 @@ export const {
   useDeletePostMutation,
   useGetPositionQuery,
   useUpdatePositionMutation,
+  usePositionListByTeamIdQuery
 } = positionApi;

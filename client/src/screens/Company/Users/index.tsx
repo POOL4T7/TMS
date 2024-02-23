@@ -65,9 +65,6 @@ export default function User() {
     order,
   });
 
-  // const [deletePosition, { isLoading: deletePostLoading }] =
-  //   useDeletePostMutation();
-
   const handleChangePage = (event: unknown, newPage: number) => {
     setPage(newPage);
   };
@@ -84,21 +81,6 @@ export default function User() {
     setOrder(isAsc ? "desc" : "asc");
     setOrderBy(property);
   };
-  // const deletePositionHandler = (id: string) => async () => {
-  //   console.log(id);
-  //   await deletePosition(id);
-  // };
-  // const handleSelectAllClick = (event: React.ChangeEvent<HTMLInputElement>) => {
-  //   if (event.target.checked) {
-  //     const newSelected = data?.positionList.map(
-  //       (n) => n._id
-  //     ) as readonly string[];
-  //     setSelected(newSelected);
-  //     return;
-  //   }
-  //   setSelected([]);
-  // };
-
   return (
     <Box
       sx={{
