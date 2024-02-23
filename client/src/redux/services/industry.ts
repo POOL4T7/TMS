@@ -11,15 +11,6 @@ interface ResponseObject {
 // Create our baseQuery instance
 const baseQuery = fetchBaseQuery({
   baseUrl: `${import.meta.env.VITE_SERVER_URL}`,
-  // prepareHeaders: (headers, { getState }) => {
-  //   console.log(getState() as RootState);
-  //   const token = (getState() as RootState);
-  //   console.log('token', token)
-  //   if (token) {
-  //     headers.set("authentication", `Bearer ${token}`);
-  //   }
-  //   return headers;
-  // },
 });
 
 const baseQueryWithRetry = retry(baseQuery, { maxRetries: 2 });

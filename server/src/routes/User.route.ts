@@ -6,7 +6,7 @@ const router: Router = express.Router();
 import Auth from "../middlewares/User.middleware";
 
 router
-  .route("/register/employee")
+  .route("/register")
   .post(
     Auth.isAuth,
     Auth.roleAuthMiddleware(["company"]),
@@ -19,6 +19,19 @@ router
     Auth.isAuth,
     Auth.roleAuthMiddleware(["company"]),
     UserController.getCompanyUsers,
+  );
+
+router
+  .route("/:userId")
+  .get(
+    Auth.isAuth,
+    Auth.roleAuthMiddleware(["company"]),
+    UserController.userDetails,
+  )
+  .patch(
+    Auth.isAuth,
+    Auth.roleAuthMiddleware(["company"]),
+    UserController.updateProfile,
   );
 
 export default router;

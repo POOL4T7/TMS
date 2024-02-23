@@ -79,7 +79,6 @@ const Profile = () => {
     e.preventDefault();
     const data = new FormData(e.currentTarget);
     try {
-      console.log('data.get("name")', data.get("name"));
       await updateProfile({
         name: data.get("name")?.toString(),
         industry: data.get("industryList")?.toString().split(","),

@@ -7,11 +7,11 @@ import TableContainer from "@mui/material/TableContainer";
 import TableHead from "@mui/material/TableHead";
 import TablePagination from "@mui/material/TablePagination";
 import TableRow from "@mui/material/TableRow";
-import { Box, IconButton, TableSortLabel } from "@mui/material";
-import { ModeEdit } from "@mui/icons-material";
+import { Box,  TableSortLabel } from "@mui/material";
 import TableToolBar from "../../../components/TableToolBar";
 import Loader from "../../../components/Loader";
 import { useUserListQuery } from "../../../redux/services/user";
+import AddUpdate from "../../../components/Users/AddUpdate";
 
 interface Column {
   id: "id" | "name" | "position" | "status" | "action" | "team" | "employeId";
@@ -99,7 +99,6 @@ export default function User() {
   //   setSelected([]);
   // };
 
-  console.log(data?.userList, "&&&&&&");
   return (
     <Box
       sx={{
@@ -112,8 +111,8 @@ export default function User() {
           <TableToolBar
             numSelected={0}
             title="Position & Roles"
-            // component={<></>}
-            toolTipText="Add Position"
+            Children={<AddUpdate userId={""} />}
+            toolTipText="Add User"
           />
           <TableContainer sx={{ maxHeight: 440 }}>
             <Table stickyHeader aria-label="sticky table">
@@ -142,21 +141,18 @@ export default function User() {
               <TableBody>
                 {(!isFetching || !isLoading) &&
                   data.userList?.map((row) => {
-                    console.log(row, "*****");
                     return (
                       <TableRow hover tabIndex={-1} key={row._id}>
                         <TableCell>
                           {row._id.substring(row._id.length - 6)}
                         </TableCell>
                         <TableCell>{`${row.firstName} ${row.lastName}`}</TableCell>
-                        <TableCell>{row.teamId?.name || "-"}</TableCell>
+                        <TableCell>{row.departmentId?.name || "-"}</TableCell>
                         <TableCell>{row.positionId?.name || "-"}</TableCell>
                         <TableCell>{row.employeeId || "-"}</TableCell>
                         <TableCell>{row.status}</TableCell>
                         <TableCell>
-                          <IconButton aria-label="delete" color="success">
-                            <ModeEdit />
-                          </IconButton>
+                          <AddUpdate userId={row._id} />
                         </TableCell>
                       </TableRow>
                     );

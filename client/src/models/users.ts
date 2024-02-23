@@ -1,5 +1,20 @@
+export interface HttpResponse {
+  success: boolean;
+  message: string;
+}
+
+interface Position {
+  _id: string;
+  name: string;
+}
+
+interface Team {
+  _id: string;
+  name: string;
+}
+
 export interface User {
-  _id:string;
+  _id: string;
   username: string;
   email: string;
   role: "manager" | "admin" | "employee";
@@ -7,9 +22,10 @@ export interface User {
   lastName?: string;
   profilePicture?: string;
   positionId: Position;
-  teamId: Team;
+  departmentId: Team;
   status: string;
-  employeeId:string
+  employeeId: string;
+  companyId:string;
 }
 
 export interface AccessToken {
@@ -28,22 +44,29 @@ export interface userSignupData {
   lastName: string;
 }
 
-interface Position {
-  _id: string;
-  name: string;
-}
-
-interface Team {
-  _id: string;
-  name: string;
-}
-
 export interface UserGetApiData {
   userList: User[];
   totalCount: number;
 }
 
-export interface UserGetApiResponse extends UserGetApiData {
-  success: boolean;
-  message: string;
+export interface UserGetApiResponse extends HttpResponse {
+  userList: User[];
+  totalCount: number;
+}
+
+export interface UserDetailsResponse extends HttpResponse {
+  userDetails: User;
+}
+
+export interface UpdateUserData {
+  _id?: string;
+  email: string;
+  firstName: string;
+  lastName?: string;
+  profilePicture?: string;
+  positionId: string;
+  departmentId: string;
+  status: string;
+  employeeId: string;
+  password?:string;
 }

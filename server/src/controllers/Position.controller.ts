@@ -53,7 +53,6 @@ class PositionController {
         {
           companyId,
         },
-        "",
         skip,
         pageSize,
         sort,
@@ -132,7 +131,6 @@ class PositionController {
         _id: req.params.positionId as string,
         companyId: companyId,
       });
-      console.log("position", position);
       return res.status(200).json({
         success: true,
         message: "Position Details",

@@ -19,23 +19,16 @@ class UserService {
     }
   }
 
-  static async findOne(filter: Filter): Promise<IUser | null> {
+  static async findOne(filter: Filter, select: string): Promise<IUser | null> {
     try {
       const company = await User.findOne(filter)
-        .populate({ path: "industry", select: "name" })
+        .select(select)
+        .populate({ path: "departmentId", select: "name" })
+        .populate({ path: "positionId", select: "name" })
         .lean();
       return company;
     } catch (error: any) {
       throw new Error(`Error creating company: ${error.message}`);
-    }
-  }
-
-  static async getUserById(userId: string): Promise<IUser | null> {
-    try {
-      const user = await User.findById(userId);
-      return user;
-    } catch (error: any) {
-      throw new Error(`Error getting user: ${error.message}`);
     }
   }
 
@@ -63,11 +56,11 @@ class UserService {
   }
 
   static async updateUser(
-    userId: string,
+    filter: Filter,
     data: Partial<IUser>,
   ): Promise<IUser | null> {
     try {
-      const user = await User.findByIdAndUpdate(userId, data, { new: true });
+      const user = await User.findByIdAndUpdate(filter, data, { new: true });
       return user;
     } catch (error: any) {
       throw new Error(`Error updating user: ${error.message}`);

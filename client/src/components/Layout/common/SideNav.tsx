@@ -138,23 +138,6 @@ const SideNav = () => {
                 </NavLink>
               </ListItemButton>
             </ListItem>
-            <ListItem>
-              <ListItemButton
-                sx={{ "&:hover": { backgroundColor: "#e8effa" } }}
-                
-              >
-                <ListItemIcon>
-                  <People />
-                </ListItemIcon>
-                <NavLink
-                  to={"/users"}
-                  className={({ isActive }) => (isActive ? "active-link" : "")}
-                >
-                  <ListItemText primary="Users" />
-                </NavLink>
-              </ListItemButton>
-              
-            </ListItem>
           </List>
         </Box>
       </Box>

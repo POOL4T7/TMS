@@ -8,7 +8,7 @@ import ListItemButton from "@mui/material/ListItemButton";
 import ListItemIcon from "@mui/material/ListItemIcon";
 import ListItemText from "@mui/material/ListItemText";
 import MenuIcon from "@mui/icons-material/Menu";
-import { Groups, QueryStats, WebStories } from "@mui/icons-material";
+import { FolderShared, Groups, People, QueryStats, WebStories } from "@mui/icons-material";
 import { NavLink, useNavigate } from "react-router-dom";
 import { Avatar, Typography } from "@mui/material";
 import Loader from "../../Loader";
@@ -76,6 +76,19 @@ export default function TemporaryDrawer() {
         <ListItem>
           <ListItemButton sx={{ "&:hover": { backgroundColor: "#e8effa" } }}>
             <ListItemIcon>
+              <WebStories />
+            </ListItemIcon>
+            <NavLink
+              to={"/projects"}
+              className={({ isActive }) => (isActive ? "active-link" : "")}
+            >
+              <ListItemText primary="Projects" />
+            </NavLink>
+          </ListItemButton>
+        </ListItem>
+        <ListItem>
+          <ListItemButton sx={{ "&:hover": { backgroundColor: "#e8effa" } }}>
+            <ListItemIcon>
               <Groups />
             </ListItemIcon>
             <NavLink
@@ -89,13 +102,26 @@ export default function TemporaryDrawer() {
         <ListItem>
           <ListItemButton sx={{ "&:hover": { backgroundColor: "#e8effa" } }}>
             <ListItemIcon>
-              <WebStories />
+              <FolderShared />
             </ListItemIcon>
             <NavLink
-              to={"/projects"}
+              to={"/positions"}
               className={({ isActive }) => (isActive ? "active-link" : "")}
             >
-              <ListItemText primary="Projects" />
+              <ListItemText primary="Position & Roles" />
+            </NavLink>
+          </ListItemButton>
+        </ListItem>
+        <ListItem>
+          <ListItemButton sx={{ "&:hover": { backgroundColor: "#e8effa" } }}>
+            <ListItemIcon>
+              <People />
+            </ListItemIcon>
+            <NavLink
+              to={"/users"}
+              className={({ isActive }) => (isActive ? "active-link" : "")}
+            >
+              <ListItemText primary="Users" />
             </NavLink>
           </ListItemButton>
         </ListItem>

@@ -99,7 +99,7 @@ export default function Position() {
           <TableToolBar
             numSelected={0}
             title="Position & Roles"
-            PositionModal={<AddPosition positionId="" />}
+            Children={<AddPosition positionId="" />}
             toolTipText="Add Position"
           />
           <TableContainer sx={{ maxHeight: 440 }}>

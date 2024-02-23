@@ -52,7 +52,6 @@ class PositionService {
   }
   static async findWithStats(
     filter: Filter,
-    select: string = "",
     skip: number = 0,
     limit: number = 10,
     sort: Sort = { _id: -1 },

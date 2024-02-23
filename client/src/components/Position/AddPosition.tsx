@@ -87,7 +87,6 @@ export default function AddPosition({ positionId }: PropTypes) {
       };
       if (positionId) await updatePosition(body);
       else await addPosition(body);
-      console.log(body);
       handleClose();
     } catch (e) {
       console.log(e);

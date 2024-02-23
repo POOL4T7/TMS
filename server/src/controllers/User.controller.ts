@@ -42,21 +42,35 @@ class UserController {
       });
     }
   }
-  async completeProfile(req: Request, res: Response): Promise<Response> {
-    try {
-      // const updatedData: Partial<IUser> = {};
-      // if (req.body.employeeId) updatedData.employeeId = req.body.employeeId;
-      // if (req.body.department) updatedData.department = req.body.department;
-      // if (req.body.position) updatedData.position = req.body.position;
-      // if (req.body.hireDate) updatedData.hireDate = req.body.hireDate;
-      // const user: IUser | null = await UserService.updateUser(req.params.id, {});
-      // if (!user) {
-      //   return res.status(404).json({
-      //     success: true,
-      //     message: "User not found",
-      //   });
-      // }
 
+  async updateProfile(req: Request, res: Response): Promise<Response> {
+    try {
+      const companyId = new Types.ObjectId(
+        (req as RequestWithSessionDetails).sessionDetails.companyId!,
+      ) as unknown as ObjectId;
+      const role = (req as RequestWithSessionDetails).sessionDetails.role;
+      const updatedData: Partial<IUser> = {};
+      if (role === "user") {
+        if (req.body.firstName) updatedData.firstName = req.body.firstName;
+        if (req.body.lastName) updatedData.lastName = req.body.lastName;
+      } else {
+        if (req.body.employeeId) updatedData.employeeId = req.body.employeeId;
+        if (req.body.departmentId)
+          updatedData.departmentId = req.body.departmentId;
+        if (req.body.positionId) updatedData.positionId = req.body.positionId;
+        if (req.body.hireDate) updatedData.hireDate = req.body.hireDate;
+        if (req.body.status) updatedData.status = req.body.status;
+      }
+      const user: IUser | null = await UserService.updateUser(
+        { companyId: companyId, _id: req.params.userId },
+        updatedData,
+      );
+      if (!user) {
+        return res.status(404).json({
+          success: true,
+          message: "User not found",
+        });
+      }
       return res.status(200).json({
         success: true,
         message: "Profile updated successfully",
@@ -101,30 +115,49 @@ class UserController {
         sort,
       );
       return res.status(200).json(users);
-    } catch (error: any) {
-      return res.status(500).json({ error: error.message });
+    } catch (e: any) {
+      return res.status(500).json({
+        success: true,
+        message: "server error",
+        error: e.message,
+      });
     }
   }
   async getAllUsers(req: Request, res: Response): Promise<void> {
     try {
       const users = await UserService.getAllUsers();
       res.json(users);
-    } catch (error: any) {
-      res.status(500).json({ error: error.message });
+    } catch (e: any) {
+      res.status(500).json({
+        success: true,
+        message: "server error",
+        error: e.message,
+      });
     }
   }
 
-  async getUserById(req: Request, res: Response): Promise<void> {
-    const userId = req.params.id;
+  async userDetails(req: Request, res: Response): Promise<Response> {
+    const userId = req.params.userId;
     try {
-      const user = await UserService.getUserById(userId);
+      const user = await UserService.findOne({ _id: userId }, "-password");
       if (user) {
-        res.json(user);
+        return res.status(200).json({
+          success: true,
+          userDetails: user,
+          message: "User Details",
+        });
       } else {
-        res.status(404).json({ error: "User not found" });
+        return res.status(404).json({
+          success: false,
+          message: "User not found",
+        });
       }
-    } catch (error: any) {
-      res.status(500).json({ error: error.message });
+    } catch (e: any) {
+      return res.status(500).json({
+        success: true,
+        message: "server error",
+        error: e.message,
+      });
     }
   }
 }

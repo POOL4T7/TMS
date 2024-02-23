@@ -1,6 +1,13 @@
 import { createApi, fetchBaseQuery, retry } from "@reduxjs/toolkit/query/react";
 import { RootState } from "../store";
-import {  UserGetApiData, UserGetApiResponse } from "../../models/users";
+import {
+  HttpResponse,
+  UpdateUserData,
+  User,
+  UserDetailsResponse,
+  UserGetApiData,
+  UserGetApiResponse,
+} from "../../models/users";
 
 interface Pagination {
   page: number;
@@ -25,6 +32,7 @@ const baseQueryWithRetry = retry(baseQuery, { maxRetries: 2 });
 export const userAPI = createApi({
   reducerPath: "users",
   baseQuery: baseQueryWithRetry,
+  tagTypes: ["UserList", "User"],
   endpoints: (build) => ({
     userList: build.query<UserGetApiData, Pagination>({
       query: ({ page = 1, rowsPerPage = 1, orderBy = "name", order = "asc" }) =>
@@ -35,8 +43,41 @@ export const userAPI = createApi({
           totalCount: response.totalCount,
         };
       },
+      providesTags: ["UserList"],
+    }),
+    userDetails: build.query<User, string>({
+      query: (id) => `${id}`,
+      transformResponse: (response: UserDetailsResponse) => {
+        return response.userDetails;
+      },
+      providesTags: ["User"],
+    }),
+    updateUser: build.mutation<HttpResponse, UpdateUserData>({
+      query(formData) {
+        return {
+          url: `${formData._id}`,
+          method: "PATCH",
+          body: formData,
+        };
+      },
+      invalidatesTags: ["UserList", "User"],
+    }),
+    registerUser: build.mutation<HttpResponse, UpdateUserData>({
+      query(formData) {
+        return {
+          url: "/register",
+          method: "POST",
+          body: formData,
+        };
+      },
+      invalidatesTags: ["UserList"],
     }),
   }),
 });
 
-export const { useUserListQuery } = userAPI;
+export const {
+  useUserListQuery,
+  useUserDetailsQuery,
+  useUpdateUserMutation,
+  useRegisterUserMutation,
+} = userAPI;

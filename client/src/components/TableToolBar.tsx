@@ -4,14 +4,14 @@ import { IconButton, Toolbar, Tooltip, Typography, alpha } from "@mui/material";
 interface EnhancedTableToolbarProps {
   numSelected: number;
   title: string;
-  PositionModal?: JSX.Element;
+  Children?: JSX.Element;
   toolTipText: string;
 }
 
 const TableToolBar = ({
   numSelected,
   title,
-  PositionModal,
+  Children,
 }: EnhancedTableToolbarProps) => {
   console.log("TableToolBar...");
   return (
@@ -55,7 +55,7 @@ const TableToolBar = ({
           </IconButton>
         </Tooltip>
       ) : (
-        PositionModal
+        Children
       )}
     </Toolbar>
   );
