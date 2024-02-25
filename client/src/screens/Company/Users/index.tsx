@@ -7,7 +7,7 @@ import TableContainer from "@mui/material/TableContainer";
 import TableHead from "@mui/material/TableHead";
 import TablePagination from "@mui/material/TablePagination";
 import TableRow from "@mui/material/TableRow";
-import { Box,  TableSortLabel } from "@mui/material";
+import { Box, TableSortLabel } from "@mui/material";
 import TableToolBar from "../../../components/TableToolBar";
 import Loader from "../../../components/Loader";
 import { useUserListQuery } from "../../../redux/services/user";
@@ -92,7 +92,7 @@ export default function User() {
         <Paper sx={{ width: "100%", overflow: "hidden" }}>
           <TableToolBar
             numSelected={0}
-            title="Position & Roles"
+            title="Users"
             Children={<AddUpdate userId={""} />}
             toolTipText="Add User"
           />

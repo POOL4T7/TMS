@@ -44,7 +44,7 @@ class DepartmentController {
       const departments = await DepartmentService.departmentListWithStats(
         { companyId: new Types.ObjectId(companyId!) as unknown as ObjectId }, // need thinking
         0,
-        10,
+        10
       );
       return res.json({
         success: true,
@@ -62,12 +62,12 @@ class DepartmentController {
   async getDepartmentList(req: Request, res: Response): Promise<Response> {
     try {
       const companyId = new Types.ObjectId(
-        (req as unknown as RequestWithSessionDetails).sessionDetails.companyId!,
+        (req as unknown as RequestWithSessionDetails).sessionDetails.companyId!
       ) as unknown as ObjectId;
 
       const departments = await DepartmentService.findAll(
-        { companyId: companyId },
-        "name",
+        { companyId: companyId, status: "active" },
+        "name"
       );
       return res.json({
         success: true,

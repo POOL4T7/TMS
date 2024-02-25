@@ -10,6 +10,7 @@ import {
   PositionPostResponse,
   ReturnObject,
 } from "../../models/Position";
+import { toast } from "react-toastify";
 
 interface Pagination {
   page: number;
@@ -73,6 +74,7 @@ export const positionApi = createApi({
         };
       },
       transformResponse(baseQueryReturnValue: PositionPostResponse) {
+        toast("New Position added");
         return baseQueryReturnValue.position;
       },
       invalidatesTags: ["Position"],
@@ -98,6 +100,10 @@ export const positionApi = createApi({
         };
       },
       invalidatesTags: ["Position"],
+      transformResponse(baseQueryReturnValue: ReturnObject) {
+        // toast.success("Position updated successfully");
+        return baseQueryReturnValue;
+      },
     }),
     updatePosition: build.mutation<ReturnObject, PositionAddData>({
       query(formData) {
@@ -108,6 +114,10 @@ export const positionApi = createApi({
         };
       },
       invalidatesTags: ["Position"],
+      transformResponse(baseQueryReturnValue: ReturnObject) {
+        // toast.success("Position updated successfully");
+        return baseQueryReturnValue;
+      },
     }),
   }),
 });

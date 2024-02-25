@@ -44,8 +44,6 @@ export default function AddPosition({ positionId }: PropTypes) {
   const { data: positionDetails } = useGetPositionQuery(positionId || "", {
     skip: !positionId || !open,
   });
-  
-
 
   useEffect(() => {
     if (open && positionId && positionDetails?.position) {
@@ -54,7 +52,6 @@ export default function AddPosition({ positionId }: PropTypes) {
       setPositionName(positionDetails.position.name || "");
     }
   }, [open, positionId, positionDetails]);
-
 
   const handleChange = (event: SelectChangeEvent) => {
     setTeam(event.target.value);
@@ -83,7 +80,7 @@ export default function AddPosition({ positionId }: PropTypes) {
         slug: `${companyDetails!._id.slice(-6)}-${positionName
           .split(" ")
           .join("-")}`,
-        positionId
+        positionId,
       };
       if (positionId) await updatePosition(body);
       else await addPosition(body);
@@ -111,7 +108,7 @@ export default function AddPosition({ positionId }: PropTypes) {
         <DialogTitle>Add New Position</DialogTitle>
         <DialogContent>
           <DialogContentText color={"error"}>
-            {isError || updateIsError && "something went wrong"}
+            {isError || (updateIsError && "something went wrong")}
           </DialogContentText>
           <TextField
             margin="normal"
@@ -181,7 +178,13 @@ export default function AddPosition({ positionId }: PropTypes) {
             type="submit"
             disabled={isLoading}
           >
-            {isLoading || updateIsLoading ? <Loader /> : positionId ? "Update" : "Add"}
+            {isLoading || updateIsLoading ? (
+              <Loader />
+            ) : positionId ? (
+              "Update"
+            ) : (
+              "Add"
+            )}
           </Button>
         </DialogActions>
       </Dialog>

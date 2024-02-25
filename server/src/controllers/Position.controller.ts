@@ -13,13 +13,13 @@ interface FormData {
   slug?: string;
 }
 
-// const waitFiveSeconds = () => {
-//   return new Promise((resolve) => {
-//     setTimeout(() => {
-//       resolve("Operation completed after 5 seconds");
-//     }, 5000);
-//   });
-// };
+const waitFiveSeconds = () => {
+  return new Promise((resolve) => {
+    setTimeout(() => {
+      resolve("Operation completed after 5 seconds");
+    }, 5000);
+  });
+};
 
 class PositionController {
   constructor() {
@@ -102,6 +102,7 @@ class PositionController {
         {
           companyId,
           teamId: req.params.teamId,
+          status: "active",
         },
         "",
         skip,
@@ -198,6 +199,7 @@ class PositionController {
 
   async updatePosition(req: Request, res: Response): Promise<Response> {
     try {
+      waitFiveSeconds();
       const companyId = new Types.ObjectId(
         (req as RequestWithSessionDetails).sessionDetails.companyId!
       ) as unknown as ObjectId;
