@@ -9,19 +9,20 @@
         "MongoDB",
         "socket.io",
         "oneSignal",
-        "role-based-auth"
+        "role-based-auth",
+        "redis"
       ]
     },
     {
       "type": "web",
-      "tech": ["ReactJS", "MUI", "socket.io"]
+      "tech": ["ReactJS", "MUI", "socket.io", "RTK Query"]
     },
     {
       "type": "mobile",
       "tech": ["Flutter"]
     }
   ],
-  "points":[
+  "points": [
     "create role based users, firstly create org flow",
     "setup org/compnay based on their profile",
     "create team/department fror their company",

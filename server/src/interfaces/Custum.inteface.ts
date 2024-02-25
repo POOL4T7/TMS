@@ -1,5 +1,5 @@
 import ICompany from "./Company.interface";
-import IPosition from "./Position.interface";
+import { IPosition } from "./Position.interface";
 import { Request } from "express";
 
 export interface TokenOutput {

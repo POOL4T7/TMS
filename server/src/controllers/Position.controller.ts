@@ -2,7 +2,7 @@
 
 import { Request, Response } from "express";
 import PositionService from "../services/Position.service";
-import { IPosition } from "../models/Position.model";
+import { IPosition } from "../interfaces/Position.interface";
 import { ObjectId, Types } from "mongoose";
 import { RequestWithSessionDetails, Sort } from "../interfaces/Custum.inteface";
 
@@ -31,7 +31,7 @@ class PositionController {
     try {
       // await waitFiveSeconds();
       const companyId = new Types.ObjectId(
-        (req as unknown as RequestWithSessionDetails).sessionDetails.companyId!,
+        (req as unknown as RequestWithSessionDetails).sessionDetails.companyId!
       ) as unknown as ObjectId;
       const page: number = parseInt(req.query.page as string) || 1;
       const pageSize: number = parseInt(req.query.pageSize as string) || 10;
@@ -56,7 +56,7 @@ class PositionController {
         },
         skip,
         pageSize,
-        sort,
+        sort
       );
       return res.json({
         success: true,
@@ -74,12 +74,12 @@ class PositionController {
   }
   async getPositionByDepartmentId(
     req: Request,
-    res: Response,
+    res: Response
   ): Promise<Response> {
     try {
       // await waitFiveSeconds();
       const companyId = new Types.ObjectId(
-        (req as unknown as RequestWithSessionDetails).sessionDetails.companyId!,
+        (req as unknown as RequestWithSessionDetails).sessionDetails.companyId!
       ) as unknown as ObjectId;
       const page: number = parseInt(req.query.page as string) || 1;
       const pageSize: number = parseInt(req.query.pageSize as string) || 10;
@@ -106,7 +106,7 @@ class PositionController {
         "",
         skip,
         pageSize,
-        sort,
+        sort
       );
       return res.json({
         success: true,
@@ -152,7 +152,7 @@ class PositionController {
   async deletePosition(req: Request, res: Response): Promise<Response> {
     try {
       const companyId = new Types.ObjectId(
-        (req as unknown as RequestWithSessionDetails).sessionDetails.companyId!,
+        (req as unknown as RequestWithSessionDetails).sessionDetails.companyId!
       ) as unknown as ObjectId;
 
       await PositionService.deletePosition({
@@ -176,7 +176,7 @@ class PositionController {
   async getPosition(req: Request, res: Response): Promise<Response> {
     try {
       const companyId = new Types.ObjectId(
-        (req as unknown as RequestWithSessionDetails).sessionDetails.companyId!,
+        (req as unknown as RequestWithSessionDetails).sessionDetails.companyId!
       ) as unknown as ObjectId;
       const position = await PositionService.findOne({
         _id: req.params.positionId as string,
@@ -199,7 +199,7 @@ class PositionController {
   async updatePosition(req: Request, res: Response): Promise<Response> {
     try {
       const companyId = new Types.ObjectId(
-        (req as unknown as RequestWithSessionDetails).sessionDetails.companyId!,
+        (req as RequestWithSessionDetails).sessionDetails.companyId!
       ) as unknown as ObjectId;
 
       const formData: FormData = {};
@@ -227,7 +227,7 @@ class PositionController {
         },
         {
           $set: formData,
-        },
+        }
       );
 
       return res.status(200).json({

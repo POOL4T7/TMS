@@ -1,6 +1,7 @@
 import { ObjectId } from "mongoose";
-import Position, { IPosition } from "../models/Position.model";
+import Position from "../models/Position.model";
 import { Sort, PaginationData } from "../interfaces/Custum.inteface";
+import { IPosition } from "../interfaces/Position.interface";
 
 interface Filter {
   _id?: string;
@@ -35,7 +36,7 @@ class PositionService {
     select: string = "",
     skip: number = 0,
     limit: number = 10,
-    sort: Sort = { _id: -1 },
+    sort: Sort = { _id: -1 }
   ): Promise<PaginationData | null> {
     try {
       const position = await Position.find(filter)
@@ -55,7 +56,7 @@ class PositionService {
     filter: Filter,
     skip: number = 0,
     limit: number = 10,
-    sort: Sort = { _id: -1 },
+    sort: Sort = { _id: -1 }
   ): Promise<PaginationData | null> {
     try {
       const position = await Position.aggregate([
@@ -136,7 +137,7 @@ class PositionService {
 
   async updatePosition(
     positionId: string,
-    data: Partial<IPosition>,
+    data: Partial<IPosition>
   ): Promise<IPosition | null> {
     try {
       const position = await Position.findByIdAndUpdate(positionId, data, {

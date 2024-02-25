@@ -1,11 +1,12 @@
 import { Schema } from "mongoose";
 
-interface IPosition {
+export interface IPosition {
   name: string;
   slug: string;
   createdBy: string;
-  companyId: Schema.Types.ObjectId;
+  companyId: string | Schema.Types.ObjectId;
+  teamId: string | Schema.Types.ObjectId;
   status: "active" | "inactive" | "deleted";
 }
 
-export default IPosition;
+// export default IPosition;
