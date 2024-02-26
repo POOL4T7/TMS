@@ -6,12 +6,10 @@ import CompanyController from "../controllers/Auth.controller";
 
 const router: Router = express.Router();
 
-router.route("/company/create").post(
-  // Auth.isAuth,
-  // Auth.roleAuthMiddleware(["admin"]),
-  CompanyController.createCompany,
-);
+router.route("/company/create").post(CompanyController.createCompany);
+router.route("/login").post(CompanyController.login);
 
 router.route("/company/login").post(CompanyController.companyLogin);
+router.route("/user/login").post(CompanyController.userLogin);
 
 export default router;

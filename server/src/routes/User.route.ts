@@ -10,7 +10,7 @@ router
   .post(
     Auth.isAuth,
     Auth.roleAuthMiddleware(["company"]),
-    UserController.registerUser,
+    UserController.registerUser
   );
 
 router
@@ -18,20 +18,27 @@ router
   .get(
     Auth.isAuth,
     Auth.roleAuthMiddleware(["company"]),
-    UserController.getCompanyUsers,
+    UserController.getCompanyUsers
   );
+
+router.get(
+  "/own-profile",
+  Auth.isAuth,
+  Auth.roleAuthMiddleware(["employee"]),
+  UserController.ownDetails
+);
 
 router
   .route("/:userId")
   .get(
     Auth.isAuth,
     Auth.roleAuthMiddleware(["company"]),
-    UserController.userDetails,
+    UserController.userDetails
   )
   .patch(
     Auth.isAuth,
-    Auth.roleAuthMiddleware(["company"]),
-    UserController.updateProfile,
+    Auth.roleAuthMiddleware(["company", "employee"]),
+    UserController.updateProfile
   );
 
 export default router;

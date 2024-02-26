@@ -40,15 +40,15 @@ function Copyright(props: any) {
 
 const defaultTheme = createTheme();
 
-export default function SignIn() {
-  const [companyLogin, { isLoading }] = useLoginMutation();
+export default function UserSignIn() {
+  const [userLogin, { isLoading }] = useLoginMutation();
   const dispatch = useAppDispatch();
   const selector = useTypedSelector((state) => state.authState);
   const navigate = useNavigate();
 
   React.useEffect(() => {
     if (selector.isAuthenticated) {
-      navigate("/dashboard");
+      navigate("/");
     }
   }, [selector.isAuthenticated, navigate]);
 
@@ -56,7 +56,7 @@ export default function SignIn() {
     try {
       event.preventDefault();
       const data = new FormData(event.currentTarget);
-      const response = await companyLogin({
+      const response = await userLogin({
         email: data.get("email")?.toString() || "",
         password: data.get("password")?.toString() || "",
       }).unwrap();

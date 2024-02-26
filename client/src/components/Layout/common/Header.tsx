@@ -13,7 +13,7 @@ import Tooltip from "@mui/material/Tooltip";
 import MenuItem from "@mui/material/MenuItem";
 import AdbIcon from "@mui/icons-material/Adb";
 import { Link, NavLink } from "react-router-dom";
-import SideBar from "./Sidebar";
+// import SideBar from "./company/Sidebar";
 import { useAppDispatch, useTypedSelector } from "../../../redux/store";
 import { userInfo } from "../../../redux/features/authSlice";
 import { emptyStorage } from "../../../utils/storage";
@@ -21,7 +21,11 @@ import { Theme, useMediaQuery } from "@mui/material";
 
 const pages = ["Products", "Pricing", "Blog"];
 
-function Navbar() {
+interface PropType {
+  SideBar: () => JSX.Element;
+}
+
+function Navbar({ SideBar }: PropType) {
   const [anchorElNav, setAnchorElNav] = React.useState<null | HTMLElement>(
     null
   );
@@ -67,6 +71,7 @@ function Navbar() {
 
           <Box sx={{ flexGrow: 1, display: { xs: "flex", md: "none" } }}>
             {isMobile && <SideBar />}
+
             <Menu
               id="menu-appbar"
               anchorEl={anchorElNav}

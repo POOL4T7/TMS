@@ -7,9 +7,6 @@ import { RequestWithSessionDetails, Sort } from "../interfaces/Custum.inteface";
 import { ObjectId, Types } from "mongoose";
 
 class UserController {
-  constructor() {
-    this.registerUser = this.registerUser.bind(this);
-  }
   async registerUser(req: Request, res: Response): Promise<Response> {
     try {
       const companyId = new Types.ObjectId(
@@ -139,6 +136,31 @@ class UserController {
 
   async userDetails(req: Request, res: Response): Promise<Response> {
     const userId = req.params.userId;
+    try {
+      const user = await UserService.findOne({ _id: userId }, "-password");
+      if (user) {
+        return res.status(200).json({
+          success: true,
+          userDetails: user,
+          message: "User Details",
+        });
+      } else {
+        return res.status(404).json({
+          success: false,
+          message: "User not found",
+        });
+      }
+    } catch (e: any) {
+      return res.status(500).json({
+        success: true,
+        message: "server error",
+        error: e.message,
+      });
+    }
+  }
+  async ownDetails(req: Request, res: Response): Promise<Response> {
+    const userId = (req as unknown as RequestWithSessionDetails).sessionDetails
+      ._id!;
     try {
       const user = await UserService.findOne({ _id: userId }, "-password");
       if (user) {

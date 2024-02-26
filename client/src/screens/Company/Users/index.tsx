@@ -7,7 +7,7 @@ import TableContainer from "@mui/material/TableContainer";
 import TableHead from "@mui/material/TableHead";
 import TablePagination from "@mui/material/TablePagination";
 import TableRow from "@mui/material/TableRow";
-import { Box, TableSortLabel } from "@mui/material";
+import { Alert, Box, TableSortLabel } from "@mui/material";
 import TableToolBar from "../../../components/TableToolBar";
 import Loader from "../../../components/Loader";
 import { useUserListQuery } from "../../../redux/services/user";
@@ -58,7 +58,7 @@ export default function User() {
   const [rowsPerPage, setRowsPerPage] = useState(10);
   const [order, setOrder] = useState<Order>("asc");
   const [orderBy, setOrderBy] = useState<string>("id");
-  const { data, isFetching, isLoading } = useUserListQuery({
+  const { data, isFetching, isLoading, isError, error } = useUserListQuery({
     page,
     rowsPerPage,
     orderBy,
@@ -88,6 +88,7 @@ export default function User() {
       }}
     >
       {isLoading && <Loader size={100} thickness={1.5} />}
+      {isError && <Alert severity="error">{error.message}</Alert>}
       {data && (
         <Paper sx={{ width: "100%", overflow: "hidden" }}>
           <TableToolBar

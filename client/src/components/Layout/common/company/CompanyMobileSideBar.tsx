@@ -8,15 +8,21 @@ import ListItemButton from "@mui/material/ListItemButton";
 import ListItemIcon from "@mui/material/ListItemIcon";
 import ListItemText from "@mui/material/ListItemText";
 import MenuIcon from "@mui/icons-material/Menu";
-import { FolderShared, Groups, People, QueryStats, WebStories } from "@mui/icons-material";
+import {
+  FolderShared,
+  Groups,
+  People,
+  QueryStats,
+  WebStories,
+} from "@mui/icons-material";
 import { NavLink, useNavigate } from "react-router-dom";
 import { Avatar, Typography } from "@mui/material";
-import Loader from "../../Loader";
-import { useCompanyProfileQuery } from "../../../redux/services/company";
+import Loader from "../../../Loader";
+import { useCompanyProfileQuery } from "../../../../redux/services/company";
 
 type Anchor = "left";
 
-export default function TemporaryDrawer() {
+export default function CompanyMobileSideBar() {
   const [state, setState] = React.useState({
     left: false,
     bottom: false,

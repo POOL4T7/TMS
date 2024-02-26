@@ -11,25 +11,27 @@ import CompanyLayout from "./components/Layout/CompanyLayout";
 import Team from "./screens/Company/Team";
 import Users from "./screens/Company/Users";
 import Position from "./screens/Company/Position";
+import UserSignIn from "./screens/Auth/UserSignIn";
+import EmployeeLayout from "./components/Layout/EmployeeLayout";
+import Employeedashboard from "./screens/Employee/Dashboard/EmployeeDashboard";
+import EmployeeProfile from "./screens/Employee/Profile/EmployeeProfile";
+import Project from "./screens/Company/Project/Project";
+// import EmployeeProject from "./screens/Employee/Project/EmployeeProject";
 
 const router = (authState: AuthState) => {
   return createBrowserRouter([
     {
       path: "/",
-      element: authState?.type === "company" ? <CompanyLayout /> : <Layout />,
+      element: getLayout(authState),
       children: [
         {
           path: "",
-          element: authState?.type === "company" ? <DashBoard /> : <Home />,
+          element: getLandingPage(authState),
         },
         {
           path: "/profile",
-          element: <Profile />,
+          element: getProfile(authState),
         },
-        // {
-        //   path: "/dashboard",
-        //   element: <DashBoard />,
-        // },
         {
           path: "/teams",
           element: <Team />,
@@ -42,11 +44,19 @@ const router = (authState: AuthState) => {
           path: "/positions",
           element: <Position />,
         },
+        {
+          path: "/projects",
+          element: <Project />,
+        },
       ],
     },
     {
       path: "/login",
       element: <Login />,
+    },
+    {
+      path: "/login-user",
+      element: <UserSignIn />,
     },
     {
       path: "/signup",
@@ -62,5 +72,36 @@ const router = (authState: AuthState) => {
     },
   ]);
 };
+
+function getLayout(authState: AuthState) {
+  if (authState?.type === "company") {
+    return <CompanyLayout />;
+  } else if (authState.type === "employee") {
+    return <EmployeeLayout />;
+  } else {
+    return <Layout />;
+  }
+}
+
+function getLandingPage(authState: AuthState) {
+  if (authState?.type === "company") {
+    return <DashBoard />;
+  } else if (authState.type === "employee") {
+    return <Employeedashboard />;
+  } else {
+    return <Home />;
+  }
+}
+function getProfile(authState: AuthState) {
+  if (authState?.type === "company") {
+    return <Profile />;
+  } else if (authState.type === "employee") {
+    return <EmployeeProfile />;
+  } else {
+    return <Home />;
+  }
+}
+
+// function getProjectP
 
 export default router;

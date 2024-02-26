@@ -11,6 +11,7 @@ import {
   TableHead,
   TablePagination,
   TableRow,
+  Alert,
 } from "@mui/material";
 import { Delete } from "@mui/icons-material";
 import {
@@ -54,7 +55,7 @@ export default function Position() {
   const [rowsPerPage, setRowsPerPage] = useState(10);
   const [order, setOrder] = useState<Order>("desc");
   const [orderBy, setOrderBy] = useState<string>("id");
-  const { data, isFetching, isLoading } = usePositionListQuery({
+  const { data, isFetching, isLoading, error, isError } = usePositionListQuery({
     page: page + 1,
     rowsPerPage,
     orderBy,
@@ -97,6 +98,7 @@ export default function Position() {
       }}
     >
       {isLoading && <Loader size={100} thickness={1.5} />}
+      {isError && <Alert severity="error">{error?.message}</Alert>}
       {data && (
         <Paper sx={{ width: "100%", overflow: "hidden" }}>
           <TableToolBar

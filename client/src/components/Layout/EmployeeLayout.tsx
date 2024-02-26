@@ -1,19 +1,19 @@
-import CompanyMobileSideBar from "./common/company/CompanyMobileSideBar";
-import CompanySideBar from "./common/company/CompanySideBar";
-import Header from "./common/Header";
 import { Box, Stack, Theme, useMediaQuery } from "@mui/material";
 import { Outlet } from "react-router-dom";
+import Header from "./common/Header";
+import UserSideBar from "./common/user/UserSideBar";
+import UserMobileSideBar from "./common/user/UserMobileSideBar";
 
-const CompanyLayout = () => {
+const EmployeeLayout = () => {
   const isMobile = useMediaQuery((theme: Theme) =>
     theme.breakpoints.down("md")
   );
 
   return (
     <>
-      <Header SideBar={CompanyMobileSideBar} />
+      <Header SideBar={UserMobileSideBar} />
       <Stack direction="row" spacing={0.5}>
-        <CompanySideBar />
+        <UserSideBar />
         <Box
           flex={8}
           sx={{
@@ -33,4 +33,4 @@ const CompanyLayout = () => {
   );
 };
 
-export default CompanyLayout;
+export default EmployeeLayout;

@@ -1,13 +1,20 @@
-import { createApi, fetchBaseQuery, retry } from "@reduxjs/toolkit/query/react";
+import {
+  FetchBaseQueryError,
+  createApi,
+  fetchBaseQuery,
+  retry,
+} from "@reduxjs/toolkit/query/react";
 import { RootState } from "../store";
 import {
   HttpResponse,
+  OwnProfileResponse,
   UpdateUserData,
   User,
   UserDetailsResponse,
   UserGetApiData,
   UserGetApiResponse,
 } from "../../models/users";
+import { ErrorType } from "../../models/custom";
 
 interface Pagination {
   page: number;
@@ -43,12 +50,18 @@ export const userAPI = createApi({
           totalCount: response.totalCount,
         };
       },
+      transformErrorResponse: (response: FetchBaseQueryError) => {
+        return response.data as ErrorType;
+      },
       providesTags: ["UserList"],
     }),
     userDetails: build.query<User, string>({
       query: (id) => `${id}`,
       transformResponse: (response: UserDetailsResponse) => {
         return response.userDetails;
+      },
+      transformErrorResponse: (response: FetchBaseQueryError) => {
+        return response.data as ErrorType;
       },
       providesTags: ["User"],
     }),
@@ -72,6 +85,15 @@ export const userAPI = createApi({
       },
       invalidatesTags: ["UserList"],
     }),
+    ownProfile: build.query<User, void>({
+      query: () => "/own-profile",
+      transformResponse: (response: OwnProfileResponse) => {
+        return response.userDetails;
+      },
+      transformErrorResponse: (response: FetchBaseQueryError) => {
+        return response.data as ErrorType;
+      },
+    }),
   }),
 });
 
@@ -80,4 +102,5 @@ export const {
   useUserDetailsQuery,
   useUpdateUserMutation,
   useRegisterUserMutation,
+  useOwnProfileQuery,
 } = userAPI;

@@ -27,7 +27,7 @@ interface Pagination {
 }
 
 const baseQuery = fetchBaseQuery({
-  baseUrl: `${import.meta.env.VITE_SERVER_URL}/position`,
+  baseUrl: `${import.meta.env.VITE_SERVER_URL}/project`,
   prepareHeaders: (headers, { getState }) => {
     const token = (getState() as RootState).authState.accessToken;
     if (token) {
@@ -39,9 +39,8 @@ const baseQuery = fetchBaseQuery({
 
 const baseQueryWithRetry = retry(baseQuery, { maxRetries: 0 });
 
-export const positionApi = createApi({
-  reducerPath: "position",
-  tagTypes: ["Position"],
+export const projectAPI = createApi({
+  reducerPath: "Project",
   baseQuery: baseQueryWithRetry,
   endpoints: (build) => ({
     positionList: build.query<PositionGetApiData, Pagination>({
@@ -56,28 +55,8 @@ export const positionApi = createApi({
       transformErrorResponse: (response: FetchBaseQueryError) => {
         return response.data as ErrorType;
       },
-      providesTags: ["Position"],
     }),
-    positionListByTeamId: build.query<PositionGetApiData, Pagination>({
-      query: ({
-        page = 1,
-        rowsPerPage = 1,
-        orderBy = "name",
-        order = "asc",
-        teamId,
-      }) =>
-        `team/${teamId}?page=${page}&perPage=${rowsPerPage}&orderby=${orderBy}&order=${order}`,
-      transformResponse: (response: PositionGetApiResponse) => {
-        return {
-          positionList: response.positionList,
-          totalPosition: response.totalPosition,
-        };
-      },
-      transformErrorResponse: (response: FetchBaseQueryError) => {
-        console.log("response.data", response.data);
-        return response.data;
-      },
-    }),
+
     addPosition: build.mutation<PositionObject, PositionPostData>({
       query(data) {
         return {
@@ -90,32 +69,9 @@ export const positionApi = createApi({
         toast.success("New Position added");
         return baseQueryReturnValue.position;
       },
-      invalidatesTags: ["Position"],
     }),
     getPosition: build.query<PositionDetailsResponse, string>({
       query: (id) => `/${id}`,
-      // transformResponse: (response: PositionGetApiResponse) => {
-      //   return {
-      //     positionList: response.positionList,
-      //     totalPosition: response.totalPosition,
-      //   };
-      // },
-      // providesTags: ["Position"],
-    }),
-    deletePost: build.mutation<ReturnObject, string>({
-      query(id) {
-        return {
-          url: "",
-          method: "DELETE",
-          body: {
-            positionId: id,
-          },
-        };
-      },
-      invalidatesTags: ["Position"],
-      transformResponse(baseQueryReturnValue: ReturnObject) {
-        return baseQueryReturnValue;
-      },
     }),
     updatePosition: build.mutation<ReturnObject, PositionAddData>({
       query(formData) {
@@ -125,7 +81,7 @@ export const positionApi = createApi({
           body: formData,
         };
       },
-      invalidatesTags: ["Position"],
+
       transformResponse(baseQueryReturnValue: ReturnObject) {
         return baseQueryReturnValue;
       },
@@ -136,8 +92,6 @@ export const positionApi = createApi({
 export const {
   usePositionListQuery,
   useAddPositionMutation,
-  useDeletePostMutation,
   useGetPositionQuery,
   useUpdatePositionMutation,
-  usePositionListByTeamIdQuery,
-} = positionApi;
+} = projectAPI;

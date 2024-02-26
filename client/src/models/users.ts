@@ -12,6 +12,10 @@ interface Team {
   _id: string;
   name: string;
 }
+interface Company {
+  _id: string;
+  name: string;
+}
 
 export interface User {
   _id: string;
@@ -25,7 +29,7 @@ export interface User {
   departmentId: Team;
   status: string;
   employeeId: string;
-  companyId:string;
+  companyId: Company;
 }
 
 export interface AccessToken {
@@ -60,13 +64,18 @@ export interface UserDetailsResponse extends HttpResponse {
 
 export interface UpdateUserData {
   _id?: string;
-  email: string;
-  firstName: string;
+  email?: string;
+  firstName?: string;
   lastName?: string;
   profilePicture?: string;
-  positionId: string;
-  departmentId: string;
-  status: string;
-  employeeId: string;
-  password?:string;
+  positionId?: string;
+  departmentId?: string;
+  status?: string;
+  employeeId?: string;
+  password?: string;
+}
+
+export interface OwnProfileResponse {
+  success: boolean;
+  userDetails: User;
 }

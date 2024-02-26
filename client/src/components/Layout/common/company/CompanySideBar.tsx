@@ -16,15 +16,11 @@ import {
   FolderShared,
   People,
 } from "@mui/icons-material";
-// import Accordion from "@mui/material/Accordion";
-// import AccordionActions from "@mui/material/AccordionActions";
-// import AccordionSummary from "@mui/material/AccordionSummary";
-// import AccordionDetails from "@mui/material/AccordionDetails";
-// import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import { NavLink, useNavigate } from "react-router-dom";
-import { useCompanyProfileQuery } from "../../../redux/services/company";
-import Loader from "../../Loader";
-const SideNav = () => {
+import { useCompanyProfileQuery } from "../../../../redux/services/company";
+import Loader from "../../../Loader";
+
+const CompanySideBar = () => {
   const navigate = useNavigate();
   const { data, isLoading } = useCompanyProfileQuery();
 
@@ -145,4 +141,4 @@ const SideNav = () => {
   );
 };
 
-export default SideNav;
+export default CompanySideBar;

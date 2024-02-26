@@ -1,6 +1,12 @@
-import { createApi, fetchBaseQuery, retry } from "@reduxjs/toolkit/query/react";
+import {
+  FetchBaseQueryError,
+  createApi,
+  fetchBaseQuery,
+  retry,
+} from "@reduxjs/toolkit/query/react";
 import { RootState } from "../store";
 import { TeamList } from "../../models/Team";
+import { ErrorType } from "../../models/custom";
 
 interface ResponseObject {
   success: boolean;
@@ -30,6 +36,9 @@ export const teamsApi = createApi({
       transformResponse: (response: ResponseObject) => {
         const responseData = response.teamList;
         return responseData!;
+      },
+      transformErrorResponse: (response: FetchBaseQueryError) => {
+        return response.data as ErrorType;
       },
     }),
     allTeams: build.query<TeamList[], void>({

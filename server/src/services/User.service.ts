@@ -21,14 +21,15 @@ class UserService {
 
   static async findOne(filter: Filter, select: string): Promise<IUser | null> {
     try {
-      const company = await User.findOne(filter)
+      const user = await User.findOne(filter)
         .select(select)
         .populate({ path: "departmentId", select: "name" })
         .populate({ path: "positionId", select: "name" })
+        .populate({ path: "companyId", select: "name" })
         .lean();
-      return company;
+      return user;
     } catch (error: any) {
-      throw new Error(`Error creating company: ${error.message}`);
+      throw new Error(`Error fetching user: ${error.message}`);
     }
   }
 
@@ -37,7 +38,7 @@ class UserService {
     select: string = "",
     skip: number = 0,
     limit: number = 10,
-    sort: Sort = { _id: -1 },
+    sort: Sort = { _id: -1 }
   ): Promise<UserPaginationData | null> {
     try {
       const companyList = await User.find(filter)
@@ -57,7 +58,7 @@ class UserService {
 
   static async updateUser(
     filter: Filter,
-    data: Partial<IUser>,
+    data: Partial<IUser>
   ): Promise<IUser | null> {
     try {
       const user = await User.findByIdAndUpdate(filter, data, { new: true });

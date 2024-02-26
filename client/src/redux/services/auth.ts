@@ -1,8 +1,7 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 import { PostCompany } from "../../models/company";
-import { LoginData, AuthResponse } from "../../models/auth";
+import { LoginData, AuthResponse, AuthInput } from "../../models/auth";
 
-// Create our baseQuery instance
 const baseQuery = fetchBaseQuery({
   baseUrl: `${import.meta.env.VITE_SERVER_URL}/auth/`,
 });
@@ -13,10 +12,10 @@ export const authApi = createApi({
   baseQuery: baseQuery,
 
   endpoints: (build) => ({
-    companyLogin: build.mutation<LoginData, Partial<PostCompany>>({
+    login: build.mutation<LoginData, Partial<AuthInput>>({
       query(user) {
         return {
-          url: "/company/login",
+          url: "/login",
           method: "POST",
           body: {
             email: user.email,
@@ -25,7 +24,6 @@ export const authApi = createApi({
         };
       },
       transformResponse(baseQueryReturnValue: AuthResponse) {
-        // localStorage.setItem("auth", JSON.stringify(baseQueryReturnValue.data));
         return baseQueryReturnValue.data;
       },
     }),
@@ -44,4 +42,4 @@ export const authApi = createApi({
   }),
 });
 
-export const { useCreateCompanyMutation, useCompanyLoginMutation } = authApi;
+export const { useCreateCompanyMutation, useLoginMutation } = authApi;

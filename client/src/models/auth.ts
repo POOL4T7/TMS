@@ -9,3 +9,8 @@ export interface AuthResponse {
   message: string;
   data: LoginData;
 }
+
+export interface AuthInput {
+  email: string;
+  password: string;
+}
