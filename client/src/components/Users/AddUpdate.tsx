@@ -91,6 +91,7 @@ export default function AddUpdate({ userId }: PropTypes) {
   };
 
   const handleClose = () => {
+    if (isLoading || userAddLoading) return;
     setOpen(false);
     setUser({
       firstName: "",
@@ -159,7 +160,6 @@ export default function AddUpdate({ userId }: PropTypes) {
           />
           <TextField
             margin="normal"
-            required
             fullWidth
             id="lastName"
             label="Last Name"

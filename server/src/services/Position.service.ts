@@ -149,16 +149,21 @@ class PositionService {
     }
   }
 
-  static async deletePosition(filter: Filter): Promise<void> {
+  static async deletePosition(filter: Filter): Promise<boolean> {
     try {
-      await Position.findOneAndDelete(filter);
+      const data = await Position.findOneAndDelete(filter);
+      return data ? true : false;
     } catch (error: any) {
       throw new Error(`Error deleting position: ${error.message}`);
     }
   }
-  static async findOneAndUpdate(filter: Filter, formData: any): Promise<void> {
+  static async findOneAndUpdate(
+    filter: Filter,
+    formData: any
+  ): Promise<boolean> {
     try {
-      await Position.findOneAndUpdate(filter, formData);
+      const data = await Position.findOneAndUpdate(filter, formData);
+      return data ? true : false;
     } catch (error: any) {
       throw new Error(`Error deleting position: ${error.message}`);
     }

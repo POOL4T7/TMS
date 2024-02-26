@@ -13,7 +13,7 @@ class UserController {
   async registerUser(req: Request, res: Response): Promise<Response> {
     try {
       const companyId = new Types.ObjectId(
-        (req as unknown as RequestWithSessionDetails).sessionDetails.companyId!,
+        (req as unknown as RequestWithSessionDetails).sessionDetails.companyId!
       ) as unknown as ObjectId;
       const user: IUser = {
         email: req.body.email,
@@ -46,24 +46,25 @@ class UserController {
   async updateProfile(req: Request, res: Response): Promise<Response> {
     try {
       const companyId = new Types.ObjectId(
-        (req as RequestWithSessionDetails).sessionDetails.companyId!,
+        (req as RequestWithSessionDetails).sessionDetails.companyId!
       ) as unknown as ObjectId;
       const role = (req as RequestWithSessionDetails).sessionDetails.role;
       const updatedData: Partial<IUser> = {};
       if (role === "user") {
-        if (req.body.firstName) updatedData.firstName = req.body.firstName;
-        if (req.body.lastName) updatedData.lastName = req.body.lastName;
+        updatedData.firstName = req.body.firstName;
+        updatedData.lastName = req.body.lastName;
       } else {
-        if (req.body.employeeId) updatedData.employeeId = req.body.employeeId;
-        if (req.body.departmentId)
-          updatedData.departmentId = req.body.departmentId;
-        if (req.body.positionId) updatedData.positionId = req.body.positionId;
-        if (req.body.hireDate) updatedData.hireDate = req.body.hireDate;
-        if (req.body.status) updatedData.status = req.body.status;
+        updatedData.firstName = req.body.firstName;
+        updatedData.lastName = req.body.lastName;
+        updatedData.employeeId = req.body.employeeId;
+        updatedData.departmentId = req.body.departmentId;
+        updatedData.positionId = req.body.positionId;
+        updatedData.hireDate = req.body.hireDate;
+        updatedData.status = req.body.status;
       }
       const user: IUser | null = await UserService.updateUser(
         { companyId: companyId, _id: req.params.userId },
-        updatedData,
+        updatedData
       );
       if (!user) {
         return res.status(404).json({
@@ -87,7 +88,7 @@ class UserController {
   async getCompanyUsers(req: Request, res: Response): Promise<Response> {
     try {
       const companyId = new Types.ObjectId(
-        (req as unknown as RequestWithSessionDetails).sessionDetails.companyId!,
+        (req as unknown as RequestWithSessionDetails).sessionDetails.companyId!
       ) as unknown as ObjectId;
       const page: number = parseInt(req.query.page as string) || 1;
       const pageSize: number = parseInt(req.query.pageSize as string) || 10;
@@ -112,7 +113,7 @@ class UserController {
         "-password",
         skip,
         pageSize,
-        sort,
+        sort
       );
       return res.status(200).json(users);
     } catch (e: any) {

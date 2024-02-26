@@ -7,7 +7,7 @@ import { companyApi } from "./services/company";
 import { teamsApi } from "./services/teams";
 import { positionApi } from "./services/position";
 import { userAPI } from "./services/user";
-import { rtkQueryErrorLogger } from "./error";
+import { rtkQueryToast } from "./rtkQueryToast";
 
 export const createStore = (
   options?: ConfigureStoreOptions["preloadedState"] | undefined
@@ -24,12 +24,12 @@ export const createStore = (
     },
     middleware: (getDefaultMiddleware) =>
       getDefaultMiddleware()
+        .concat(rtkQueryToast)
         .concat(industryApi.middleware)
         .concat(authApi.middleware)
         .concat(companyApi.middleware)
         .concat(teamsApi.middleware)
         .concat(userAPI.middleware)
-        .concat(rtkQueryErrorLogger)
         .concat(positionApi.middleware),
     devTools: import.meta.env.NODE_ENV !== "production",
     ...options,

@@ -34,7 +34,7 @@ class PositionController {
         (req as unknown as RequestWithSessionDetails).sessionDetails.companyId!
       ) as unknown as ObjectId;
       const page: number = parseInt(req.query.page as string) || 1;
-      const pageSize: number = parseInt(req.query.pageSize as string) || 10;
+      const pageSize: number = parseInt(req.query.perPage as string) || 10;
       const skip = (page - 1) * pageSize;
       const orderby = req.query.orderby;
       const order = req.query.order;
@@ -156,15 +156,22 @@ class PositionController {
         (req as unknown as RequestWithSessionDetails).sessionDetails.companyId!
       ) as unknown as ObjectId;
 
-      await PositionService.deletePosition({
+      const isDeleted = await PositionService.deletePosition({
         _id: req.body.positionId,
         companyId: companyId,
       });
 
-      return res.status(200).json({
-        success: true,
-        message: "Position deleted",
-      });
+      if (isDeleted) {
+        return res.status(200).json({
+          success: true,
+          message: "Position deleted",
+        });
+      } else {
+        return res.status(404).json({
+          success: true,
+          message: "Position not found",
+        });
+      }
     } catch (e: any) {
       return res.status(500).json({
         success: false,
@@ -199,7 +206,7 @@ class PositionController {
 
   async updatePosition(req: Request, res: Response): Promise<Response> {
     try {
-      waitFiveSeconds();
+      await waitFiveSeconds();
       const companyId = new Types.ObjectId(
         (req as RequestWithSessionDetails).sessionDetails.companyId!
       ) as unknown as ObjectId;

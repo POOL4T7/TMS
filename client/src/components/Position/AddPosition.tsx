@@ -62,6 +62,7 @@ export default function AddPosition({ positionId }: PropTypes) {
   };
 
   const handleClose = () => {
+    if (updateIsLoading || isLoading) return;
     setOpen(false);
     setTeam("");
     setStatus("");

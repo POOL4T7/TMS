@@ -27,20 +27,23 @@ interface Column {
   maxWidth?: number;
   align?: "right";
   status?: string;
+  showOrder: boolean;
 }
 
 const columns: readonly Column[] = [
-  { id: "id", label: "#id", maxWidth: 100 },
-  { id: "name", label: "Name", maxWidth: 100 },
-  { id: "team", label: "Team Name", maxWidth: 100 },
+  { id: "id", label: "#id", maxWidth: 100, showOrder: true },
+  { id: "name", label: "Name", maxWidth: 100, showOrder: true },
+  { id: "team", label: "Team Name", maxWidth: 100, showOrder: false },
   {
     id: "totalMembers",
     label: "Total Members",
     maxWidth: 100,
+    showOrder: false,
   },
   {
     id: "status",
     label: "Status",
+    showOrder: true,
   },
 ];
 type Order = "asc" | "desc";
@@ -52,7 +55,7 @@ export default function Position() {
   const [order, setOrder] = useState<Order>("desc");
   const [orderBy, setOrderBy] = useState<string>("id");
   const { data, isFetching, isLoading } = usePositionListQuery({
-    page,
+    page: page + 1,
     rowsPerPage,
     orderBy,
     order,
@@ -111,15 +114,19 @@ export default function Position() {
                     <TableCell
                       key={column.id}
                       align={column.align}
-                      sortDirection={orderBy === column.id ? order : "asc"}
+                      // sortDirection={orderBy === column.id ? order : "asc"}
                     >
-                      <TableSortLabel
-                        active={orderBy === column.id}
-                        direction={orderBy === column.id ? order : "asc"}
-                        onClick={() => handleRequestSort(column.id)}
-                      >
-                        {column.label}
-                      </TableSortLabel>
+                      {column.showOrder ? (
+                        <TableSortLabel
+                          active={orderBy === column.id}
+                          direction={orderBy === column.id ? order : "asc"}
+                          onClick={() => handleRequestSort(column.id)}
+                        >
+                          {column.label}
+                        </TableSortLabel>
+                      ) : (
+                        column.label
+                      )}
                     </TableCell>
                   ))}
                   <TableCell align="left">Action</TableCell>

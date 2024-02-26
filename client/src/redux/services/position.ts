@@ -74,7 +74,7 @@ export const positionApi = createApi({
         };
       },
       transformResponse(baseQueryReturnValue: PositionPostResponse) {
-        toast("New Position added");
+        toast.success("New Position added");
         return baseQueryReturnValue.position;
       },
       invalidatesTags: ["Position"],
@@ -101,7 +101,6 @@ export const positionApi = createApi({
       },
       invalidatesTags: ["Position"],
       transformResponse(baseQueryReturnValue: ReturnObject) {
-        // toast.success("Position updated successfully");
         return baseQueryReturnValue;
       },
     }),
@@ -115,7 +114,6 @@ export const positionApi = createApi({
       },
       invalidatesTags: ["Position"],
       transformResponse(baseQueryReturnValue: ReturnObject) {
-        // toast.success("Position updated successfully");
         return baseQueryReturnValue;
       },
     }),

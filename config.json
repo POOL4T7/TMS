@@ -26,6 +26,7 @@
     "create role based users, firstly create org flow",
     "setup org/compnay based on their profile",
     "create team/department fror their company",
-    "create position for a team"
+    "create position for a team",
+    "remove message if data is there"
   ]
 }
