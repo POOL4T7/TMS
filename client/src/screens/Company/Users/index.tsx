@@ -12,6 +12,7 @@ import TableToolBar from "../../../components/TableToolBar";
 import Loader from "../../../components/Loader";
 import { useUserListQuery } from "../../../redux/services/user";
 import AddUpdate from "../../../components/Users/AddUpdate";
+import { ErrorType } from "../../../models/custom";
 
 interface Column {
   id: "id" | "name" | "position" | "status" | "action" | "team" | "employeId";
@@ -65,7 +66,11 @@ export default function User() {
     order,
   });
 
-  const handleChangePage = (event: unknown, newPage: number) => {
+  const handleChangePage = (
+    event: React.MouseEvent<HTMLButtonElement, MouseEvent> | null,
+    newPage: number
+  ) => {
+    event?.preventDefault();
     setPage(newPage);
   };
 
@@ -75,7 +80,6 @@ export default function User() {
     setRowsPerPage(+event.target.value);
     setPage(0);
   };
-
   const handleRequestSort = (property: string) => {
     const isAsc = orderBy === property && order === "asc";
     setOrder(isAsc ? "desc" : "asc");
@@ -88,7 +92,9 @@ export default function User() {
       }}
     >
       {isLoading && <Loader size={100} thickness={1.5} />}
-      {isError && <Alert severity="error">{error.message}</Alert>}
+      {isError && (
+        <Alert severity="error">{(error as ErrorType).message}</Alert>
+      )}
       {data && (
         <Paper sx={{ width: "100%", overflow: "hidden" }}>
           <TableToolBar

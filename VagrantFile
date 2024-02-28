@@ -7,10 +7,26 @@ Vagrant.configure("2") do |config|
         vmware.memory = "1600"
       end
       fedora.vm.provision "shell", inline: <<-SHELL
-        yum update && yup upgrade -y
-        dnf module install nodejs:16 -y
+        #!/bin/bash
+        echo "⚡️ Welcome to the TMS web server setup process! ⚡️"
+        echo "⚡️ Scanning for available package upgrades..."
+        yum update > /dev/null
+        echo "✅ Scan completed successfully!"
+        # echo "⚡️⚡️ Upgrading packages to the latest versions..."
+        # apt upgrade > /dev/null
+        # echo "✅ Upgrade completed successfully!"
+        echo "⚡️⚡️ Installing essential project tools like Node.js, Git, NPM..."
+        dnf module install nodejs:18 -y
         yum install git -y
+        echo "✅ Project tools installed successfully!"
+        echo "⚡️⚡️ Fetching the latest code from the cloud..."
         git clone https://github.com/POOL4T7/TMS.git
+        cd TMS/client
+        echo "⚡️⚡️ Installing server dependencies..."
+        npm install
+        echo "✅ Server dependencies installed successfully!"
+        npm run build
+        echo "⚡️ Your project is now ready to roll! ⚡️"
   SHELL
   end
 
@@ -25,20 +41,22 @@ Vagrant.configure("2") do |config|
           vmware.memory = "1600"
         end
       ubuntu.vm.provision "shell", inline: <<-SHELL
-        echo "⚡️ Scanning the updating packages.."
+        echo "⚡️ Welcome to the TMS server setup process! ⚡️"
+        echo "⚡️ Scanning for available package upgrades..."
         apt update > /dev/null
-        echo "Scanning Done ✅"
-        echo "⚡️⚡️ Updation the updating packages.."
-        apt upgrade > /dev/null
-        echo "Updating Done ✅" 
-        echo "⚡️⚡️ Installing project Tools like Nodejs, NPM etc."
+        echo "✅ Scan completed successfully!"
+        # echo "⚡️⚡️ Upgrading packages to the latest versions..."
+        # apt upgrade > /dev/null
+        # echo "✅ Upgrade completed successfully!"
+        echo "⚡️⚡️ Installing essential project tools like Node.js and NPM..."
         sudo snap install node --channel=16/stable --classic
-        echo "✅ Project Tools Installed successfully."
-        echo "⚡️⚡️ Feching the code from cloud"
+        echo "✅ Project tools installed successfully!"
+        echo "⚡️⚡️ Fetching the latest code from the cloud..."
         git clone https://github.com/POOL4T7/TMS.git
         cd TMS/server
-        echo "⚡️⚡️ Installing the server dpendency"
+        echo "⚡️⚡️ Installing server dependencies..."
         npm install
+        echo "✅ Server dependencies installed successfully!"
         # cat <<EOT > .env
         #   PORT=8080
         #   NODE_ENV=development
@@ -46,8 +64,7 @@ Vagrant.configure("2") do |config|
         # EOT
         # echo "✅ Enviroment added successfully."
         npm run build
-        npm start
-        echo "⚡️⚡️ Server is started ⚡️⚡️"
+        echo "⚡️ Your project is now ready to roll! ⚡️"
     SHELL
   end
 end

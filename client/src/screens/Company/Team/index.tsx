@@ -3,6 +3,7 @@ import { Alert, Box, Grid, IconButton, Stack, Typography } from "@mui/material";
 import TeamCard from "../../../components/TeamCard";
 import { useTeamListQuery } from "../../../redux/services/teams";
 import Loader from "../../../components/Loader";
+import { ErrorType } from "../../../models/custom";
 
 const Team = () => {
   console.log("Team page rendering");
@@ -21,7 +22,9 @@ const Team = () => {
         </IconButton>
       </Stack>
       {isLoading && <Loader size={100} thickness={1.5} />}
-      {isError && <Alert severity="error">{error.message}</Alert>}
+      {isError && (
+        <Alert severity="error">{(error as ErrorType).message}</Alert>
+      )}
       <Grid container spacing={1.5}>
         {data?.map((item) => (
           <Grid item xs={12} sm={6} md={4} lg={3} xl={2} key={item._id}>

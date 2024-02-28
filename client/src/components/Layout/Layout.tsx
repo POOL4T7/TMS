@@ -6,7 +6,7 @@ import { Box } from "@mui/material";
 const Layout = () => {
   return (
     <>
-      <Header />
+      <Header SideBar={() => <> </>} />
       <Box
         sx={{
           top: "68.5px",

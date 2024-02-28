@@ -61,6 +61,7 @@ const Profile = () => {
       });
       setIndustryId(data?.industry?.map((idu) => idu._id) as string[]);
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [data]);
 
   const handle =

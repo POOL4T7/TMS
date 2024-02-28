@@ -7,7 +7,7 @@ export interface AuthState {
 }
 
 export interface ErrorType {
-  success: boolean;
+  success?: boolean;
   message: string;
   error?: string;
 }

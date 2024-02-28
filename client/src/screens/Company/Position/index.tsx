@@ -21,6 +21,7 @@ import {
 import TableToolBar from "../../../components/TableToolBar";
 import Loader from "../../../components/Loader";
 import AddPosition from "../../../components/Position/AddPosition";
+import { ErrorType } from "../../../models/custom";
 
 interface Column {
   id: "id" | "name" | "totalMembers" | "status" | "action" | "team";
@@ -65,7 +66,11 @@ export default function Position() {
   const [deletePosition, { isLoading: deletePostLoading }] =
     useDeletePostMutation();
 
-  const handleChangePage = (event: unknown, newPage: number) => {
+  const handleChangePage = (
+    event: React.MouseEvent<HTMLButtonElement, MouseEvent> | null,
+    newPage: number
+  ) => {
+    event?.preventDefault();
     setPage(newPage);
   };
 
@@ -98,7 +103,9 @@ export default function Position() {
       }}
     >
       {isLoading && <Loader size={100} thickness={1.5} />}
-      {isError && <Alert severity="error">{error?.message}</Alert>}
+      {isError && (
+        <Alert severity="error">{(error as ErrorType)?.message}</Alert>
+      )}
       {data && (
         <Paper sx={{ width: "100%", overflow: "hidden" }}>
           <TableToolBar
