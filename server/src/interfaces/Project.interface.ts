@@ -5,6 +5,7 @@ export interface IProject {
   slug: string;
   description: string;
   shortBio?: string;
+  image: string;
   owner: Schema.Types.ObjectId;
   manager?: Schema.Types.ObjectId;
   teamLead?: Schema.Types.ObjectId[];

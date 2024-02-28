@@ -5,6 +5,7 @@ interface IProject {
   slug: string;
   description: string;
   shortBio?: string;
+  image: string;
   owner: Schema.Types.ObjectId;
   manager?: Schema.Types.ObjectId;
   teamLead?: Schema.Types.ObjectId[];
@@ -21,6 +22,7 @@ const projectSchema = new Schema<IProject>(
     name: { type: String, required: true },
     description: { type: String, required: true },
     shortBio: { type: String },
+    image: { type: String },
     owner: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "Company",
