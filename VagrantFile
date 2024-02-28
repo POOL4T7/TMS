@@ -25,9 +25,29 @@ Vagrant.configure("2") do |config|
           vmware.memory = "1600"
         end
       ubuntu.vm.provision "shell", inline: <<-SHELL
-        apt update && apt upgrade > /dev/null
+        echo "⚡️ Scanning the updating packages.."
+        apt update > /dev/null
+        echo "Scanning Done ✅"
+        echo "⚡️⚡️ Updation the updating packages.."
+        apt upgrade > /dev/null
+        echo "Updating Done ✅" 
+        echo "⚡️⚡️ Installing project Tools like Nodejs, NPM etc."
         sudo snap install node --channel=16/stable --classic
+        echo "✅ Project Tools Installed successfully."
+        echo "⚡️⚡️ Feching the code from cloud"
         git clone https://github.com/POOL4T7/TMS.git
+        cd TMS/server
+        echo "⚡️⚡️ Installing the server dpendency"
+        npm install
+        # cat <<EOT > .env
+        #   PORT=8080
+        #   NODE_ENV=development
+        #   MONGO_URI=mongodb://gulshan:1alyxstar@localhost:27017/social?authSource=admin
+        # EOT
+        # echo "✅ Enviroment added successfully."
+        npm run build
+        npm start
+        echo "⚡️⚡️ Server is started ⚡️⚡️"
     SHELL
   end
 end
