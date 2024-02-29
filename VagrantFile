@@ -16,7 +16,9 @@ Vagrant.configure("2") do |config|
         # apt upgrade > /dev/null
         # echo "✅ Upgrade completed successfully!"
         echo "⚡️⚡️ Installing essential project tools like Node.js, Git, NPM..."
-        dnf module install nodejs:18 -y
+        dnf module install nodejs:18/common
+        yum install nginx
+        mkdir -p /var/www/html/tms
         yum install git -y
         echo "✅ Project tools installed successfully!"
         echo "⚡️⚡️ Fetching the latest code from the cloud..."
@@ -26,7 +28,10 @@ Vagrant.configure("2") do |config|
         npm install
         echo "✅ Server dependencies installed successfully!"
         npm run build
-        echo "⚡️ Your project is now ready to roll! ⚡️"
+        echo "⚡️ Your project build is now ready to roll! ⚡️"
+        mv /TMS/client/build/* /var/www/html/tms/
+        echo "⚡️ Build is moved to destination! ⚡️"
+
   SHELL
   end
 
