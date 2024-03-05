@@ -5,17 +5,8 @@ import {
   retry,
 } from "@reduxjs/toolkit/query/react";
 import { RootState } from "../store";
-import {
-  PositionAddData,
-  PositionDetailsResponse,
-  PositionGetApiData,
-  PositionGetApiResponse,
-  PositionObject,
-  PositionPostData,
-  PositionPostResponse,
-  ReturnObject,
-} from "../../models/Position";
-import { toast } from "react-toastify";
+import { ProjectGetApiData, ProjectGetApiResponse } from "../../models/Project";
+// import { toast } from "react-toastify";
 import { ErrorType } from "../../models/custom";
 
 interface Pagination {
@@ -43,55 +34,20 @@ export const projectAPI = createApi({
   reducerPath: "Project",
   baseQuery: baseQueryWithRetry,
   endpoints: (build) => ({
-    positionList: build.query<PositionGetApiData, Pagination>({
+    projectList: build.query<ProjectGetApiData, Pagination>({
       query: ({ page = 1, rowsPerPage = 1, orderBy = "name", order = "asc" }) =>
         `?page=${page}&perPage=${rowsPerPage}&orderby=${orderBy}&order=${order}`,
-      transformResponse: (response: PositionGetApiResponse) => {
+      transformResponse: (response: ProjectGetApiResponse) => {
         return {
-          positionList: response.positionList,
-          totalPosition: response.totalPosition,
+          projectList: response.projectList,
+          totalProject: response.totalProject,
         };
       },
       transformErrorResponse: (response: FetchBaseQueryError) => {
         return response.data as ErrorType;
       },
     }),
-
-    addPosition: build.mutation<PositionObject, PositionPostData>({
-      query(data) {
-        return {
-          url: "",
-          method: "POST",
-          body: data,
-        };
-      },
-      transformResponse(baseQueryReturnValue: PositionPostResponse) {
-        toast.success("New Position added");
-        return baseQueryReturnValue.position;
-      },
-    }),
-    getPosition: build.query<PositionDetailsResponse, string>({
-      query: (id) => `/${id}`,
-    }),
-    updatePosition: build.mutation<ReturnObject, PositionAddData>({
-      query(formData) {
-        return {
-          url: ``,
-          method: "PATCH",
-          body: formData,
-        };
-      },
-
-      transformResponse(baseQueryReturnValue: ReturnObject) {
-        return baseQueryReturnValue;
-      },
-    }),
   }),
 });
 
-export const {
-  usePositionListQuery,
-  useAddPositionMutation,
-  useGetPositionQuery,
-  useUpdatePositionMutation,
-} = projectAPI;
+export const { useProjectListQuery } = projectAPI;

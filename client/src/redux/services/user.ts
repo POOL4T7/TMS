@@ -23,6 +23,15 @@ interface Pagination {
   order: "asc" | "desc";
 }
 
+interface Filters {
+  companyId?: string;
+  role?: string;
+  departmentId?: string;
+  positionId?: string;
+  employeeId?: string;
+  pageSize?: number;
+}
+
 const baseQuery = fetchBaseQuery({
   baseUrl: `${import.meta.env.VITE_SERVER_URL}/user`,
   prepareHeaders: (headers, { getState }) => {
@@ -94,6 +103,24 @@ export const userAPI = createApi({
         return response.data as ErrorType;
       },
     }),
+    filteredUserList: build.query<UserGetApiData, Filters>({
+      query: ({
+        departmentId = "",
+        positionId = "",
+        employeeId = "",
+        pageSize = 100,
+      }) =>
+        `/filtered-users?teamId=${departmentId}&positionId=${positionId}&employeeId=${employeeId}&pageSize=${pageSize}`,
+      transformResponse: (response: UserGetApiResponse) => {
+        return {
+          userList: response.userList,
+          totalCount: response.totalCount,
+        };
+      },
+      transformErrorResponse: (response: FetchBaseQueryError) => {
+        return response.data as ErrorType;
+      },
+    }),
   }),
 });
 
@@ -103,4 +130,5 @@ export const {
   useUpdateUserMutation,
   useRegisterUserMutation,
   useOwnProfileQuery,
+  useFilteredUserListQuery,
 } = userAPI;

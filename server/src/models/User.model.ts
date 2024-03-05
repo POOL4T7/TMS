@@ -30,7 +30,7 @@ const userSchema: Schema<IUser> = new Schema(
     },
     role: {
       type: String,
-      enum: ["manager", "admin", "employee"],
+      enum: ["manager", "admin", "employee", "teamlead"],
       default: "employee",
     },
     firstName: {
@@ -75,7 +75,7 @@ const userSchema: Schema<IUser> = new Schema(
       default: Date.now(),
     },
   },
-  { timestamps: true },
+  { timestamps: true }
 );
 
 const User = mongoose.model<IUser>("User", userSchema);

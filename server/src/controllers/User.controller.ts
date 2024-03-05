@@ -1,7 +1,7 @@
 // controllers/UserController.ts
 
 import { Request, Response } from "express";
-import UserService from "../services/User.service";
+import UserService, { Filter } from "../services/User.service";
 import { IUser } from "../models/User.model";
 import { RequestWithSessionDetails, Sort } from "../interfaces/Custum.inteface";
 import { ObjectId, Types } from "mongoose";
@@ -93,6 +93,7 @@ class UserController {
       const orderby = req.query.orderby;
       const order = req.query.order;
       const sort: Sort = {};
+
       if (orderby == "id") {
         sort["_id"] = order === "asc" ? 1 : -1;
       } else if (orderby == "name") {
@@ -111,6 +112,44 @@ class UserController {
         skip,
         pageSize,
         sort
+      );
+      return res.status(200).json(users);
+    } catch (e: any) {
+      return res.status(500).json({
+        success: true,
+        message: "server error",
+        error: e.message,
+      });
+    }
+  }
+
+  async filteredCompanyUser(req: Request, res: Response): Promise<Response> {
+    try {
+      const companyId = new Types.ObjectId(
+        (req as unknown as RequestWithSessionDetails).sessionDetails.companyId!
+      ) as unknown as ObjectId;
+      const page: number = parseInt(req.query.page as string) || 1;
+      const pageSize: number = parseInt(req.query.pageSize as string) || 10;
+      const skip = (page - 1) * pageSize;
+      const filter: Filter = {
+        companyId: companyId,
+      };
+      req.query.teamId
+        ? (filter.departmentId = req.query.teamId.toString())
+        : "";
+      req.query.positionId
+        ? (filter.positionId = req.query.positionId.toString())
+        : "";
+      req.query.employeeId
+        ? (filter.employeeId = req.query.employeeId.toString())
+        : "";
+      req.query.role ? (filter.role = req.query.role.toString()) : "";
+      console.log("filter", filter);
+      const users = await UserService.find(
+        filter,
+        "_id firstName lastName",
+        skip,
+        pageSize
       );
       return res.status(200).json(users);
     } catch (e: any) {

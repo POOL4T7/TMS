@@ -3,7 +3,7 @@ import Project from "../models/Project.model";
 import { Sort } from "../interfaces/Custum.inteface";
 import { IProject } from "../interfaces/Project.interface";
 
-interface Filter {
+export interface Filter {
   _id?: string;
   status?: string;
   owner?: string | ObjectId;
@@ -24,7 +24,7 @@ class ProjectService {
     }
   }
 
-  static async find(
+  static async findWithStats(
     filter: Filter,
     skip: number = 0,
     limit: number = 10,
@@ -53,7 +53,8 @@ class ProjectService {
   static async findOne(filter: Filter): Promise<IProject | null> {
     try {
       const position = await Project.findOne(filter)
-        .populate({ path: "teamId", select: "name" })
+        .populate({ path: "team.departmentId", select: "name" })
+        .populate({ path: "team.userId", select: "firstName lastName" })
         .lean();
       return position;
     } catch (error: any) {

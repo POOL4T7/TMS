@@ -3,41 +3,48 @@
 import express, { Router } from "express";
 import UserController from "../controllers/User.controller";
 const router: Router = express.Router();
-import Auth from "../middlewares/User.middleware";
+import AuthMiddleware from "../middlewares/Auth.middleware";
 
 router
   .route("/register")
   .post(
-    Auth.isAuth,
-    Auth.roleAuthMiddleware(["company"]),
+    AuthMiddleware.isAuth,
+    AuthMiddleware.roleAuthMiddleware(["company"]),
     UserController.registerUser
   );
 
 router
   .route("/users-list")
   .get(
-    Auth.isAuth,
-    Auth.roleAuthMiddleware(["company"]),
+    AuthMiddleware.isAuth,
+    AuthMiddleware.roleAuthMiddleware(["company"]),
     UserController.getCompanyUsers
   );
 
 router.get(
   "/own-profile",
-  Auth.isAuth,
-  Auth.roleAuthMiddleware(["employee"]),
+  AuthMiddleware.isAuth,
+  AuthMiddleware.roleAuthMiddleware(["employee"]),
   UserController.ownDetails
+);
+
+router.get(
+  "/filtered-users",
+  AuthMiddleware.isAuth,
+  AuthMiddleware.roleAuthMiddleware(["company", "manager"]),
+  UserController.filteredCompanyUser
 );
 
 router
   .route("/:userId")
   .get(
-    Auth.isAuth,
-    Auth.roleAuthMiddleware(["company"]),
+    AuthMiddleware.isAuth,
+    AuthMiddleware.roleAuthMiddleware(["company"]),
     UserController.userDetails
   )
   .patch(
-    Auth.isAuth,
-    Auth.roleAuthMiddleware(["company", "employee"]),
+    AuthMiddleware.isAuth,
+    AuthMiddleware.roleAuthMiddleware(["company", "employee"]),
     UserController.updateProfile
   );
 

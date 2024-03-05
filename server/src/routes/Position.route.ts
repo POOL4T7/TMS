@@ -2,42 +2,42 @@
 
 import express, { Router } from "express";
 import PositionController from "../controllers/Position.controller";
-import Auth from "../middlewares/User.middleware";
+import AuthMiddleware from "../middlewares/Auth.middleware";
 
 const PositionRouter: Router = express.Router();
 
 PositionRouter.route("/")
   .post(
-    Auth.isAuth,
-    Auth.roleAuthMiddleware(["company"]),
-    PositionController.createPosition,
+    AuthMiddleware.isAuth,
+    AuthMiddleware.roleAuthMiddleware(["company"]),
+    PositionController.createPosition
   )
   .get(
-    Auth.isAuth,
-    Auth.roleAuthMiddleware(["company"]),
-    PositionController.getPositionWithStats,
+    AuthMiddleware.isAuth,
+    AuthMiddleware.roleAuthMiddleware(["company"]),
+    PositionController.getPositionWithStats
   )
   .delete(
-    Auth.isAuth,
-    Auth.roleAuthMiddleware(["company"]),
-    PositionController.deletePosition,
+    AuthMiddleware.isAuth,
+    AuthMiddleware.roleAuthMiddleware(["company"]),
+    PositionController.deletePosition
   )
   .patch(
-    Auth.isAuth,
-    Auth.roleAuthMiddleware(["company"]),
-    PositionController.updatePosition,
+    AuthMiddleware.isAuth,
+    AuthMiddleware.roleAuthMiddleware(["company"]),
+    PositionController.updatePosition
   );
 
 PositionRouter.route("/:positionId").get(
-  Auth.isAuth,
-  Auth.roleAuthMiddleware(["company"]),
-  PositionController.getPosition,
+  AuthMiddleware.isAuth,
+  AuthMiddleware.roleAuthMiddleware(["company"]),
+  PositionController.getPosition
 );
 
 PositionRouter.route("/team/:teamId").get(
-  Auth.isAuth,
-  Auth.roleAuthMiddleware(["company"]),
-  PositionController.getPositionByDepartmentId,
+  AuthMiddleware.isAuth,
+  AuthMiddleware.roleAuthMiddleware(["company"]),
+  PositionController.getPositionByDepartmentId
 );
 
 export default PositionRouter;

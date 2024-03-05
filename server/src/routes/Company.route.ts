@@ -2,21 +2,21 @@
 
 import express, { Router } from "express";
 import CompanyController from "../controllers/Company.controller";
-import Auth from "../middlewares/User.middleware";
+import AuthMiddleware from "../middlewares/Auth.middleware";
 
 const router: Router = express.Router();
 
 router
   .route("/")
   .get(
-    Auth.isAuth,
-    Auth.roleAuthMiddleware(["company"]),
-    CompanyController.getOwnCompany,
+    AuthMiddleware.isAuth,
+    AuthMiddleware.roleAuthMiddleware(["company"]),
+    CompanyController.getOwnCompany
   )
   .patch(
-    Auth.isAuth,
-    Auth.roleAuthMiddleware(["company"]),
-    CompanyController.updateCompanyDetails,
+    AuthMiddleware.isAuth,
+    AuthMiddleware.roleAuthMiddleware(["company"]),
+    CompanyController.updateCompanyDetails
   );
 
 export default router;

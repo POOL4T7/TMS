@@ -15,8 +15,9 @@ class JwtService {
     try {
       const decoded = jwt.verify(token, secretKey) as Partial<TokenOutput>;
       return decoded;
-    } catch (error) {
-      return null;
+    } catch (error: any) {
+      console.log(error);
+      throw new Error(error);
     }
   }
 }

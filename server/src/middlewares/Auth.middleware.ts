@@ -14,25 +14,24 @@ class Auth {
   ): Promise<Response | undefined> {
     try {
       let token: string =
-        (req as unknown as RequestWithSessionDetails).headers[
-          "x-access-token"
-        ] ||
-        (req as unknown as RequestWithSessionDetails).headers["authorization"];
+        (req as RequestWithSessionDetails).headers["x-access-token"] ||
+        (req as RequestWithSessionDetails).headers["authorization"];
       const checkBearer = "Bearer ";
       if (token) {
         if (token?.startsWith(checkBearer)) {
           token = token.slice(checkBearer.length, token.length);
         }
         const user = TokenService.verifyToken(token);
+        // console.log(user);
         if (user) {
-          (req as unknown as RequestWithSessionDetails).sessionDetails = user;
+          (req as RequestWithSessionDetails).sessionDetails = user;
           next();
         } else {
           return res.status(401).json({
             success: false,
             message: "invalid access token, please login again",
             error: "BAD REQUEST",
-            code: 401.1,
+            code: 2469,
           });
         }
       } else {
@@ -68,12 +67,10 @@ class Auth {
       if (hasRequiredRole) {
         next();
       } else {
-        return res
-          .status(403)
-          .json({
-            error: "Forbidden - Insufficient permissions",
-            message: "Forbidden - Insufficient permissions",
-          });
+        return res.status(403).json({
+          error: "Forbidden - Insufficient permissions",
+          message: "Forbidden - Insufficient permissions",
+        });
       }
     };
   }

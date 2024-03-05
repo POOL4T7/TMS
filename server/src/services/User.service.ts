@@ -3,10 +3,14 @@ import { Sort } from "../interfaces/Custum.inteface";
 import { UserPaginationData } from "../interfaces/User.interface";
 import User, { IUser } from "../models/User.model";
 
-interface Filter {
+export interface Filter {
   _id?: string;
   email?: string;
   companyId?: Schema.Types.ObjectId;
+  role?: string;
+  departmentId?: Schema.Types.ObjectId | string;
+  positionId?: Schema.Types.ObjectId | string;
+  employeeId?: string;
 }
 
 class UserService {

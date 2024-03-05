@@ -1,5 +1,10 @@
 import mongoose, { Schema } from "mongoose";
 
+interface ProjectTeam {
+  departmentId: Schema.Types.ObjectId;
+  userId: Schema.Types.ObjectId;
+}
+
 interface IProject {
   name: string;
   slug: string;
@@ -9,7 +14,7 @@ interface IProject {
   owner: Schema.Types.ObjectId;
   manager?: Schema.Types.ObjectId;
   teamLead?: Schema.Types.ObjectId[];
-  team: Schema.Types.ObjectId[];
+  team: ProjectTeam[];
   status: "draft" | "publish" | "deleted";
   startDate: Date;
   endDate?: Date;
@@ -41,8 +46,14 @@ const projectSchema = new Schema<IProject>(
     ],
     team: [
       {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: "User",
+        departmentId: {
+          type: mongoose.Schema.Types.ObjectId,
+          ref: "Department",
+        },
+        userId: {
+          type: mongoose.Schema.Types.ObjectId,
+          ref: "User",
+        },
       },
     ],
     startDate: {
@@ -53,6 +64,10 @@ const projectSchema = new Schema<IProject>(
       type: Date,
     },
     techStack: [String],
+    status: {
+      type: String,
+      enum: ["draft", "publish", "deleted", ""],
+    },
   },
   {
     timestamps: true,

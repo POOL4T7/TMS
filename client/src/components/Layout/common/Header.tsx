@@ -161,45 +161,9 @@ function Navbar({ SideBar }: PropType) {
             </Box>
           ) : (
             <Box sx={{ flexGrow: 0 }}>
-              <Tooltip title="Open settings">
-                {/* <IconButton  sx={{ p: 0 }}>
-                  <Avatar alt="Remy Sharp" src="/static/images/avatar/2.jpg" />
-                </IconButton> */}
-                <Button
-                  variant="text"
-                  style={{ color: "white" }}
-                  onClick={handleOpenUserMenu}
-                >
-                  Login
-                </Button>
-              </Tooltip>
-              <Menu
-                sx={{ mt: "45px" }}
-                id="menu-appbar"
-                anchorEl={anchorElUser}
-                anchorOrigin={{
-                  vertical: "top",
-                  horizontal: "right",
-                }}
-                keepMounted
-                transformOrigin={{
-                  vertical: "top",
-                  horizontal: "right",
-                }}
-                open={Boolean(anchorElUser)}
-                onClose={() => setAnchorElUser(null)}
-              >
-                <MenuItem onClick={handleCloseUserMenu}>
-                  <Link to={"/login"}>
-                    <Typography textAlign="center">Company</Typography>
-                  </Link>
-                </MenuItem>
-                <MenuItem>
-                  <Link to={"/login-user"}>
-                    <Typography textAlign="center">User</Typography>
-                  </Link>
-                </MenuItem>
-              </Menu>
+              <Link to={"/login"} style={{ color: "white" }}>
+                Login
+              </Link>
             </Box>
           )}
         </Toolbar>
