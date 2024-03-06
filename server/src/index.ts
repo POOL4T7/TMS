@@ -5,6 +5,7 @@ import CompanyRoute from "./routes/Company.route";
 import AuthRoute from "./routes/Auth.route";
 import DepartmentRoute from "./routes/Department.route";
 import PositionRouter from "./routes/Position.route";
+import ProjectRoute from "./routes/Project.route";
 
 const routesV1 = async (app: Express): Promise<void> => {
   app.use("/tms/industry", IndustryRoute);
@@ -13,6 +14,7 @@ const routesV1 = async (app: Express): Promise<void> => {
   app.use("/auth", AuthRoute);
   app.use("/teams", DepartmentRoute);
   app.use("/position", PositionRouter);
+  app.use("/project", ProjectRoute);
 };
 
 export default routesV1;

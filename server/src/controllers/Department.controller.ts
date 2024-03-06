@@ -3,7 +3,7 @@
 import { Request, Response } from "express";
 import { Types, ObjectId } from "mongoose";
 import DepartmentService from "../services/Department.service";
-import { RequestWithSessionDetails } from "../interfaces/Custum.inteface";
+import Custom from "../helpers/custom";
 
 class DepartmentController {
   constructor() {
@@ -13,12 +13,11 @@ class DepartmentController {
   }
   async createDepartment(req: Request, res: Response): Promise<Response> {
     try {
-      const companyId = (req as unknown as RequestWithSessionDetails)
-        .sessionDetails.companyId;
+      const userDetails = Custom.getSessionDetails(req);
       const body = {
         name: req.body.name,
         slug: req.body.slug,
-        companyId: new Types.ObjectId(companyId!),
+        companyId: new Types.ObjectId(userDetails.companyId),
         status: req.body.status,
         image: req.body.image,
       };
@@ -39,10 +38,13 @@ class DepartmentController {
 
   async getDepartments(req: Request, res: Response): Promise<Response> {
     try {
-      const companyId = (req as unknown as RequestWithSessionDetails)
-        .sessionDetails.companyId;
+      const userDetails = Custom.getSessionDetails(req);
       const departments = await DepartmentService.departmentListWithStats(
-        { companyId: new Types.ObjectId(companyId!) as unknown as ObjectId }, // need thinking
+        {
+          companyId: new Types.ObjectId(
+            userDetails.companyId
+          ) as unknown as ObjectId,
+        }, // need thinking
         0,
         10
       );
@@ -61,12 +63,10 @@ class DepartmentController {
   }
   async getDepartmentList(req: Request, res: Response): Promise<Response> {
     try {
-      const companyId = new Types.ObjectId(
-        (req as unknown as RequestWithSessionDetails).sessionDetails.companyId!
-      ) as unknown as ObjectId;
+      const userDetails = Custom.getSessionDetails(req);
 
       const departments = await DepartmentService.findAll(
-        { companyId: companyId, status: "active" },
+        { companyId: userDetails.companyId, status: "active" },
         "name"
       );
       return res.json({

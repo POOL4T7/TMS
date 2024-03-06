@@ -13,7 +13,7 @@ class JwtService {
 
   static verifyToken(token: string): TokenOutput | null {
     try {
-      const decoded = jwt.verify(token, secretKey) as Partial<TokenOutput>;
+      const decoded = jwt.verify(token, secretKey) as TokenOutput;
       return decoded;
     } catch (error: any) {
       console.log(error);

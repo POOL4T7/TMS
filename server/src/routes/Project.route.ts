@@ -1,10 +1,9 @@
 import express, { Router } from "express";
 import ProjectController from "../controllers/Project.controller";
 import AuthMiddleware from "../middlewares/Auth.middleware";
-const projectRoute: Router = express.Router();
+const ProjectRoute: Router = express.Router();
 
-projectRoute
-  .route("/")
+ProjectRoute.route("/")
   .post(
     AuthMiddleware.isAuth,
     AuthMiddleware.roleAuthMiddleware(["company"]),
@@ -21,4 +20,4 @@ projectRoute
     ProjectController.getProjectList
   );
 
-export default projectRoute;
+export default ProjectRoute;

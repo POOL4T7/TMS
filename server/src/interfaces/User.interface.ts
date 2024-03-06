@@ -1,15 +1,26 @@
-interface User {
+import { ObjectId, Types } from "mongoose";
+
+export interface UserCompany {
+  _id: string;
+  name: string;
+}
+
+export interface IUser {
+  _id?: string | Types.ObjectId | ObjectId;
   username?: string;
   email: string;
   role: "manager" | "admin" | "employee";
+  password?: string;
   firstName: string;
   lastName?: string;
   profilePicture?: string;
   employeeId?: string;
-  department?: Department;
-  position?: Position;
+  departmentId?: Department | ObjectId | null | undefined | string;
+  positionId?: Position | ObjectId | null | undefined | string;
   hireDate?: Date;
   qualification?: string[];
+  companyId?: UserCompany | ObjectId | null | undefined | string;
+  status: "active" | "inactive" | "deleted" | "suspended";
 }
 
 interface Department {
@@ -23,6 +34,6 @@ interface Position {
 }
 
 export interface UserPaginationData {
-  userList: User[];
+  userList?: IUser[];
   totalCount: number;
 }

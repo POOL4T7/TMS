@@ -3,8 +3,8 @@
 import { Request, Response } from "express";
 import PositionService from "../services/Position.service";
 import { IPosition } from "../interfaces/Position.interface";
-import { ObjectId, Types } from "mongoose";
-import { RequestWithSessionDetails, Sort } from "../interfaces/Custum.inteface";
+import { Sort } from "../interfaces/Custum.inteface";
+import Custom from "../helpers/custom";
 
 interface FormData {
   name?: string;
@@ -13,13 +13,13 @@ interface FormData {
   slug?: string;
 }
 
-const waitFiveSeconds = () => {
-  return new Promise((resolve) => {
-    setTimeout(() => {
-      resolve("Operation completed after 5 seconds");
-    }, 5000);
-  });
-};
+// const waitFiveSeconds = () => {
+//   return new Promise((resolve) => {
+//     setTimeout(() => {
+//       resolve("Operation completed after 5 seconds");
+//     }, 5000);
+//   });
+// };
 
 class PositionController {
   constructor() {
@@ -29,10 +29,7 @@ class PositionController {
   }
   async getPositionWithStats(req: Request, res: Response): Promise<Response> {
     try {
-      // await waitFiveSeconds();
-      const companyId = new Types.ObjectId(
-        (req as unknown as RequestWithSessionDetails).sessionDetails.companyId!
-      ) as unknown as ObjectId;
+      const userDetails = Custom.getSessionDetails(req);
       const page: number = parseInt(req.query.page as string) || 1;
       const pageSize: number = parseInt(req.query.perPage as string) || 10;
       const skip = (page - 1) * pageSize;
@@ -52,7 +49,7 @@ class PositionController {
       }
       const data = await PositionService.findWithStats(
         {
-          companyId,
+          companyId: Custom.toObjectId(userDetails.companyId),
         },
         skip,
         pageSize,
@@ -77,10 +74,7 @@ class PositionController {
     res: Response
   ): Promise<Response> {
     try {
-      // await waitFiveSeconds();
-      const companyId = new Types.ObjectId(
-        (req as unknown as RequestWithSessionDetails).sessionDetails.companyId!
-      ) as unknown as ObjectId;
+      const userDetails = Custom.getSessionDetails(req);
       const page: number = parseInt(req.query.page as string) || 1;
       const pageSize: number = parseInt(req.query.pageSize as string) || 10;
       const skip = (page - 1) * pageSize;
@@ -100,7 +94,7 @@ class PositionController {
       }
       const data = await PositionService.find(
         {
-          companyId,
+          companyId: userDetails.companyId,
           teamId: req.params.teamId,
           status: "active",
         },
@@ -125,11 +119,11 @@ class PositionController {
   }
 
   async createPosition(req: Request, res: Response): Promise<Response> {
+    const userDetails = Custom.getSessionDetails(req);
     const positionData: IPosition = {
       name: req.body.name,
       slug: req.body.slug,
-      createdBy: (req as unknown as RequestWithSessionDetails).sessionDetails
-        .companyId!,
+      createdBy: userDetails.companyId,
       teamId: req.body.teamId,
       status: req.body.status,
       companyId: req.body.companyId,
@@ -152,13 +146,11 @@ class PositionController {
 
   async deletePosition(req: Request, res: Response): Promise<Response> {
     try {
-      const companyId = new Types.ObjectId(
-        (req as unknown as RequestWithSessionDetails).sessionDetails.companyId!
-      ) as unknown as ObjectId;
+      const userDetails = Custom.getSessionDetails(req);
 
       const isDeleted = await PositionService.deletePosition({
         _id: req.body.positionId,
-        companyId: companyId,
+        companyId: userDetails.companyId,
       });
 
       if (isDeleted) {
@@ -183,12 +175,10 @@ class PositionController {
 
   async getPosition(req: Request, res: Response): Promise<Response> {
     try {
-      const companyId = new Types.ObjectId(
-        (req as unknown as RequestWithSessionDetails).sessionDetails.companyId!
-      ) as unknown as ObjectId;
+      const userDetails = Custom.getSessionDetails(req);
       const position = await PositionService.findOne({
         _id: req.params.positionId as string,
-        companyId: companyId,
+        companyId: userDetails.companyId,
       });
       return res.status(200).json({
         success: true,
@@ -206,10 +196,7 @@ class PositionController {
 
   async updatePosition(req: Request, res: Response): Promise<Response> {
     try {
-      await waitFiveSeconds();
-      const companyId = new Types.ObjectId(
-        (req as RequestWithSessionDetails).sessionDetails.companyId!
-      ) as unknown as ObjectId;
+      const userDetails = Custom.getSessionDetails(req);
 
       const formData: FormData = {};
 
@@ -232,7 +219,7 @@ class PositionController {
       await PositionService.findOneAndUpdate(
         {
           _id: req.body.positionId,
-          companyId: companyId,
+          companyId: userDetails.companyId,
         },
         {
           $set: formData,

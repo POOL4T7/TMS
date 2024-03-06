@@ -1,13 +1,13 @@
-import { ObjectId } from "mongoose";
+import { Types } from "mongoose";
 import Position from "../models/Position.model";
 import { Sort, PaginationData } from "../interfaces/Custum.inteface";
 import { IPosition } from "../interfaces/Position.interface";
 
 interface Filter {
   _id?: string;
-  companyId?: string | ObjectId;
+  companyId?: string | Types.ObjectId;
   status?: string;
-  teamId?: string | ObjectId;
+  teamId?: string | Types.ObjectId;
 }
 
 class PositionService {

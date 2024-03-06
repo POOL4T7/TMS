@@ -3,13 +3,22 @@ interface Team {
   _id: string;
 }
 
+interface User {
+  _id: string;
+  firstName: string;
+  lastName: string;
+}
+
 export interface ProjectList {
   _id: string;
   name: string;
+  image: string;
   team: Team;
-  totalMembers: number;
+  teamSize: number;
   slug: string;
-  status: "active" | "inactive" | "deleted";
+  status: string;
+  manager: User;
+  teamLead: User[];
 }
 
 export interface ProjectGetApiData {

@@ -22,7 +22,7 @@ class Auth {
           token = token.slice(checkBearer.length, token.length);
         }
         const user = TokenService.verifyToken(token);
-        // console.log(user);
+        console.log(user);
         if (user) {
           (req as RequestWithSessionDetails).sessionDetails = user;
           next();

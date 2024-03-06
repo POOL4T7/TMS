@@ -4,6 +4,7 @@ import { Request, Response } from "express";
 import CompanyService from "../services/Company.service";
 import TokenService from "../services/Token.service";
 import UserService from "../services/User.service";
+import { UserCompany } from "../interfaces/User.interface";
 
 // const waitFiveSeconds = () => {
 //   return new Promise((resolve) => {
@@ -124,25 +125,33 @@ class CompanyController {
   async login(req: Request, res: Response): Promise<Response> {
     try {
       // await waitFiveSeconds();
-      let user, role;
+      let user, role, accessToken;
       user = await UserService.findOne({ email: req.body.email }, "");
       role = user?.role || "user";
-      if (!user) {
+      if (user) {
+        console.log(user);
+        accessToken = TokenService.generateToken({
+          email: user.email,
+          _id: user._id?.toString(),
+          role: role,
+          companyId: (user.companyId as UserCompany)?._id?.toString(),
+        });
+      } else {
         user = await CompanyService.findOne({ email: req.body.email });
         role = "company";
         if (!user) {
           return res.status(404).json({
             success: false,
-            messsage: "invalid credentials jvhj",
+            messsage: "invalid credentials",
           });
         }
+        accessToken = TokenService.generateToken({
+          email: user.email,
+          _id: user._id?.toString(),
+          role: role,
+          companyId: user._id?.toString(),
+        });
       }
-      const accessToken = TokenService.generateToken({
-        email: user.email,
-        _id: user._id?.toString(),
-        role: role,
-        companyId: user._id?.toString(),
-      });
       return res.status(201).json({
         success: true,
         data: {

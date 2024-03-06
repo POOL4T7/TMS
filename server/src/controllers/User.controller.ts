@@ -2,26 +2,24 @@
 
 import { Request, Response } from "express";
 import UserService, { Filter } from "../services/User.service";
-import { IUser } from "../models/User.model";
+import { IUser } from "../interfaces/User.interface";
 import { RequestWithSessionDetails, Sort } from "../interfaces/Custum.inteface";
-import { ObjectId, Types } from "mongoose";
+import Custom from "../helpers/custom";
 
 class UserController {
   async registerUser(req: Request, res: Response): Promise<Response> {
     try {
-      const companyId = new Types.ObjectId(
-        (req as unknown as RequestWithSessionDetails).sessionDetails.companyId!
-      ) as unknown as ObjectId;
+      const userDetails = Custom.getSessionDetails(req);
       const user: IUser = {
         email: req.body.email,
-        password: req.body.password, // need to be hashed
+        password: req.body.password,
         role: req.body.role,
         firstName: req.body.firstName,
         lastName: req.body.lastName,
         employeeId: req.body.employeeId,
         departmentId: req.body.departmentId,
         positionId: req.body.positionId,
-        companyId: companyId,
+        companyId: userDetails.companyId,
         hireDate: req.body.hireDate,
         qualification: req.body.qualification,
         status: req.body.status,
@@ -42,9 +40,7 @@ class UserController {
 
   async updateProfile(req: Request, res: Response): Promise<Response> {
     try {
-      const companyId = new Types.ObjectId(
-        (req as RequestWithSessionDetails).sessionDetails.companyId!
-      ) as unknown as ObjectId;
+      const userDetails = Custom.getSessionDetails(req);
       const role = (req as RequestWithSessionDetails).sessionDetails.role;
       const updatedData: Partial<IUser> = {};
       if (role === "user") {
@@ -60,7 +56,7 @@ class UserController {
         updatedData.status = req.body.status;
       }
       const user: IUser | null = await UserService.updateUser(
-        { companyId: companyId, _id: req.params.userId },
+        { companyId: userDetails.companyId, _id: req.params.userId },
         updatedData
       );
       if (!user) {
@@ -84,9 +80,7 @@ class UserController {
 
   async getCompanyUsers(req: Request, res: Response): Promise<Response> {
     try {
-      const companyId = new Types.ObjectId(
-        (req as unknown as RequestWithSessionDetails).sessionDetails.companyId!
-      ) as unknown as ObjectId;
+      const userDetails = Custom.getSessionDetails(req);
       const page: number = parseInt(req.query.page as string) || 1;
       const pageSize: number = parseInt(req.query.pageSize as string) || 10;
       const skip = (page - 1) * pageSize;
@@ -107,7 +101,7 @@ class UserController {
       }
 
       const users = await UserService.find(
-        { companyId: companyId },
+        { companyId: userDetails.companyId },
         "-password",
         skip,
         pageSize,
@@ -125,14 +119,12 @@ class UserController {
 
   async filteredCompanyUser(req: Request, res: Response): Promise<Response> {
     try {
-      const companyId = new Types.ObjectId(
-        (req as unknown as RequestWithSessionDetails).sessionDetails.companyId!
-      ) as unknown as ObjectId;
+      const userDetails = Custom.getSessionDetails(req);
       const page: number = parseInt(req.query.page as string) || 1;
       const pageSize: number = parseInt(req.query.pageSize as string) || 10;
       const skip = (page - 1) * pageSize;
       const filter: Filter = {
-        companyId: companyId,
+        companyId: userDetails.companyId,
       };
       req.query.teamId
         ? (filter.departmentId = req.query.teamId.toString())
@@ -199,7 +191,7 @@ class UserController {
   }
   async ownDetails(req: Request, res: Response): Promise<Response> {
     const userId = (req as unknown as RequestWithSessionDetails).sessionDetails
-      ._id!;
+      ._id;
     try {
       const user = await UserService.findOne({ _id: userId }, "-password");
       if (user) {

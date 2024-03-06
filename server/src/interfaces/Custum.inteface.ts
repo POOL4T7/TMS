@@ -3,11 +3,11 @@ import { IPosition } from "./Position.interface";
 import { Request } from "express";
 
 export interface TokenOutput {
-  _id?: string;
-  email?: string;
-  userId?: string;
-  role?: string;
-  companyId?: string;
+  _id: string;
+  email: string;
+  userId: string;
+  role: string;
+  companyId: string;
 }
 
 export interface TokenInput {

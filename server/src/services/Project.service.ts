@@ -1,15 +1,21 @@
-import { ObjectId } from "mongoose";
+import { ObjectId, Types } from "mongoose";
 import Project from "../models/Project.model";
 import { Sort } from "../interfaces/Custum.inteface";
-import { IProject } from "../interfaces/Project.interface";
+import { IProject, ProjectStats } from "../interfaces/Project.interface";
+
+// interface ProjectTeam {
+//   departmentId?: string;
+//   userId: string | Types.ObjectId;
+// }
 
 export interface Filter {
   _id?: string;
   status?: string;
   owner?: string | ObjectId;
-  manager?: string | ObjectId;
-  teamLead?: string | ObjectId;
-  team?: string | ObjectId;
+  manager?: string | Types.ObjectId;
+  teamLead?: string | Types.ObjectId;
+  // team?: ProjectTeam;
+  "team.userId"?: Types.ObjectId | string;
 }
 
 class ProjectService {
@@ -29,7 +35,7 @@ class ProjectService {
     skip: number = 0,
     limit: number = 10,
     sort: Sort = { _id: -1 }
-  ): Promise<IProject[]> {
+  ): Promise<ProjectStats> {
     try {
       const projects = await Project.find(filter)
         .populate({ path: "manager", select: "firstName lastName" })
@@ -38,14 +44,18 @@ class ProjectService {
           slug: 1,
           name: 1,
           image: 1,
-          teamSize: { $size: "$teamLead" },
+          teamSize: { $size: "$team" },
+          status: 1,
         })
         .sort(sort)
         .skip(skip)
         .limit(limit)
         .lean();
-      return projects;
+      const totalProject = await Project.countDocuments(filter);
+
+      return { projectList: projects, totalProject };
     } catch (error: any) {
+      console.log(error);
       throw new Error(`Error getting projects: ${error.message}`);
     }
   }

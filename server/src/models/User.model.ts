@@ -11,7 +11,7 @@ export interface IUser {
   employeeId?: string;
   departmentId?: Schema.Types.ObjectId | null;
   positionId?: Schema.Types.ObjectId | null;
-  companyId?: Schema.Types.ObjectId | null;
+  companyId?: Schema.Types.ObjectId | string;
   hireDate?: Date;
   qualification?: string[];
   status: "active" | "inactive" | "deleted" | "suspended";
@@ -63,7 +63,7 @@ const userSchema: Schema<IUser> = new Schema(
     companyId: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "Company",
-      default: null,
+      required: true,
     },
     status: {
       type: String,

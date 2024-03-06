@@ -109,6 +109,7 @@ class DepartmentService {
             name: 1,
             image: 1,
             totalMembers: { $size: "$members" },
+            status: 1,
           },
         },
       ]);
