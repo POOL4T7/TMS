@@ -11,3 +11,11 @@ export interface ErrorType {
   message: string;
   error?: string;
 }
+
+export interface FileUpload {
+  success?: boolean;
+  message: string;
+  error?: string;
+  fileLocation: string;
+  // fileName?: string;
+}

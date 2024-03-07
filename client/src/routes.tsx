@@ -76,7 +76,7 @@ const router = (authState: AuthState) => {
 function getLayout(authState: AuthState) {
   if (authState?.type === "company") {
     return <CompanyLayout />;
-  } else if (authState.type === "employee") {
+  } else if (authState.type === "employee" || authState?.type == "manager") {
     return <EmployeeLayout />;
   } else {
     return <Layout />;

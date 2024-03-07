@@ -14,3 +14,15 @@ export interface TeamList {
   manager?: string;
   image: string;
 }
+
+export interface TeamAddData {
+  name: string;
+  status: string;
+  slug: string;
+  image: string;
+}
+
+export interface ReturnObject {
+  success: boolean;
+  message: string;
+}

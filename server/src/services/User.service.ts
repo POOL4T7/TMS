@@ -43,7 +43,7 @@ class UserService {
     select: string = "",
     skip: number = 0,
     limit: number = 10,
-    sort: Sort = { _id: -1 }
+    sort: Sort = { _id: -1 },
   ): Promise<UserPaginationData> {
     try {
       const userList = await User.find(filter)
@@ -64,7 +64,7 @@ class UserService {
 
   static async updateUser(
     filter: Filter,
-    data: Partial<IUser>
+    data: Partial<IUser>,
   ): Promise<IUser | null> {
     try {
       const user = await User.findByIdAndUpdate(filter, data, { new: true });

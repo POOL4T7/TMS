@@ -31,7 +31,7 @@ const positionSchema: Schema = new Schema<IPosition>(
       default: "inactive",
     },
   },
-  { timestamps: true }
+  { timestamps: true },
 );
 
 positionSchema.pre("findOneAndUpdate", checkForUser);
@@ -40,7 +40,7 @@ positionSchema.pre("findOneAndDelete", checkForUser);
 
 async function checkForUser(
   this: QueryWithHelpers<IPosition, Document>,
-  next: any
+  next: any,
 ) {
   try {
     console.log("i'm here");
@@ -52,7 +52,7 @@ async function checkForUser(
 
       if (usersWithActivePosition) {
         const error = new Error(
-          "Cannot change position status to inactive. Users have this position with an active status."
+          "Cannot change position status to inactive. Users have this position with an active status.",
         );
         return next(error);
       }

@@ -10,34 +10,34 @@ PositionRouter.route("/")
   .post(
     AuthMiddleware.isAuth,
     AuthMiddleware.roleAuthMiddleware(["company"]),
-    PositionController.createPosition
+    PositionController.createPosition,
   )
   .get(
     AuthMiddleware.isAuth,
     AuthMiddleware.roleAuthMiddleware(["company"]),
-    PositionController.getPositionWithStats
+    PositionController.getPositionWithStats,
   )
   .delete(
     AuthMiddleware.isAuth,
     AuthMiddleware.roleAuthMiddleware(["company"]),
-    PositionController.deletePosition
+    PositionController.deletePosition,
   )
   .patch(
     AuthMiddleware.isAuth,
     AuthMiddleware.roleAuthMiddleware(["company"]),
-    PositionController.updatePosition
+    PositionController.updatePosition,
   );
 
 PositionRouter.route("/:positionId").get(
   AuthMiddleware.isAuth,
   AuthMiddleware.roleAuthMiddleware(["company"]),
-  PositionController.getPosition
+  PositionController.getPosition,
 );
 
 PositionRouter.route("/team/:teamId").get(
   AuthMiddleware.isAuth,
   AuthMiddleware.roleAuthMiddleware(["company"]),
-  PositionController.getPositionByDepartmentId
+  PositionController.getPositionByDepartmentId,
 );
 
 export default PositionRouter;

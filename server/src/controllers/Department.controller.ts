@@ -42,11 +42,11 @@ class DepartmentController {
       const departments = await DepartmentService.departmentListWithStats(
         {
           companyId: new Types.ObjectId(
-            userDetails.companyId
+            userDetails.companyId,
           ) as unknown as ObjectId,
         }, // need thinking
         0,
-        10
+        10,
       );
       return res.json({
         success: true,
@@ -67,7 +67,7 @@ class DepartmentController {
 
       const departments = await DepartmentService.findAll(
         { companyId: userDetails.companyId, status: "active" },
-        "name"
+        "name",
       );
       return res.json({
         success: true,
@@ -79,6 +79,29 @@ class DepartmentController {
         success: false,
         error: e.message,
         message: "server error",
+      });
+    }
+  }
+  async uploadImage(req: Request, res: Response): Promise<Response> {
+    try {
+      if (req.file instanceof Error) {
+        return res.status(422).json({
+          success: 0,
+          message: "Violation for file validation ",
+          error: req.file.message,
+        });
+      } else {
+        return res.status(200).json({
+          success: 1,
+          message: "File Uploaded successfully",
+          fileLocation: "http://localhost:8080/" + req.file?.path,
+        });
+      }
+    } catch (error: any) {
+      return res.status(500).json({
+        success: false,
+        error: error.message,
+        message: "Server error",
       });
     }
   }

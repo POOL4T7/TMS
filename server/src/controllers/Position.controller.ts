@@ -53,7 +53,7 @@ class PositionController {
         },
         skip,
         pageSize,
-        sort
+        sort,
       );
       return res.json({
         success: true,
@@ -71,7 +71,7 @@ class PositionController {
   }
   async getPositionByDepartmentId(
     req: Request,
-    res: Response
+    res: Response,
   ): Promise<Response> {
     try {
       const userDetails = Custom.getSessionDetails(req);
@@ -101,7 +101,7 @@ class PositionController {
         "",
         skip,
         pageSize,
-        sort
+        sort,
       );
       return res.json({
         success: true,
@@ -223,7 +223,7 @@ class PositionController {
         },
         {
           $set: formData,
-        }
+        },
       );
 
       return res.status(200).json({

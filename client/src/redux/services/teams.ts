@@ -5,7 +5,7 @@ import {
   retry,
 } from "@reduxjs/toolkit/query/react";
 import { RootState } from "../store";
-import { TeamList } from "../../models/Team";
+import { ReturnObject, TeamAddData, TeamList } from "../../models/Team";
 import { ErrorType } from "../../models/custom";
 
 interface ResponseObject {
@@ -48,7 +48,30 @@ export const teamsApi = createApi({
         return responseData!;
       },
     }),
+    createTeam: build.mutation<ReturnObject, TeamAddData>({
+      query(data) {
+        return {
+          url: "",
+          method: "POST",
+          body: data,
+        };
+      },
+    }),
+    updateTeam: build.mutation<ReturnObject, TeamAddData>({
+      query(data) {
+        return {
+          url: "",
+          method: "POST",
+          body: data,
+        };
+      },
+    }),
   }),
 });
 
-export const { useTeamListQuery, useAllTeamsQuery } = teamsApi;
+export const {
+  useTeamListQuery,
+  useAllTeamsQuery,
+  useCreateTeamMutation,
+  useUpdateTeamMutation,
+} = teamsApi;

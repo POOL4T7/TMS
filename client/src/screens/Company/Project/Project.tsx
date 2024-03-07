@@ -1,19 +1,18 @@
-import { FilterAlt } from "@mui/icons-material";
+import { Add, Autorenew, FilterAlt } from "@mui/icons-material";
 import { Alert, Box, Grid, IconButton, Stack, Typography } from "@mui/material";
 import { useProjectListQuery } from "../../../redux/services/project";
 import Loader from "../../../components/Loader";
 import { ErrorType } from "../../../models/custom";
 import ProjectCard from "../../../components/cards/ProjectCard";
-// import { useFilteredUserListQuery } from "../../../redux/services/user";
 
 const Project = () => {
-  const { data, isLoading, error, isError } = useProjectListQuery({
+  const { data, isLoading, error, isError, refetch } = useProjectListQuery({
     page: 1,
     rowsPerPage: 10,
     orderBy: "name",
     order: "asc",
   });
-  console.log("{ data, isLoading, error }", { data, isLoading, error });
+
   return (
     <Box p={5}>
       <Stack
@@ -23,9 +22,17 @@ const Project = () => {
         sx={{ marginBottom: "25px" }}
       >
         <Typography variant="h4">Project</Typography>
-        <IconButton aria-label="filter alt">
-          <FilterAlt />
-        </IconButton>
+        <Box>
+          <IconButton aria-label="filter alt">
+            <FilterAlt />
+          </IconButton>
+          <IconButton aria-label="autorenew alt" onClick={refetch}>
+            <Autorenew />
+          </IconButton>
+          <IconButton aria-label="add alt">
+            <Add />
+          </IconButton>
+        </Box>
       </Stack>
       {isLoading && <Loader size={100} thickness={1.5} />}
       {isError && (

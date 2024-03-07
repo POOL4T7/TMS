@@ -57,7 +57,7 @@ class UserController {
       }
       const user: IUser | null = await UserService.updateUser(
         { companyId: userDetails.companyId, _id: req.params.userId },
-        updatedData
+        updatedData,
       );
       if (!user) {
         return res.status(404).json({
@@ -105,7 +105,7 @@ class UserController {
         "-password",
         skip,
         pageSize,
-        sort
+        sort,
       );
       return res.status(200).json(users);
     } catch (e: any) {
@@ -141,7 +141,7 @@ class UserController {
         filter,
         "_id firstName lastName",
         skip,
-        pageSize
+        pageSize,
       );
       return res.status(200).json(users);
     } catch (e: any) {

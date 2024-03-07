@@ -7,7 +7,7 @@ ProjectRoute.route("/")
   .post(
     AuthMiddleware.isAuth,
     AuthMiddleware.roleAuthMiddleware(["company"]),
-    ProjectController.createProject
+    ProjectController.createProject,
   )
   .get(
     AuthMiddleware.isAuth,
@@ -17,7 +17,7 @@ ProjectRoute.route("/")
       "employee",
       "teamlead",
     ]),
-    ProjectController.getProjectList
+    ProjectController.getProjectList,
   );
 
 export default ProjectRoute;

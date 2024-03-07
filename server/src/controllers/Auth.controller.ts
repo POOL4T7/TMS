@@ -129,7 +129,6 @@ class CompanyController {
       user = await UserService.findOne({ email: req.body.email }, "");
       role = user?.role || "user";
       if (user) {
-        console.log(user);
         accessToken = TokenService.generateToken({
           email: user.email,
           _id: user._id?.toString(),

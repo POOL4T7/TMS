@@ -31,7 +31,7 @@ class DepartmentService {
     select: string,
     skip: number,
     limit: number,
-    sort: Sort = { _id: -1 }
+    sort: Sort = { _id: -1 },
   ): Promise<IDepartment[] | null> {
     try {
       const departments = await DepartmentModel.find(filter)
@@ -48,7 +48,7 @@ class DepartmentService {
 
   async updateDepartment(
     filter: Filter,
-    data: Partial<IDepartment>
+    data: Partial<IDepartment>,
   ): Promise<IDepartment | null> {
     try {
       const department = await DepartmentModel.findByIdAndUpdate(filter, data, {
@@ -72,7 +72,7 @@ class DepartmentService {
     filter: Filter,
     skip: number,
     limit: number,
-    sort: Sort = { _id: -1 }
+    sort: Sort = { _id: -1 },
   ): Promise<IDepartment[] | null> {
     try {
       const departmentList = await DepartmentModel.aggregate([
@@ -120,7 +120,7 @@ class DepartmentService {
   }
   static async findAll(
     filter: Filter,
-    select: string
+    select: string,
   ): Promise<IDepartment[] | null> {
     try {
       const departmentList = await DepartmentModel.find(filter)

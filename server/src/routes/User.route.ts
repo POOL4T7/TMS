@@ -10,7 +10,7 @@ router
   .post(
     AuthMiddleware.isAuth,
     AuthMiddleware.roleAuthMiddleware(["company"]),
-    UserController.registerUser
+    UserController.registerUser,
   );
 
 router
@@ -18,21 +18,21 @@ router
   .get(
     AuthMiddleware.isAuth,
     AuthMiddleware.roleAuthMiddleware(["company"]),
-    UserController.getCompanyUsers
+    UserController.getCompanyUsers,
   );
 
 router.get(
   "/own-profile",
   AuthMiddleware.isAuth,
   AuthMiddleware.roleAuthMiddleware(["employee"]),
-  UserController.ownDetails
+  UserController.ownDetails,
 );
 
 router.get(
   "/filtered-users",
   AuthMiddleware.isAuth,
   AuthMiddleware.roleAuthMiddleware(["company", "manager"]),
-  UserController.filteredCompanyUser
+  UserController.filteredCompanyUser,
 );
 
 router
@@ -40,12 +40,12 @@ router
   .get(
     AuthMiddleware.isAuth,
     AuthMiddleware.roleAuthMiddleware(["company"]),
-    UserController.userDetails
+    UserController.userDetails,
   )
   .patch(
     AuthMiddleware.isAuth,
     AuthMiddleware.roleAuthMiddleware(["company", "employee"]),
-    UserController.updateProfile
+    UserController.updateProfile,
   );
 
 export default router;

@@ -1,5 +1,3 @@
-// controllers/CompanyController.ts
-
 import { Request, Response } from "express";
 import { Types, ObjectId } from "mongoose";
 import ProjectService, { Filter } from "../services/Project.service";
@@ -61,8 +59,7 @@ class DepartmentController {
         // filter.team = {};
         filter["team.userId"] = userId;
       }
-      filter.status = "publish";
-      console.log(filter);
+      role != "company" ? (filter.status = "publish") : "";
       const projects = await ProjectService.findWithStats(filter, 0, 10);
       return res.status(200).json({
         success: true,

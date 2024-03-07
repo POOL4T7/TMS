@@ -9,6 +9,7 @@ import { positionApi } from "./services/position";
 import { userAPI } from "./services/user";
 import { rtkQueryToast } from "./rtkQueryToast";
 import { projectAPI } from "./services/project";
+import { customAPI } from "./services/custom";
 
 export const createStore = (
   options?: ConfigureStoreOptions["preloadedState"] | undefined
@@ -22,6 +23,7 @@ export const createStore = (
       [teamsApi.reducerPath]: teamsApi.reducer,
       [positionApi.reducerPath]: positionApi.reducer,
       [userAPI.reducerPath]: userAPI.reducer,
+      [customAPI.reducerPath]: customAPI.reducer,
       [projectAPI.reducerPath]: projectAPI.reducer,
     },
     middleware: (getDefaultMiddleware) =>
@@ -33,6 +35,7 @@ export const createStore = (
         .concat(teamsApi.middleware)
         .concat(userAPI.middleware)
         .concat(projectAPI.middleware)
+        .concat(customAPI.middleware)
         .concat(positionApi.middleware),
     devTools: import.meta.env.NODE_ENV !== "production",
     ...options,

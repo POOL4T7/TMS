@@ -1,13 +1,15 @@
-import { FilterAlt } from "@mui/icons-material";
+import { Autorenew, FilterAlt } from "@mui/icons-material";
 import { Alert, Box, Grid, IconButton, Stack, Typography } from "@mui/material";
 import TeamCard from "../../../components/TeamCard";
 import { useTeamListQuery } from "../../../redux/services/teams";
 import Loader from "../../../components/Loader";
 import { ErrorType } from "../../../models/custom";
+import AddUpdateTeam from "../../../components/Team/AddUpdateTeam";
 
 const Team = () => {
   console.log("Team page rendering");
-  const { data, isLoading, isError, error } = useTeamListQuery();
+  const { data, isLoading, isError, error, refetch } = useTeamListQuery();
+
   return (
     <Box p={5}>
       <Stack
@@ -17,9 +19,15 @@ const Team = () => {
         sx={{ marginBottom: "25px" }}
       >
         <Typography variant="h4">Teams</Typography>
-        <IconButton aria-label="filter alt">
-          <FilterAlt />
-        </IconButton>
+        <Box component={"div"}>
+          <IconButton aria-label="filter alt">
+            <FilterAlt />
+          </IconButton>
+          <IconButton aria-label="filter alt" onClick={refetch}>
+            <Autorenew />
+          </IconButton>
+          <AddUpdateTeam />
+        </Box>
       </Stack>
       {isLoading && <Loader size={100} thickness={1.5} />}
       {isError && (
@@ -32,6 +40,8 @@ const Team = () => {
               name={item.name}
               totalMember={item.totalMembers}
               image={item.image}
+              _id={item._id}
+              status={item.status}
             />
           </Grid>
         ))}
