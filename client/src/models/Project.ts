@@ -72,3 +72,24 @@ export interface ProjectDetails {
 export interface ProjectDetailsResponse extends ReturnObject {
   position: ProjectDetails;
 }
+
+interface Team {
+  name: string;
+  _id: string;
+}
+
+interface Position {
+  name: string;
+  _id: string;
+}
+
+interface UserTemp {
+  name: string;
+  _id: string;
+}
+
+export interface ProjectTeamData {
+  team: Team;
+  position: Position;
+  user: UserTemp;
+}

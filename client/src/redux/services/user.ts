@@ -108,9 +108,10 @@ export const userAPI = createApi({
         departmentId = "",
         positionId = "",
         employeeId = "",
+        role = "manager",
         pageSize = 100,
       }) =>
-        `/filtered-users?teamId=${departmentId}&positionId=${positionId}&employeeId=${employeeId}&pageSize=${pageSize}`,
+        `/filtered-users?teamId=${departmentId}&positionId=${positionId}&employeeId=${employeeId}&role=${role}&pageSize=${pageSize}`,
       transformResponse: (response: UserGetApiResponse) => {
         return {
           userList: response.userList,

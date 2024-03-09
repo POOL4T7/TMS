@@ -16,6 +16,7 @@ import EmployeeLayout from "./components/Layout/EmployeeLayout";
 import Employeedashboard from "./screens/Employee/Dashboard/EmployeeDashboard";
 import EmployeeProfile from "./screens/Employee/Profile/EmployeeProfile";
 import Project from "./screens/Company/Project/Project";
+import CUPage from "./screens/Company/Project/CUPage";
 // import EmployeeProject from "./screens/Employee/Project/EmployeeProject";
 
 const router = (authState: AuthState) => {
@@ -47,6 +48,10 @@ const router = (authState: AuthState) => {
         {
           path: "/projects",
           element: <Project />,
+        },
+        {
+          path: "create-project",
+          element: <CUPage />,
         },
       ],
     },

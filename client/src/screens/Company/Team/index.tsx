@@ -1,6 +1,6 @@
 import { Autorenew, FilterAlt } from "@mui/icons-material";
 import { Alert, Box, Grid, IconButton, Stack, Typography } from "@mui/material";
-import TeamCard from "../../../components/TeamCard";
+import TeamCard from "../../../components/cards/TeamCard";
 import { useTeamListQuery } from "../../../redux/services/teams";
 import Loader from "../../../components/Loader";
 import { ErrorType } from "../../../models/custom";

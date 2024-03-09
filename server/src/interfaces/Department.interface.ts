@@ -8,4 +8,11 @@ interface IDepartment {
   status: "active" | "inactive" | "deleted";
 }
 
+export interface UpdateFormData {
+  name?: string;
+  slug?: string;
+  image?: string;
+  status?: string;
+}
+
 export default IDepartment;

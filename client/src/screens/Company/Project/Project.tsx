@@ -4,6 +4,7 @@ import { useProjectListQuery } from "../../../redux/services/project";
 import Loader from "../../../components/Loader";
 import { ErrorType } from "../../../models/custom";
 import ProjectCard from "../../../components/cards/ProjectCard";
+import { useNavigate } from "react-router-dom";
 
 const Project = () => {
   const { data, isLoading, error, isError, refetch } = useProjectListQuery({
@@ -12,7 +13,7 @@ const Project = () => {
     orderBy: "name",
     order: "asc",
   });
-
+  const navigate = useNavigate();
   return (
     <Box p={5}>
       <Stack
@@ -29,7 +30,10 @@ const Project = () => {
           <IconButton aria-label="autorenew alt" onClick={refetch}>
             <Autorenew />
           </IconButton>
-          <IconButton aria-label="add alt">
+          <IconButton
+            aria-label="add alt"
+            onClick={() => navigate("/create-project")}
+          >
             <Add />
           </IconButton>
         </Box>

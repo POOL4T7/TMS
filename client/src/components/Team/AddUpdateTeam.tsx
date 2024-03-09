@@ -6,6 +6,7 @@ import DialogActions from "@mui/material/DialogActions";
 import DialogContent from "@mui/material/DialogContent";
 import DialogTitle from "@mui/material/DialogTitle";
 import {
+  Box,
   DialogContentText,
   FormControl,
   IconButton,
@@ -57,10 +58,8 @@ export default function AddUpdateTeam({
   const { name, status, image } = teamData;
   const { data: companyDetails } = useCompanyProfileQuery();
   const [createTeam, { isError, isLoading }] = useCreateTeamMutation();
-  const [
-    updatePosition,
-    { isError: updateIsError, isLoading: updateIsLoading },
-  ] = useUpdateTeamMutation();
+  const [updateTeam, { isError: updateIsError, isLoading: updateIsLoading }] =
+    useUpdateTeamMutation();
   const [uploadImage] = useUploadImageMutation();
 
   useEffect(() => {
@@ -104,13 +103,14 @@ export default function AddUpdateTeam({
     try {
       const formData = new FormData(e.currentTarget);
       const body = {
+        _id: teamId || "",
         name: formData.get("name")!.toString(),
         status: formData.get("status")!.toString() || "active",
         companyId: companyDetails!._id.toString(),
         slug: `${companyDetails!._id.slice(-6)}-${name.split(" ").join("-")}`,
         image: teamData.image,
       };
-      if (teamId) await updatePosition(body);
+      if (teamId) await updateTeam(body);
       else await createTeam(body);
       handleClose();
     } catch (e) {
@@ -188,6 +188,14 @@ export default function AddUpdateTeam({
               </MenuItem>
             </Select>
           </FormControl>
+          <Box
+            sx={{
+              maxWidth: "320px",
+              maxHeight: "320px",
+            }}
+          >
+            <img src={image} height="100%" width="100%" />
+          </Box>
           <InputLabel
             htmlFor="file-upload"
             sx={{

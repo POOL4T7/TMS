@@ -1,6 +1,6 @@
 export const toInternationalNumberSystem = (num: number) => {
   if (isNaN(num)) {
-    return "Invalid input. Please provide a valid num.";
+    return "Invalid count";
   }
 
   const abbreviations = ["", "K", "M", "B"];
@@ -16,4 +16,10 @@ export const toInternationalNumberSystem = (num: number) => {
   });
 
   return `${formattedNumber} ${abbreviations[index]}`;
+};
+
+export const colorHelper = (status: string) => {
+  if (status == "active" || status == "publish") return "success";
+  else if (status == "draft" || status == "inactive") return "primary";
+  else if (status == "deleted") return "error";
 };

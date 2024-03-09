@@ -26,7 +26,6 @@ const projectSchema = new Schema<IProject>(
     slug: { type: String, required: true, unique: true },
     name: { type: String, required: true },
     description: { type: String, required: true },
-    shortBio: { type: String },
     image: { type: String },
     owner: {
       type: mongoose.Schema.Types.ObjectId,
@@ -71,7 +70,7 @@ const projectSchema = new Schema<IProject>(
   },
   {
     timestamps: true,
-  },
+  }
 );
 
 const Project = mongoose.model<IProject>("Project", projectSchema);

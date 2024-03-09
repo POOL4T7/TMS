@@ -3,24 +3,15 @@ import CardContent from "@mui/material/CardContent";
 import CardMedia from "@mui/material/CardMedia";
 import Typography from "@mui/material/Typography";
 import { Button, CardActionArea, CardActions } from "@mui/material";
-import { Group, RemoveRedEye } from "@mui/icons-material";
-import AddUpdateTeam from "./Team/AddUpdateTeam";
+import { Group } from "@mui/icons-material";
 
 interface propTypes {
   image: string;
   name: string;
   totalMember: number;
-  status: string;
-  _id: string;
 }
 
-export default function TeamCard({
-  image,
-  name,
-  totalMember,
-  status,
-  _id,
-}: propTypes) {
+export default function TeamCard({ image, name, totalMember }: propTypes) {
   return (
     <Card>
       <CardActionArea>
@@ -35,13 +26,6 @@ export default function TeamCard({
         <Button size="small" color="primary" startIcon={<Group />}>
           {totalMember}
         </Button>
-        <AddUpdateTeam
-          teamId={_id}
-          teamName={name}
-          teamImage={image}
-          teamStatus={status}
-          Icon={RemoveRedEye}
-        />
       </CardActions>
     </Card>
   );

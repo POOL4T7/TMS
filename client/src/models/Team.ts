@@ -22,6 +22,14 @@ export interface TeamAddData {
   image: string;
 }
 
+export interface TeamUpdateData {
+  _id: string;
+  name: string;
+  status: string;
+  slug: string;
+  image: string;
+}
+
 export interface ReturnObject {
   success: boolean;
   message: string;
