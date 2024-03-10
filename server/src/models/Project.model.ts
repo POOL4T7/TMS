@@ -9,11 +9,10 @@ interface IProject {
   name: string;
   slug: string;
   description: string;
-  shortBio?: string;
   image: string;
   owner: Schema.Types.ObjectId;
   manager?: Schema.Types.ObjectId;
-  teamLead?: Schema.Types.ObjectId[];
+  teamLead?: Schema.Types.ObjectId;
   team: ProjectTeam[];
   status: "draft" | "publish" | "deleted";
   startDate: Date;
@@ -37,12 +36,10 @@ const projectSchema = new Schema<IProject>(
       ref: "User",
       default: null,
     },
-    teamLead: [
-      {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: "User",
-      },
-    ],
+    teamLead: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "User",
+    },
     team: [
       {
         departmentId: {

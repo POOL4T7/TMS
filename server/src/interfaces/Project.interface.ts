@@ -13,7 +13,7 @@ export interface IProject {
   image: string;
   owner: Schema.Types.ObjectId | string;
   manager?: Schema.Types.ObjectId | string;
-  teamLead?: Schema.Types.ObjectId[];
+  teamLead?: Schema.Types.ObjectId;
   team: ProjectTeam[];
   status: "draft" | "publish" | "deleted";
   startDate: Date;

@@ -47,7 +47,7 @@ const TeamList = ({ teamData, setUserList }: Proptype) => {
     <Paper sx={{ width: "100%", overflow: "hidden" }}>
       <TableContainer sx={{ maxHeight: 440 }}>
         <Table stickyHeader aria-label="sticky table">
-          <caption>Team listing with stats</caption>
+          <caption>Project Team listing</caption>
           <TableHead>
             <TableRow>
               {columns.map((column) => (

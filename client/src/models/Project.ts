@@ -31,17 +31,6 @@ export interface ProjectGetApiResponse extends ProjectGetApiData {
   message: string;
 }
 
-export interface ProjectAddData {
-  name: string;
-  teamId: string;
-  status: string;
-  slug: string;
-}
-
-export interface ProjectPostData extends ProjectAddData {
-  companyId: string;
-}
-
 export interface ReturnObject {
   success: boolean;
   message: string;
@@ -92,4 +81,21 @@ export interface ProjectTeamData {
   team: Team;
   position: Position;
   user: UserTemp;
+}
+
+export interface ProjectAddData {
+  name: string;
+  slug: string;
+  startDate: string;
+  endDate: string;
+  manager: string;
+  status: string;
+  teamLead: string;
+  description: string;
+  team: ProjectTeam[];
+}
+
+interface ProjectTeam {
+  departmentId: string;
+  userId: string;
 }

@@ -5,7 +5,12 @@ import {
   retry,
 } from "@reduxjs/toolkit/query/react";
 import { RootState } from "../store";
-import { ProjectGetApiData, ProjectGetApiResponse } from "../../models/Project";
+import {
+  ProjectAddData,
+  ProjectGetApiData,
+  ProjectGetApiResponse,
+  ReturnObject,
+} from "../../models/Project";
 // import { toast } from "react-toastify";
 import { ErrorType } from "../../models/custom";
 
@@ -47,7 +52,16 @@ export const projectAPI = createApi({
         return response.data as ErrorType;
       },
     }),
+    createProject: build.mutation<ReturnObject, ProjectAddData>({
+      query(data) {
+        return {
+          url: "",
+          method: "POST",
+          body: data,
+        };
+      },
+    }),
   }),
 });
 
-export const { useProjectListQuery } = projectAPI;
+export const { useProjectListQuery, useCreateProjectMutation } = projectAPI;
