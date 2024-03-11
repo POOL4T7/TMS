@@ -35,7 +35,7 @@ const positionSchema: Schema = new Schema<IPosition>(
 );
 
 positionSchema.pre("findOneAndUpdate", checkForUser);
-positionSchema.pre("save", checkForUser); // for creating the new position
+// positionSchema.pre("save", checkForUser); // for creating the new position
 positionSchema.pre("findOneAndDelete", checkForUser);
 
 async function checkForUser(

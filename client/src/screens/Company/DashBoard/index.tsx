@@ -4,7 +4,7 @@ import DashboardCard from "../../../components/cards/DashboardCard";
 const DashBoard = () => {
   return (
     <Container maxWidth="xl">
-      <Typography variant="h4" sx={{ mb: 5 }}>
+      <Typography variant="h4" sx={{ mt: 5, mb: 3 }}>
         Hi, Welcome back 👋
       </Typography>
       <Grid container spacing={3}>

@@ -7,7 +7,7 @@ ProjectRoute.route("/")
   .post(
     AuthMiddleware.isAuth,
     AuthMiddleware.roleAuthMiddleware(["company"]),
-    ProjectController.createProject
+    ProjectController.createProject,
   )
   .get(
     AuthMiddleware.isAuth,
@@ -17,7 +17,7 @@ ProjectRoute.route("/")
       "employee",
       "teamlead",
     ]),
-    ProjectController.getProjectList
+    ProjectController.getProjectList,
   );
 
 ProjectRoute.route("/:projectId")
@@ -29,12 +29,12 @@ ProjectRoute.route("/:projectId")
       "employee",
       "teamlead",
     ]),
-    ProjectController.projectDetails
+    ProjectController.projectDetails,
   )
   .patch(
     AuthMiddleware.isAuth,
     AuthMiddleware.roleAuthMiddleware(["company", "manager"]),
-    ProjectController.updateProject
+    ProjectController.updateProject,
   );
 
 export default ProjectRoute;

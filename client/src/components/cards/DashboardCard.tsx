@@ -26,7 +26,7 @@ export default function DashboardCard({
         px: 3,
         py: 5,
         borderRadius: 2,
-        padding: "20px",
+        // padding: "20px",
       }}
       color={color}
     >

@@ -10,7 +10,7 @@ class Auth {
   async isAuth(
     req: Request,
     res: Response,
-    next: NextFunction
+    next: NextFunction,
   ): Promise<Response | undefined> {
     try {
       let token: string =
@@ -53,7 +53,7 @@ class Auth {
     return (
       req: Request,
       res: Response,
-      next: NextFunction
+      next: NextFunction,
     ): Response | undefined => {
       const userRole: string | undefined = (
         req as unknown as RequestWithSessionDetails

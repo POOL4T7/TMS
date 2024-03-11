@@ -31,7 +31,7 @@ class DepartmentService {
     select: string,
     skip: number,
     limit: number,
-    sort: Sort = { _id: -1 }
+    sort: Sort = { _id: -1 },
   ): Promise<IDepartment[] | null> {
     try {
       const departments = await DepartmentModel.find(filter)
@@ -69,7 +69,7 @@ class DepartmentService {
     filter: Filter,
     skip: number,
     limit: number,
-    sort: Sort = { _id: -1 }
+    sort: Sort = { _id: -1 },
   ): Promise<IDepartment[] | null> {
     try {
       const departmentList = await DepartmentModel.aggregate([
@@ -107,6 +107,7 @@ class DepartmentService {
             image: 1,
             totalMembers: { $size: "$members" },
             status: 1,
+            slug: 1,
           },
         },
       ]);
@@ -117,7 +118,7 @@ class DepartmentService {
   }
   static async findAll(
     filter: Filter,
-    select: string
+    select: string,
   ): Promise<IDepartment[] | null> {
     try {
       const departmentList = await DepartmentModel.find(filter)

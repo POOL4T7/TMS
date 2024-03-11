@@ -13,6 +13,7 @@ interface propTypes {
   totalMember: number;
   status: string;
   _id: string;
+  slug: string;
 }
 
 export default function TeamCard({
@@ -21,7 +22,9 @@ export default function TeamCard({
   totalMember,
   status,
   _id,
+  slug,
 }: propTypes) {
+  console.log("propTypes", { image, name, totalMember, status, _id, slug });
   return (
     <Card>
       <CardActionArea>
@@ -42,6 +45,7 @@ export default function TeamCard({
           teamImage={image}
           teamStatus={status}
           Icon={RemoveRedEye}
+          teamSlug={slug}
         />
         <Button size="small" color={colorHelper(status)}>
           {status}

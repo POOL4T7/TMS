@@ -33,12 +33,14 @@ interface PropTypes {
   teamStatus?: string;
   teamImage?: string;
   Icon?: OverridableComponent<SvgIconTypeMap>;
+  teamSlug?: string;
 }
 
 interface Team {
   name: string;
   status: string;
   image: string;
+  slug: string;
 }
 
 export default function AddUpdateTeam({
@@ -47,6 +49,7 @@ export default function AddUpdateTeam({
   teamStatus,
   teamImage,
   Icon,
+  teamSlug,
 }: PropTypes) {
   const fileInputRef = useRef<HTMLInputElement | null>(null);
   const [open, setOpen] = useState(false);
@@ -54,6 +57,7 @@ export default function AddUpdateTeam({
     name: "",
     status: "",
     image: "",
+    slug: "",
   });
   const { name, status, image } = teamData;
   const { data: companyDetails } = useCompanyProfileQuery();
@@ -69,11 +73,12 @@ export default function AddUpdateTeam({
         name: teamName!,
         image: teamImage!,
         status: teamStatus!,
+        slug: teamSlug!,
       });
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [open, teamId, teamImage, teamName, teamStatus]);
-
+  console.log("teamData", teamData);
   const handleChange =
     (name: string) =>
     (
@@ -81,7 +86,11 @@ export default function AddUpdateTeam({
         | React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
         | SelectChangeEvent
     ) => {
-      setTeamData({ ...teamData, [name]: e?.target.value || e });
+      setTeamData({
+        ...teamData,
+        [name]: e?.target.value,
+        slug: teamData.name.split(" ").join("-"),
+      });
     };
 
   const handleClickOpen = () => {
@@ -95,6 +104,7 @@ export default function AddUpdateTeam({
       name: "",
       status: "",
       image: "",
+      slug: "",
     });
   };
 
@@ -161,11 +171,17 @@ export default function AddUpdateTeam({
             name="name"
             autoFocus
             value={name}
-            onChange={handleChange("name")}
+            onChange={(e) => {
+              setTeamData({
+                ...teamData,
+                name: e.target.value,
+                slug: `${companyDetails!._id.slice(-6)}-${e.target.value
+                  .split(" ")
+                  .join("-")}`,
+              });
+            }}
           />
-          <DialogContentText fontSize={14}>{`${companyDetails?._id.slice(
-            -6
-          )}-${name.split(" ").join("-")}`}</DialogContentText>
+          <DialogContentText fontSize={14}>{teamData.slug}</DialogContentText>
 
           <FormControl sx={{ width: "100%" }} margin="normal">
             <InputLabel id="status-select-label">Status</InputLabel>

@@ -67,7 +67,7 @@ const projectSchema = new Schema<IProject>(
   },
   {
     timestamps: true,
-  }
+  },
 );
 
 const Project = mongoose.model<IProject>("Project", projectSchema);

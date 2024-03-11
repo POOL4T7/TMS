@@ -42,6 +42,7 @@ const Team = () => {
               image={item.image}
               _id={item._id}
               status={item.status}
+              slug={item.slug!}
             />
           </Grid>
         ))}

@@ -11,21 +11,21 @@ router
   .post(
     AuthMiddleware.isAuth,
     AuthMiddleware.roleAuthMiddleware(["company"]),
-    DepartmentController.createDepartment
+    DepartmentController.createDepartment,
   );
 
 router.get(
   "/all",
   AuthMiddleware.isAuth,
   AuthMiddleware.roleAuthMiddleware(["company"]),
-  DepartmentController.getDepartments
+  DepartmentController.getDepartments,
 );
 
 router.get(
   "/get-list",
   AuthMiddleware.isAuth,
   AuthMiddleware.roleAuthMiddleware(["company"]),
-  DepartmentController.getDepartmentList
+  DepartmentController.getDepartmentList,
 );
 
 router
@@ -33,7 +33,7 @@ router
   .patch(
     AuthMiddleware.isAuth,
     AuthMiddleware.roleAuthMiddleware(["company"]),
-    DepartmentController.updateDepartment
+    DepartmentController.updateDepartment,
   );
 
 export default router;

@@ -13,6 +13,7 @@ export interface TeamList {
   status: "active" | "inactive" | "deleted";
   manager?: string;
   image: string;
+  slug?: string;
 }
 
 export interface TeamAddData {
