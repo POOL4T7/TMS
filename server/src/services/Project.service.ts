@@ -11,6 +11,7 @@ import { IProject, ProjectStats } from "../interfaces/Project.interface";
 export interface Filter {
   _id?: string;
   status?: string;
+  slug?: string;
   owner?: string | ObjectId;
   manager?: string | Types.ObjectId;
   teamLead?: string | Types.ObjectId;
@@ -65,6 +66,8 @@ class ProjectService {
       const position = await Project.findOne(filter)
         .populate({ path: "team.departmentId", select: "name" })
         .populate({ path: "team.userId", select: "firstName lastName" })
+        .populate({ path: "manager", select: "firstName lastName" })
+        .populate({ path: "teamLead", select: "firstName lastName" })
         .lean();
       return position;
     } catch (error: any) {

@@ -25,12 +25,6 @@ const columns: readonly Column[] = [
   { id: "id", label: "#id", maxWidth: 100, showOrder: true },
   { id: "name", label: "Name", maxWidth: 100, showOrder: true },
   { id: "team", label: "Team Name", maxWidth: 100, showOrder: false },
-  {
-    id: "position",
-    label: "Position Name",
-    maxWidth: 100,
-    showOrder: false,
-  },
 ];
 
 interface Proptype {
@@ -62,10 +56,9 @@ const TeamList = ({ teamData, setUserList }: Proptype) => {
             {teamData?.map((row, idx) => {
               return (
                 <TableRow hover tabIndex={-1} key={idx}>
-                  <TableCell>{idx}</TableCell>
+                  <TableCell>{idx + 1}</TableCell>
+                  <TableCell>{row.user.name}</TableCell>
                   <TableCell>{row.team.name}</TableCell>
-                  <TableCell>{row.position.name || "null"}</TableCell>
-                  <TableCell>{row.user.name || 0}</TableCell>
                   <TableCell>
                     <IconButton onClick={removeUser(idx)}>
                       <Delete />

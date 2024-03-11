@@ -15,8 +15,8 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 
 const port = process.env.PORT;
-console.log(path.join(__dirname, "../uploads/"));
-app.use("/uploads", express.static(path.join(__dirname, "uploads")));
+
+app.use("/uploads", express.static(path.join(__dirname, "../uploads/")));
 // app.use("/images", express.static("./src/uploads/"));
 routesV1(app);
 

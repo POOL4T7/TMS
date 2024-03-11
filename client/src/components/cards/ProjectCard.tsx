@@ -22,19 +22,11 @@ interface propTypes {
   name: string;
   teamSize: number;
   manager: User;
-  teamLead: User[];
   status: string;
 }
 
-const ProjectCard = ({
-  image,
-  name,
-  teamSize,
-  manager,
-  teamLead,
-  status,
-}: propTypes) => {
-  console.log("teamLead", teamLead);
+const ProjectCard = ({ image, name, teamSize, manager, status }: propTypes) => {
+  // console.log("teamLead", teamLead);
   return (
     <Card>
       <CardActionArea>

@@ -4,7 +4,7 @@ import { useProjectListQuery } from "../../../redux/services/project";
 import Loader from "../../../components/Loader";
 import { ErrorType } from "../../../models/custom";
 import ProjectCard from "../../../components/cards/ProjectCard";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 const Project = () => {
   const { data, isLoading, error, isError, refetch } = useProjectListQuery({
@@ -45,14 +45,16 @@ const Project = () => {
       <Grid container spacing={1.5}>
         {data?.projectList?.map((item) => (
           <Grid item xs={12} sm={6} md={4} lg={3} xl={2} key={item._id}>
-            <ProjectCard
-              name={item.name}
-              teamSize={item.teamSize}
-              image={item.image}
-              manager={item.manager}
-              teamLead={item.teamLead}
-              status={item.status}
-            />
+            <Link to={`/project/${item.slug}`}>
+              <ProjectCard
+                name={item.name}
+                teamSize={item.teamSize}
+                image={item.image}
+                manager={item.manager}
+                // teamLead={item.teamLead}
+                status={item.status}
+              />
+            </Link>
           </Grid>
         ))}
       </Grid>

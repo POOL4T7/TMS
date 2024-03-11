@@ -188,14 +188,16 @@ export default function AddUpdateTeam({
               </MenuItem>
             </Select>
           </FormControl>
-          <Box
-            sx={{
-              maxWidth: "320px",
-              maxHeight: "320px",
-            }}
-          >
-            <img src={image} height="100%" width="100%" />
-          </Box>
+          {image && (
+            <Box
+              sx={{
+                maxWidth: "320px",
+                maxHeight: "320px",
+              }}
+            >
+              <img src={image} height="100%" width="100%" />
+            </Box>
+          )}
           <InputLabel
             htmlFor="file-upload"
             sx={{

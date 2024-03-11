@@ -50,7 +50,11 @@ const router = (authState: AuthState) => {
           element: <Project />,
         },
         {
-          path: "create-project",
+          path: "/create-project",
+          element: <CUPage />,
+        },
+        {
+          path: "/project/:projectID",
           element: <CUPage />,
         },
       ],

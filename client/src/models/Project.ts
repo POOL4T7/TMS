@@ -49,17 +49,30 @@ export interface ProjectObject {
   createdBy: string;
 }
 
+interface TeamList {
+  departmentId: {
+    _id: string;
+    name: string;
+  };
+  userId: User;
+}
+
 export interface ProjectDetails {
+  _id: string;
   name: string;
-  teamId: Team;
-  // companyId: string;
-  status: "active" | "inactive" | "deleted";
+  description: string;
   slug: string;
-  createdBy: string;
+  startDate: string;
+  endDate: string;
+  manager: User;
+  teamLead: User;
+  team: TeamList[];
+  status: string;
+  image: string;
 }
 
 export interface ProjectDetailsResponse extends ReturnObject {
-  position: ProjectDetails;
+  projectDetail: ProjectDetails;
 }
 
 interface Team {
@@ -67,10 +80,10 @@ interface Team {
   _id: string;
 }
 
-interface Position {
-  name: string;
-  _id: string;
-}
+// interface Position {
+//   name: string;
+//   _id: string;
+// }
 
 interface UserTemp {
   name: string;
@@ -79,11 +92,12 @@ interface UserTemp {
 
 export interface ProjectTeamData {
   team: Team;
-  position: Position;
+  // position: Position;
   user: UserTemp;
 }
 
 export interface ProjectAddData {
+  _id?: string;
   name: string;
   slug: string;
   startDate: string;
@@ -93,9 +107,10 @@ export interface ProjectAddData {
   teamLead: string;
   description: string;
   team: ProjectTeam[];
+  image?: string;
 }
 
 interface ProjectTeam {
   departmentId: string;
-  userId: string;
+  userId: string | User;
 }

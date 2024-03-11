@@ -23,6 +23,7 @@ class DepartmentController {
         description: req.body.description,
         team: req.body.team,
         startDate: req.body.startDate,
+        endDate: req.body.endDate,
         techStack: req.body.techStack,
         manager: req.body.manager,
       };
@@ -30,6 +31,43 @@ class DepartmentController {
       return res.status(201).json({
         success: true,
         message: "Project added successfully",
+      });
+    } catch (e: any) {
+      console.log(e);
+      return res.status(500).json({
+        success: false,
+        error: e.message,
+        message: "server error",
+      });
+    }
+  }
+  async updateProject(req: Request, res: Response): Promise<Response> {
+    try {
+      const userDetails = Custom.getSessionDetails(req);
+      const companyId = userDetails.companyId;
+      const filter: Filter = {
+        owner: companyId,
+        _id: req.params.projectId,
+      };
+      const formData: Partial<IProject> = {};
+
+      if (req.body.name) formData.name = req.body.name;
+      if (req.body.slug) formData.slug = req.body.slug;
+      if (req.body.description) formData.description = req.body.description;
+      if (req.body.manager) formData.manager = req.body.manager;
+      if (req.body.teamLead) formData.teamLead = req.body.teamLead;
+      if (req.body.team) formData.team = req.body.team;
+      if (req.body.image) formData.image = req.body.image;
+      if (req.body.status) formData.status = req.body.status;
+      if (req.body.startDate) formData.startDate = req.body.startDate;
+      if (req.body.endDate) formData.endDate = req.body.endDate;
+      console.log(formData);
+      await ProjectService.findOneAndUpdate(filter, {
+        $set: formData,
+      });
+      return res.status(201).json({
+        success: true,
+        message: "Project Updated Successfully",
       });
     } catch (e: any) {
       console.log(e);
@@ -66,6 +104,28 @@ class DepartmentController {
         projectList: projects.projectList,
         totalProject: projects.totalProject,
         message: "Project List",
+      });
+    } catch (e: any) {
+      return res.status(500).json({
+        success: false,
+        error: e.message,
+        message: "server error",
+      });
+    }
+  }
+
+  async projectDetails(req: Request, res: Response): Promise<Response> {
+    try {
+      const userDetail = Custom.getSessionDetails(req);
+      const filter: Filter = {
+        slug: req.params.projectId,
+        owner: userDetail.companyId,
+      };
+      userDetail.role != "company" ? (filter.status = "publish") : "";
+      const d = await ProjectService.findOne(filter);
+      return res.status(200).json({
+        success: true,
+        projectDetail: d,
       });
     } catch (e: any) {
       return res.status(500).json({
