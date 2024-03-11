@@ -1,6 +1,13 @@
-import { CompanyPaginationData } from "../interfaces/Company.interface";
+import {
+  CompanyPaginationData,
+  DashboardCount,
+} from "../interfaces/Company.interface";
 import { Sort } from "../interfaces/Custum.inteface";
 import Company, { ICompany } from "../models/Company.model";
+import ProjectService from "./Project.service";
+import UserService from "./User.service";
+import DepartmentService from "./Department.service";
+import PositionService from "./Position.service";
 
 interface Filter {
   _id?: string;
@@ -41,7 +48,7 @@ class CompanyService {
     select: string = "",
     skip: number = 0,
     limit: number = 10,
-    sort: Sort = { _id: -1 },
+    sort: Sort = { _id: -1 }
   ): Promise<CompanyPaginationData | null> {
     try {
       const companyList = await Company.find(filter)
@@ -60,7 +67,7 @@ class CompanyService {
 
   static async updateCompany(
     filter: Filter,
-    data: Partial<ICompany>,
+    data: Partial<ICompany>
   ): Promise<ICompany | null> {
     try {
       const company = await Company.findByIdAndUpdate(filter, data, {
@@ -86,6 +93,30 @@ class CompanyService {
       return companies;
     } catch (error: any) {
       throw new Error(`Error getting companies: ${error.message}`);
+    }
+  }
+  static async dashboardTotalCount(companyId: string): Promise<DashboardCount> {
+    try {
+      const totalProject = await ProjectService.countDocuments({
+        owner: companyId,
+      });
+      const totalPosition = await PositionService.countDocuments({
+        companyId: companyId,
+      });
+      const totalTeam = await DepartmentService.countDocuments({
+        companyId: companyId,
+      });
+      const totalEmployee = await UserService.countDocuments({
+        companyId: companyId,
+      });
+      return {
+        totalEmployee,
+        totalPosition,
+        totalProject,
+        totalTeam,
+      };
+    } catch (error: any) {
+      throw new Error(`Error deleting company: ${error.message}`);
     }
   }
 }

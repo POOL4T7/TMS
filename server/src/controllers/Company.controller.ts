@@ -3,6 +3,9 @@
 import { Request, Response } from "express";
 import CompanyService from "../services/Company.service";
 import { RequestWithSessionDetails } from "../interfaces/Custum.inteface";
+import Custom from "../helpers/custom";
+import UserService from "../services/User.service";
+import { Types } from "mongoose";
 
 class CompanyController {
   constructor() {
@@ -69,7 +72,7 @@ class CompanyController {
     try {
       const updatedCompany = await CompanyService.updateCompany(
         { _id: companyId },
-        companyData,
+        companyData
       );
       if (updatedCompany) {
         return res.status(200).json({
@@ -93,6 +96,29 @@ class CompanyController {
     try {
       await CompanyService.deleteCompany(industryId);
       return res.status(204).send(); // No content
+    } catch (e: any) {
+      return res.status(500).json({
+        success: false,
+        error: e.message,
+        message: "server error",
+      });
+    }
+  }
+
+  async dashboardCount(req: Request, res: Response): Promise<Response> {
+    try {
+      const userDetails = Custom.getSessionDetails(req);
+      const counts = await CompanyService.dashboardTotalCount(
+        userDetails.companyId
+      );
+      const teamStats = await UserService.teamCountForDashboard({
+        companyId: new Types.ObjectId(userDetails.companyId!),
+      });
+      return res.status(200).json({
+        success: true,
+        counts: counts,
+        teamStats: teamStats,
+      });
     } catch (e: any) {
       return res.status(500).json({
         success: false,

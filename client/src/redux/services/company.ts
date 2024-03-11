@@ -3,6 +3,8 @@ import { RootState } from "../store";
 import {
   Company,
   CompanyApiResponse,
+  CompanyDashboardCount,
+  CompanyDashboardCountResponse,
   CompanyPostApiResponse,
   PostCompany,
 } from "../../models/company";
@@ -33,6 +35,12 @@ export const companyApi = createApi({
         return responseData.company;
       },
     }),
+    dashboardCount: build.query<CompanyDashboardCount, void>({
+      query: () => "/dashboard-counts",
+      transformResponse: (response: CompanyDashboardCountResponse) => {
+        return { counts: response.counts, teamStats: response.teamStats };
+      },
+    }),
     updateProfile: build.mutation<CompanyPostApiResponse, Partial<PostCompany>>(
       {
         query(data) {
@@ -51,4 +59,8 @@ export const companyApi = createApi({
   }),
 });
 
-export const { useCompanyProfileQuery, useUpdateProfileMutation } = companyApi;
+export const {
+  useCompanyProfileQuery,
+  useUpdateProfileMutation,
+  useDashboardCountQuery,
+} = companyApi;

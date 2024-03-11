@@ -18,4 +18,11 @@ export interface CompanyPaginationData {
   totalPosition: number;
 }
 
+export interface DashboardCount {
+  totalProject: number;
+  totalTeam: number;
+  totalPosition: number;
+  totalEmployee: number;
+}
+
 export default Company;

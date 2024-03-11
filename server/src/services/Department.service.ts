@@ -31,7 +31,7 @@ class DepartmentService {
     select: string,
     skip: number,
     limit: number,
-    sort: Sort = { _id: -1 },
+    sort: Sort = { _id: -1 }
   ): Promise<IDepartment[] | null> {
     try {
       const departments = await DepartmentModel.find(filter)
@@ -69,7 +69,7 @@ class DepartmentService {
     filter: Filter,
     skip: number,
     limit: number,
-    sort: Sort = { _id: -1 },
+    sort: Sort = { _id: -1 }
   ): Promise<IDepartment[] | null> {
     try {
       const departmentList = await DepartmentModel.aggregate([
@@ -118,7 +118,7 @@ class DepartmentService {
   }
   static async findAll(
     filter: Filter,
-    select: string,
+    select: string
   ): Promise<IDepartment[] | null> {
     try {
       const departmentList = await DepartmentModel.find(filter)
@@ -127,6 +127,14 @@ class DepartmentService {
       return departmentList;
     } catch (error: any) {
       throw new Error(`Error getting department: ${error.message}`);
+    }
+  }
+  static async countDocuments(filter: Filter): Promise<number> {
+    try {
+      const totalProject = await DepartmentModel.countDocuments(filter);
+      return totalProject;
+    } catch (error: any) {
+      throw new Error(`Error deleting position: ${error.message}`);
     }
   }
 }

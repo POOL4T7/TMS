@@ -1,4 +1,4 @@
-import { Schema } from "mongoose";
+import { Schema, Types } from "mongoose";
 import { Sort } from "../interfaces/Custum.inteface";
 import { UserPaginationData } from "../interfaces/User.interface";
 import User from "../models/User.model";
@@ -7,11 +7,17 @@ import { IUser } from "../interfaces/User.interface";
 export interface Filter {
   _id?: string;
   email?: string;
-  companyId?: Schema.Types.ObjectId | string;
+  companyId?: Types.ObjectId | string;
   role?: string;
   departmentId?: Schema.Types.ObjectId | string;
   positionId?: Schema.Types.ObjectId | string;
   employeeId?: string;
+}
+
+interface TeamDashboardCount {
+  id: string;
+  value: number;
+  label: string;
 }
 
 class UserService {
@@ -43,7 +49,7 @@ class UserService {
     select: string = "",
     skip: number = 0,
     limit: number = 10,
-    sort: Sort = { _id: -1 },
+    sort: Sort = { _id: -1 }
   ): Promise<UserPaginationData> {
     try {
       const userList = await User.find(filter)
@@ -64,7 +70,7 @@ class UserService {
 
   static async updateUser(
     filter: Filter,
-    data: Partial<IUser>,
+    data: Partial<IUser>
   ): Promise<IUser | null> {
     try {
       const user = await User.findByIdAndUpdate(filter, data, { new: true });
@@ -88,6 +94,61 @@ class UserService {
       return users;
     } catch (error: any) {
       throw new Error(`Error getting users: ${error.message}`);
+    }
+  }
+  static async countDocuments(filter: Filter): Promise<number> {
+    try {
+      const totalProject = await User.countDocuments(filter);
+      return totalProject;
+    } catch (error: any) {
+      throw new Error(`Error deleting position: ${error.message}`);
+    }
+  }
+  static async teamCountForDashboard(
+    filter: Filter
+  ): Promise<TeamDashboardCount | any> {
+    try {
+      const departmentList: TeamDashboardCount[] = await User.aggregate([
+        {
+          $match: filter,
+        },
+        {
+          $group: {
+            _id: "$departmentId",
+            userCount: { $sum: 1 },
+          },
+        },
+        {
+          $lookup: {
+            from: "departments",
+            localField: "_id",
+            foreignField: "_id",
+            pipeline: [
+              {
+                $project: {
+                  name: 1,
+                },
+              },
+            ],
+            as: "team",
+          },
+        },
+        {
+          $unwind: {
+            path: "$team",
+          },
+        },
+        {
+          $project: {
+            id: "$_id",
+            value: "$userCount",
+            label: "$team.name",
+          },
+        },
+      ]);
+      return departmentList;
+    } catch (error: any) {
+      throw new Error(`Error getting department: ${error.message}`);
     }
   }
 }

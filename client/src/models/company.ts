@@ -42,3 +42,25 @@ export interface CompanyPostApiResponse {
   success: boolean;
   message: string;
 }
+
+interface DashboardCount {
+  totalProject: number;
+  totalTeam: number;
+  totalPosition: number;
+  totalEmployee: number;
+}
+
+interface TeamDashboardStats {
+  id: string;
+  value: number;
+  label: string;
+}
+
+export interface CompanyDashboardCount {
+  counts: DashboardCount;
+  teamStats: TeamDashboardStats[];
+}
+
+export interface CompanyDashboardCountResponse extends CompanyDashboardCount {
+  success: boolean;
+}
