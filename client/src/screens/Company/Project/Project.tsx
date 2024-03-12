@@ -44,7 +44,17 @@ const Project = () => {
       )}
       <Grid container spacing={1.5}>
         {data?.projectList?.map((item) => (
-          <Grid item xs={12} sm={6} md={4} lg={3} xl={2} key={item._id}>
+          <Grid
+            component={"div"}
+            draggable
+            item
+            xs={12}
+            sm={6}
+            md={4}
+            lg={3}
+            xl={2}
+            key={item._id}
+          >
             <Link to={`/project/${item.slug}`}>
               <ProjectCard
                 name={item.name}

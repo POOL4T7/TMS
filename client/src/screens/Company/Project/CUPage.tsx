@@ -31,6 +31,11 @@ import { Add, Edit } from "@mui/icons-material";
 import { format } from "date-fns";
 import { useUploadImageMutation } from "../../../redux/services/custom";
 
+interface User {
+  _id: string;
+  firstName: string;
+}
+
 const CUPage = () => {
   const params = useParams();
   const navigate = useNavigate();
@@ -54,6 +59,7 @@ const CUPage = () => {
     image: "",
   });
   const [userList, setUserList] = useState<ProjectTeamData[]>([]);
+  const [availableMembers, setAvailableMembers] = useState<User[]>([]);
 
   const [createProject, { isLoading: addLoading }] = useCreateProjectMutation();
   const [updateProject, { isLoading: updateLoading }] =
@@ -133,6 +139,18 @@ const CUPage = () => {
       },
       { skip: !filter.teamId }
     );
+
+  useEffect(() => {
+    const list = teamMemberList?.userList!.filter((user) => {
+      const t = userList.findIndex((ul) => ul.user._id === user._id);
+      if (t)
+        return {
+          _id: user._id,
+          firstName: user.firstName,
+        };
+    });
+    setAvailableMembers(list || []);
+  }, [filter.positionId, teamMemberList?.userList, userList]);
 
   const addUser = () => {
     if (!filter.teamId || !filter.positionId || !filter.userId) {
@@ -502,7 +520,7 @@ const CUPage = () => {
                         <Loader size={20} thickness={2} />
                       </MenuItem>
                     )}
-                    {teamMemberList?.userList?.map((user) => (
+                    {availableMembers?.map((user) => (
                       <MenuItem value={user._id} key={user._id}>
                         {user.firstName}
                       </MenuItem>
