@@ -13,7 +13,7 @@ class IndustryController {
   async getAllIndustries(req: Request, res: Response): Promise<Response> {
     try {
       const industries = await this.Industry.getAllIndustries();
-      return res.json({
+      return res.status(200).json({
         success: true,
         industryList: industries,
         message: "Industries list",
@@ -69,7 +69,7 @@ class IndustryController {
     try {
       const updatedIndustry = await this.Industry.updateIndustry(
         industryId,
-        industryData,
+        industryData
       );
       if (updatedIndustry) {
         return res.json(updatedIndustry);

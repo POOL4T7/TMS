@@ -7,18 +7,19 @@ nginxPortForWeb=8000
 serverHost=172.16.229.179
 applicationPort=8080
 dbUrl="mongodb://gulshan:1alyxstar@localhost:27017/social?authSource=admin"
+prodUrl=""
 enviroment="production"
 
 serverConfigFile="/etc/nginx/conf.d/$projectName.conf"
 webConfigFile="/etc/nginx/conf.d/$webProjectApp.conf"
 
 log() {
-    echo "⚡️ $1"
+  echo "⚡️ $1"
 }
 
 error_exit() {
-    log "Error: $1"
-    exit 1
+  log "Error: $1"
+  exit 1
 }
 
 log "Welcome to the TMS setup process!"
@@ -79,11 +80,11 @@ npm install --prefix server || error_exit "Failed to install server dependencies
 log "✅ Server dependencies installed successfully!"
 
 log "Adding environment variables..."
-cat <<EOT >"server/.env"
-PORT=$applicationPort
-NODE_ENV=$enviroment
-MONGO_URI=$dbUrl
-EOT
+# cat <<EOT >"server/.env"
+# PORT=$applicationPort
+# NODE_ENV=$enviroment
+# MONGO_URI=$dbUrl
+# EOT
 log "✅ Environment variables added successfully."
 
 log "Building the project..."
@@ -118,4 +119,39 @@ systemctl restart nginx || error_exit "Failed to restart Nginx. Please check Ngi
 log "✅ Nginx restarted successfully!"
 log "⚡️ Your project is now ready to roll! ⚡️"
 
-npm install pm2@latest -g
+log "Setup PM2 (process manager) for Server."
+# npm install pm2@latest -g -y
+log "⚡️ starting the pm2.."
+pwd
+cat <<EOT >"ecosystem.config.js"
+module.exports = {
+  apps: [
+    {
+      name: "tms-server",
+      script: "./server/dist/index.js",
+      env: {
+        NODE_ENV: "development",
+        PORT: 8080,
+        MONGO_URI: "$dbUrl",
+      },
+      env_production: {
+        NODE_ENV: "production",
+        PORT: 8080,
+        MONGO_URI: "$prodUrl",
+      },
+    },
+  ],
+};
+EOT
+# pm2 restart ecosystem.config.js --env production
+
+# Elastic Search installation
+# log "Installing the Elastic Search"
+# wget -qO - https://artifacts.elastic.co/GPG-KEY-elasticsearch | sudo gpg --dearmor -o /usr/share/keyrings/elasticsearch-keyring.gpg
+# apt-get install apt-transport-https -y
+# echo "deb [signed-by=/usr/share/keyrings/elasticsearch-keyring.gpg] https://artifacts.elastic.co/packages/8.x/apt stable main" | sudo tee /etc/apt/sources.list.d/elastic-8.x.list
+# sudo apt-get update && sudo apt-get install elasticsearch -y
+# sudo systemctl enable elasticsearch.service
+# sudo systemctl start elasticsearch.service
+
+# /usr/share/elasticsearch/bin/elasticsearch-reset-password -u elastic

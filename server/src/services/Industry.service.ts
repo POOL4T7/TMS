@@ -1,3 +1,4 @@
+import { Sort } from "../interfaces/Custum.inteface";
 import Industry, { IIndustry } from "../models/Industry.model";
 
 interface Filter {
@@ -26,7 +27,7 @@ class IndustryService {
 
   async updateIndustry(
     industryId: string,
-    data: Partial<IIndustry>,
+    data: Partial<IIndustry>
   ): Promise<IIndustry | null> {
     try {
       const industry = await Industry.findByIdAndUpdate(industryId, data, {
@@ -48,10 +49,10 @@ class IndustryService {
 
   async getAllIndustries(
     filter: Filter = {},
-    select: string = "",
-    sort = {}, // need to change
+    select: string = "_id name",
+    sort: Sort = {}, // need to change
     skip: number = 0,
-    limit: number = 0,
+    limit: number = 0
   ): Promise<IIndustry[]> {
     try {
       const industries = await Industry.find(filter)
