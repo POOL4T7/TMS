@@ -1,6 +1,13 @@
 import { Sort } from "../interfaces/Custum.inteface";
 import Industry, { IIndustry } from "../models/Industry.model";
+import { createClient } from "redis";
+// const client = await createClient()
+//   .on('error', err => console.log('Redis Client Error', err))
+//   .connect();
 
+// await client.set('key', 'value');
+// const value = await client.get('key');
+// await client.disconnect();
 interface Filter {
   status?: string;
   slug?: string;
@@ -55,12 +62,36 @@ class IndustryService {
     limit: number = 0
   ): Promise<IIndustry[]> {
     try {
-      const industries = await Industry.find(filter)
-        .select(select)
-        .sort(sort)
-        .skip(skip)
-        .limit(limit)
-        .lean();
+      let industries = [];
+      if (
+        process.env.REDIS_SERVICE === "ON" &&
+        process.env.REDIS_INDUSTRY_LIST === "ON"
+      ) {
+        const client = await createClient()
+          .on("error", (err) => console.log("Redis Client Error", err))
+          .connect();
+        const value = await client.get("industryList");
+        if (value) {
+          console.log("from cached");
+          industries = JSON.parse(value);
+        } else {
+          industries = await Industry.find(filter)
+            .select(select)
+            .sort(sort)
+            .skip(skip)
+            .limit(limit)
+            .lean();
+          await client.set("industryList", JSON.stringify(industries));
+        }
+        await client.disconnect();
+      } else {
+        industries = await Industry.find(filter)
+          .select(select)
+          .sort(sort)
+          .skip(skip)
+          .limit(limit)
+          .lean();
+      }
       return industries;
     } catch (error: any) {
       throw new Error(`Error getting industries: ${error.message}`);

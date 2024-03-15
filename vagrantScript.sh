@@ -84,6 +84,8 @@ log "Adding environment variables..."
 # PORT=$applicationPort
 # NODE_ENV=$enviroment
 # MONGO_URI=$dbUrl
+# REDIS_SERVICE=ON
+# REDIS_INDUSTRY_LIST=ON
 # EOT
 log "✅ Environment variables added successfully."
 
@@ -155,3 +157,8 @@ EOT
 # sudo systemctl start elasticsearch.service
 
 # /usr/share/elasticsearch/bin/elasticsearch-reset-password -u elastic
+
+# Redis
+sudo apt install redis-server -y >/dev/null || error_exit "Failed to install the Redis"
+sudo systemctl status redis-server
+sudo systemctl enable redis-server
