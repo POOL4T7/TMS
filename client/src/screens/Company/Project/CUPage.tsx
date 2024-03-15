@@ -210,9 +210,9 @@ const CUPage = () => {
     try {
       const formData = new FormData();
       formData.append("image", e.target.files[0]);
-      console.log("formData", formData);
+      // console.log("formData", formData);
       const data = await uploadImage(formData).unwrap();
-      console.log("data", data);
+      // console.log("data", data);
       setProjectData({ ...projectData, image: data.fileLocation });
     } catch (e) {
       console.log(e);
@@ -221,324 +221,331 @@ const CUPage = () => {
 
   return (
     <>
-      {(isError || imageUploadError) && (
-        <Alert severity="error">
-          {((error || imageUploadError) as ErrorType)?.message}
-        </Alert>
-      )}
-      {isLoading && <Loader size={100} thickness={1.5} />}
-      <Box
-        marginTop={"10px"}
-        padding={"10px"}
-        component={"form"}
-        onSubmit={submitHandler}
-      >
-        <Stack direction={"row"} justifyContent={"space-between"}>
-          <Typography variant="h4">
-            {params.projectID ? "Update" : "Add"} Project
-          </Typography>
-          <Button
-            variant="contained"
-            color="success"
-            type="submit"
-            startIcon={params.projectID ? <Edit /> : <Add />}
-            disabled={updateLoading || addLoading}
-          >
-            {params.projectID ? "Update" : "Add"}
-          </Button>
-        </Stack>
-        <Grid container spacing={2}>
-          <Grid item xs={12} md={6}>
-            <Box
-              component={"div"}
-              sx={{
-                maxHeight: "300px",
-                maxWidth: "100%",
-                height: "100%",
-                border: "2px solid black",
-              }}
+      <Box marginTop={"10px"} padding={"10px"}>
+        {(isError || imageUploadError) && (
+          <Alert severity="error">
+            {((error || imageUploadError) as ErrorType)?.message}
+          </Alert>
+        )}
+        {isLoading && <Loader size={100} thickness={1.5} />}
+      </Box>
+      {!isError && !isLoading && (
+        <Box
+          marginTop={"10px"}
+          padding={"10px"}
+          component={"form"}
+          onSubmit={submitHandler}
+        >
+          <Stack direction={"row"} justifyContent={"space-between"}>
+            <Typography variant="h4">
+              {params.projectID ? "Update" : "Add"} Project
+            </Typography>
+            <Button
+              variant="contained"
+              color="success"
+              type="submit"
+              startIcon={params.projectID ? <Edit /> : <Add />}
+              disabled={updateLoading || addLoading}
             >
-              <InputLabel
-                htmlFor="file-upload"
+              {params.projectID ? "Update" : "Add"}
+            </Button>
+          </Stack>
+          <Grid container spacing={2}>
+            <Grid item xs={12} md={6}>
+              <Box
+                component={"div"}
                 sx={{
-                  cursor: "pointer",
-                  borderRadius: "4px",
-                  display: "block",
-                  textAlign: "center",
+                  maxHeight: "300px",
+                  maxWidth: "100%",
                   height: "100%",
-                  objectFit: "cover",
+                  border: "2px solid black",
                 }}
-                onClick={() => {
-                  if (fileInputRef.current) {
-                    fileInputRef.current.click();
+              >
+                <InputLabel
+                  htmlFor="file-upload"
+                  sx={{
+                    cursor: "pointer",
+                    borderRadius: "4px",
+                    display: "block",
+                    textAlign: "center",
+                    height: "100%",
+                    objectFit: "cover",
+                  }}
+                  onClick={() => {
+                    if (fileInputRef.current) {
+                      fileInputRef.current.click();
+                    }
+                  }}
+                >
+                  {imageUploadLoading && <Loader size={50} thickness={1.5} />}
+                  {projectData.image ? (
+                    <img
+                      src={projectData.image}
+                      style={{
+                        objectFit: "cover",
+                        maxHeight: "300px",
+                        maxWidth: "100%",
+                      }}
+                    />
+                  ) : (
+                    "Drag and drop a file or click to select"
+                  )}
+                  <input
+                    ref={fileInputRef}
+                    type="file"
+                    name="image"
+                    id="image"
+                    style={{ width: "100%", display: "none" }}
+                    onChange={uploadFile}
+                    disabled={imageUploadLoading}
+                  />
+                </InputLabel>
+              </Box>
+            </Grid>
+            <Grid item xs={12} md={6}>
+              <FormControl sx={{ width: "100%" }} margin="normal">
+                <TextField
+                  name="name"
+                  required
+                  label="Project Name"
+                  id="name"
+                  fullWidth
+                  value={projectData.name}
+                  onChange={(e) =>
+                    setProjectData({
+                      ...projectData,
+                      name: e.target.value,
+                      slug: e.target.value.toLowerCase().split(" ").join("-"),
+                    })
                   }
-                }}
-              >
-                {imageUploadLoading && <Loader size={50} thickness={1.5} />}
-                {projectData.image ? (
-                  <img
-                    src={projectData.image}
-                    style={{
-                      objectFit: "cover",
-                      maxHeight: "300px",
-                      maxWidth: "100%",
-                    }}
-                  />
-                ) : (
-                  "Drag and drop a file or click to select"
-                )}
-                <input
-                  ref={fileInputRef}
-                  type="file"
-                  name="image"
-                  id="image"
-                  style={{ width: "100%", display: "none" }}
-                  onChange={uploadFile}
-                  disabled={imageUploadLoading}
                 />
-              </InputLabel>
-            </Box>
+              </FormControl>
+              <FormControl sx={{ width: "100%" }} margin="normal">
+                <TextField
+                  name="slug"
+                  required
+                  label="Slug"
+                  id="slug"
+                  fullWidth
+                  value={projectData.slug}
+                  onChange={(e) =>
+                    setProjectData({
+                      ...projectData,
+                      slug: e.target.value.split(" ").join("-"),
+                    })
+                  }
+                />
+              </FormControl>
+              <FormControl sx={{ width: "100%" }} margin="normal">
+                <Stack direction={"row"} spacing={2}>
+                  <FormControl sx={{ width: "100%" }} margin="normal">
+                    <Input
+                      type="date"
+                      name="startDate"
+                      placeholder="StartDate"
+                      value={projectData.startDate}
+                      onChange={handleChange("startDate")}
+                    />
+                  </FormControl>
+                  <FormControl sx={{ width: "100%" }} margin="normal">
+                    <Input
+                      type="date"
+                      name="endDate"
+                      placeholder="endDate"
+                      value={projectData.endDate}
+                      onChange={handleChange("endDate")}
+                    />
+                  </FormControl>
+                </Stack>
+              </FormControl>
+              <FormControl sx={{ width: "100%" }} margin="normal">
+                <InputLabel id="status-select-label">Status</InputLabel>
+                <Select
+                  labelId="status-select-label"
+                  id="status-select"
+                  name="status"
+                  value={projectData.status}
+                  onChange={handleChange("status")}
+                  input={<OutlinedInput label="Status" />}
+                >
+                  <MenuItem value="">
+                    <em>None</em>
+                  </MenuItem>
+                  <MenuItem value="draft">
+                    <em>Draft</em>
+                  </MenuItem>
+                  <MenuItem value="publish">
+                    <em>Publish</em>
+                  </MenuItem>
+                </Select>
+              </FormControl>
+            </Grid>
           </Grid>
-          <Grid item xs={12} md={6}>
-            <FormControl sx={{ width: "100%" }} margin="normal">
+          <Grid container spacing={2}>
+            <Grid item xs={12} md={6}>
+              <FormControl sx={{ width: "100%" }} margin="normal">
+                <InputLabel id="manager-select-label">Manager</InputLabel>
+                <Select
+                  labelId="manager-select-label"
+                  id="manager-select"
+                  value={projectData.manager}
+                  onChange={handleChange("manager")}
+                  input={<OutlinedInput label="manager" />}
+                  name="manager"
+                >
+                  <MenuItem value="">Select Manager</MenuItem>
+                  {managerLoading && (
+                    <MenuItem value="" disabled>
+                      <Loader size={20} thickness={2} />
+                    </MenuItem>
+                  )}
+                  {managerList?.userList?.map((user) => (
+                    <MenuItem value={user._id} key={user._id}>
+                      {user.firstName}
+                    </MenuItem>
+                  ))}
+                </Select>
+              </FormControl>
+            </Grid>
+            <Grid item xs={12} md={6}>
+              <FormControl sx={{ width: "100%" }} margin="normal">
+                <InputLabel id="teamLead-select-label">Teach Lead</InputLabel>
+                <Select
+                  labelId="teamLead-select-label"
+                  id="teamLead-select"
+                  value={projectData.teamLead}
+                  onChange={handleChange("teamLead")}
+                  input={<OutlinedInput label="teamLead" />}
+                  name="teamLead"
+                >
+                  <MenuItem value="">Select Team Lead</MenuItem>
+                  {teamLeadLoading && (
+                    <MenuItem value="" disabled>
+                      <Loader size={20} thickness={2} />
+                    </MenuItem>
+                  )}
+                  {teamLead?.userList?.map((user) => (
+                    <MenuItem value={user._id} key={user._id}>
+                      {user.firstName}
+                    </MenuItem>
+                  ))}
+                </Select>
+              </FormControl>
+            </Grid>
+            <Grid item xs={12}>
               <TextField
-                name="name"
-                required
-                label="Project Name"
-                id="name"
+                label="About the project!"
+                multiline
+                rows={4}
+                variant="outlined"
                 fullWidth
-                value={projectData.name}
-                onChange={(e) =>
-                  setProjectData({
-                    ...projectData,
-                    name: e.target.value,
-                    slug: e.target.value.toLowerCase().split(" ").join("-"),
-                  })
-                }
+                value={projectData.description}
+                onChange={handleChange("description")}
+                name="description"
               />
-            </FormControl>
-            <FormControl sx={{ width: "100%" }} margin="normal">
-              <TextField
-                name="slug"
-                required
-                label="Slug"
-                id="slug"
-                fullWidth
-                value={projectData.slug}
-                onChange={(e) =>
-                  setProjectData({
-                    ...projectData,
-                    slug: e.target.value.split(" ").join("-"),
-                  })
-                }
-              />
-            </FormControl>
-            <FormControl sx={{ width: "100%" }} margin="normal">
-              <Stack direction={"row"} spacing={2}>
-                <FormControl sx={{ width: "100%" }} margin="normal">
-                  <Input
-                    type="date"
-                    name="startDate"
-                    placeholder="StartDate"
-                    value={projectData.startDate}
-                    onChange={handleChange("startDate")}
-                  />
-                </FormControl>
-                <FormControl sx={{ width: "100%" }} margin="normal">
-                  <Input
-                    type="date"
-                    name="endDate"
-                    placeholder="endDate"
-                    value={projectData.endDate}
-                    onChange={handleChange("endDate")}
-                  />
-                </FormControl>
-              </Stack>
-            </FormControl>
-            <FormControl sx={{ width: "100%" }} margin="normal">
-              <InputLabel id="status-select-label">Status</InputLabel>
-              <Select
-                labelId="status-select-label"
-                id="status-select"
-                name="status"
-                value={projectData.status}
-                onChange={handleChange("status")}
-                input={<OutlinedInput label="Status" />}
-              >
-                <MenuItem value="">
-                  <em>None</em>
-                </MenuItem>
-                <MenuItem value="draft">
-                  <em>Draft</em>
-                </MenuItem>
-                <MenuItem value="publish">
-                  <em>Publish</em>
-                </MenuItem>
-              </Select>
-            </FormControl>
-          </Grid>
-        </Grid>
-        <Grid container spacing={2}>
-          <Grid item xs={12} md={6}>
-            <FormControl sx={{ width: "100%" }} margin="normal">
-              <InputLabel id="manager-select-label">Manager</InputLabel>
-              <Select
-                labelId="manager-select-label"
-                id="manager-select"
-                value={projectData.manager}
-                onChange={handleChange("manager")}
-                input={<OutlinedInput label="manager" />}
-                name="manager"
-              >
-                <MenuItem value="">Select Manager</MenuItem>
-                {managerLoading && (
-                  <MenuItem value="" disabled>
-                    <Loader size={20} thickness={2} />
-                  </MenuItem>
-                )}
-                {managerList?.userList?.map((user) => (
-                  <MenuItem value={user._id} key={user._id}>
-                    {user.firstName}
-                  </MenuItem>
-                ))}
-              </Select>
-            </FormControl>
-          </Grid>
-          <Grid item xs={12} md={6}>
-            <FormControl sx={{ width: "100%" }} margin="normal">
-              <InputLabel id="teamLead-select-label">Teach Lead</InputLabel>
-              <Select
-                labelId="teamLead-select-label"
-                id="teamLead-select"
-                value={projectData.teamLead}
-                onChange={handleChange("teamLead")}
-                input={<OutlinedInput label="teamLead" />}
-                name="teamLead"
-              >
-                <MenuItem value="">Select Team Lead</MenuItem>
-                {teamLeadLoading && (
-                  <MenuItem value="" disabled>
-                    <Loader size={20} thickness={2} />
-                  </MenuItem>
-                )}
-                {teamLead?.userList?.map((user) => (
-                  <MenuItem value={user._id} key={user._id}>
-                    {user.firstName}
-                  </MenuItem>
-                ))}
-              </Select>
-            </FormControl>
-          </Grid>
-          <Grid item xs={12}>
-            <TextField
-              label="About the project!"
-              multiline
-              rows={4}
-              variant="outlined"
-              fullWidth
-              value={projectData.description}
-              onChange={handleChange("description")}
-              name="description"
-            />
-          </Grid>
-          <Grid item xs={12}>
-            <InputLabel>Add Team Members </InputLabel>
-            <Grid container spacing={2}>
-              <Grid item xs={12} md={4}>
-                <FormControl sx={{ width: "100%" }} margin="normal">
-                  <InputLabel id="team-select-label">Team</InputLabel>
-                  <Select
-                    labelId="team-select-label"
-                    id="team-select"
-                    value={filter.teamId}
-                    onChange={(e) =>
-                      setFilter({ ...filter, teamId: e.target.value as string })
-                    }
-                    input={<OutlinedInput label="Team" />}
-                    name="team"
-                  >
-                    {isFetching && (
-                      <MenuItem value="" disabled>
-                        <Loader size={20} thickness={2} />
-                      </MenuItem>
-                    )}
-                    {teamList?.map((team) => (
-                      <MenuItem value={team._id} key={team._id}>
-                        {team.name}
-                      </MenuItem>
-                    ))}
-                  </Select>
-                </FormControl>
-              </Grid>
-              <Grid item xs={12} md={3}>
-                <FormControl sx={{ width: "100%" }} margin="normal">
-                  <InputLabel id="team-select-label">Position</InputLabel>
-                  <Select
-                    labelId="team-select-label"
-                    id="team-select"
-                    value={filter.positionId}
-                    onChange={(e) =>
-                      setFilter({
-                        ...filter,
-                        positionId: e.target.value as string,
-                      })
-                    }
-                    input={<OutlinedInput label="Position" />}
-                    name="positionId"
-                  >
-                    {positionListLoading && (
-                      <MenuItem value={""} disabled>
-                        <Loader size={20} thickness={2} />
-                      </MenuItem>
-                    )}
-                    {positionList?.positionList?.map((position) => (
-                      <MenuItem value={position._id} key={position._id}>
-                        {position.name}
-                      </MenuItem>
-                    ))}
-                  </Select>
-                </FormControl>
-              </Grid>
-              <Grid item xs={12} md={3}>
-                <FormControl sx={{ width: "100%" }} margin="normal">
-                  <InputLabel id="team-select-label">User</InputLabel>
-                  <Select
-                    labelId="team-select-label"
-                    id="team-select"
-                    value={filter.userId}
-                    onChange={(e) =>
-                      setFilter({
-                        ...filter,
-                        userId: e.target.value as string,
-                      })
-                    }
-                    input={<OutlinedInput label="User Name" />}
-                    name="userId"
-                  >
-                    {teamMemberLoading && (
-                      <MenuItem value={""} disabled>
-                        <Loader size={20} thickness={2} />
-                      </MenuItem>
-                    )}
-                    {availableMembers?.map((user) => (
-                      <MenuItem value={user._id} key={user._id}>
-                        {user.firstName}
-                      </MenuItem>
-                    ))}
-                  </Select>
-                </FormControl>
-              </Grid>
-              <Grid item xs={12} md={2}>
-                <FormControl sx={{ width: "100%" }} margin="normal">
-                  <Button onClick={addUser}>Add User</Button>
-                </FormControl>
+            </Grid>
+            <Grid item xs={12}>
+              <InputLabel>Add Team Members </InputLabel>
+              <Grid container spacing={2}>
+                <Grid item xs={12} md={4}>
+                  <FormControl sx={{ width: "100%" }} margin="normal">
+                    <InputLabel id="team-select-label">Team</InputLabel>
+                    <Select
+                      labelId="team-select-label"
+                      id="team-select"
+                      value={filter.teamId}
+                      onChange={(e) =>
+                        setFilter({
+                          ...filter,
+                          teamId: e.target.value as string,
+                        })
+                      }
+                      input={<OutlinedInput label="Team" />}
+                      name="team"
+                    >
+                      {isFetching && (
+                        <MenuItem value="" disabled>
+                          <Loader size={20} thickness={2} />
+                        </MenuItem>
+                      )}
+                      {teamList?.map((team) => (
+                        <MenuItem value={team._id} key={team._id}>
+                          {team.name}
+                        </MenuItem>
+                      ))}
+                    </Select>
+                  </FormControl>
+                </Grid>
+                <Grid item xs={12} md={3}>
+                  <FormControl sx={{ width: "100%" }} margin="normal">
+                    <InputLabel id="team-select-label">Position</InputLabel>
+                    <Select
+                      labelId="team-select-label"
+                      id="team-select"
+                      value={filter.positionId}
+                      onChange={(e) =>
+                        setFilter({
+                          ...filter,
+                          positionId: e.target.value as string,
+                        })
+                      }
+                      input={<OutlinedInput label="Position" />}
+                      name="positionId"
+                    >
+                      {positionListLoading && (
+                        <MenuItem value={""} disabled>
+                          <Loader size={20} thickness={2} />
+                        </MenuItem>
+                      )}
+                      {positionList?.positionList?.map((position) => (
+                        <MenuItem value={position._id} key={position._id}>
+                          {position.name}
+                        </MenuItem>
+                      ))}
+                    </Select>
+                  </FormControl>
+                </Grid>
+                <Grid item xs={12} md={3}>
+                  <FormControl sx={{ width: "100%" }} margin="normal">
+                    <InputLabel id="team-select-label">User</InputLabel>
+                    <Select
+                      labelId="team-select-label"
+                      id="team-select"
+                      value={filter.userId}
+                      onChange={(e) =>
+                        setFilter({
+                          ...filter,
+                          userId: e.target.value as string,
+                        })
+                      }
+                      input={<OutlinedInput label="User Name" />}
+                      name="userId"
+                    >
+                      {teamMemberLoading && (
+                        <MenuItem value={""} disabled>
+                          <Loader size={20} thickness={2} />
+                        </MenuItem>
+                      )}
+                      {availableMembers?.map((user) => (
+                        <MenuItem value={user._id} key={user._id}>
+                          {user.firstName}
+                        </MenuItem>
+                      ))}
+                    </Select>
+                  </FormControl>
+                </Grid>
+                <Grid item xs={12} md={2}>
+                  <FormControl sx={{ width: "100%" }} margin="normal">
+                    <Button onClick={addUser}>Add User</Button>
+                  </FormControl>
+                </Grid>
               </Grid>
             </Grid>
           </Grid>
-        </Grid>
-        <InputLabel id="team-select-label">User</InputLabel>
-        <TeamList teamData={userList} setUserList={setUserList} />
-      </Box>
+          <InputLabel id="team-select-label">User</InputLabel>
+          <TeamList teamData={userList} setUserList={setUserList} />
+        </Box>
+      )}
     </>
   );
 };

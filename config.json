@@ -7,10 +7,11 @@
         "Nodejs",
         "Express",
         "MongoDB",
-        "socket.io",
-        "oneSignal",
         "role-based-auth",
-        "redis"
+        "redis",
+        "Winston",
+        "socket.io",
+        "oneSignal"
       ]
     },
     {

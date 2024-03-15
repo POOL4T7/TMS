@@ -119,12 +119,16 @@ log "✅ Nginx configuration test successful!"
 # Restart Nginx to apply the changes
 systemctl restart nginx || error_exit "Failed to restart Nginx. Please check Nginx configuration and permissions."
 log "✅ Nginx restarted successfully!"
+
+log "Uploads folder created for storing the images"
+mkdir -p server/uploads
+
 log "⚡️ Your project is now ready to roll! ⚡️"
 
 log "Setup PM2 (process manager) for Server."
 # npm install pm2@latest -g -y
 log "⚡️ starting the pm2.."
-pwd
+# pwd
 cat <<EOT >"ecosystem.config.js"
 module.exports = {
   apps: [
@@ -161,4 +165,4 @@ EOT
 # Redis
 sudo apt install redis-server -y >/dev/null || error_exit "Failed to install the Redis"
 sudo systemctl status redis-server
-sudo systemctl enable redis-server
+sudo systemctl enable redis-server -y >/dev/null

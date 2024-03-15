@@ -15,7 +15,7 @@ import UserSignIn from "./screens/Auth/UserSignIn";
 import EmployeeLayout from "./components/Layout/EmployeeLayout";
 import Employeedashboard from "./screens/Employee/Dashboard/EmployeeDashboard";
 import EmployeeProfile from "./screens/Employee/Profile/EmployeeProfile";
-import Project from "./screens/Company/Project/Project";
+import Project from "./screens/Project";
 import CUPage from "./screens/Company/Project/CUPage";
 // import EmployeeProject from "./screens/Employee/Project/EmployeeProject";
 
@@ -111,6 +111,12 @@ function getProfile(authState: AuthState) {
   }
 }
 
-// function getProjectP
+// function getProject(authState: AuthState) {
+//   if (authState.type === "company") {
+//     return <Project />;
+//   } else if (authState.type === "employee") {
+//     return <EmployeeProject />;
+//   }
+// }
 
 export default router;

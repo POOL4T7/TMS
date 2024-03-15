@@ -3,6 +3,7 @@ import { Types, ObjectId } from "mongoose";
 import ProjectService, { Filter } from "../services/Project.service";
 import { IProject } from "../interfaces/Project.interface";
 import Custom from "../helpers/custom";
+import Logger from "../helpers/Logger";
 
 class DepartmentController {
   constructor() {
@@ -33,7 +34,7 @@ class DepartmentController {
         message: "Project added successfully",
       });
     } catch (e: any) {
-      console.log(e);
+      Logger.error(e.message);
       return res.status(500).json({
         success: false,
         error: e.message,
@@ -61,7 +62,7 @@ class DepartmentController {
       if (req.body.status) formData.status = req.body.status;
       if (req.body.startDate) formData.startDate = req.body.startDate;
       if (req.body.endDate) formData.endDate = req.body.endDate;
-      console.log(formData);
+
       await ProjectService.findOneAndUpdate(filter, {
         $set: formData,
       });
@@ -70,7 +71,7 @@ class DepartmentController {
         message: "Project Updated Successfully",
       });
     } catch (e: any) {
-      console.log(e);
+      Logger.error(e.message);
       return res.status(500).json({
         success: false,
         error: e.message,
@@ -86,7 +87,7 @@ class DepartmentController {
       const userId = new Types.ObjectId(userDetails._id);
       const filter: Filter = {};
       filter["owner"] = new Types.ObjectId(
-        userDetails.companyId,
+        userDetails.companyId
       ) as unknown as ObjectId;
 
       if (role === "manager") {

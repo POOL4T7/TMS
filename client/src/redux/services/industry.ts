@@ -18,7 +18,7 @@ const baseQuery = fetchBaseQuery({
   baseUrl: `${import.meta.env.VITE_SERVER_URL}`,
 });
 
-const baseQueryWithRetry = retry(baseQuery, { maxRetries: 2 });
+const baseQueryWithRetry = retry(baseQuery, { maxRetries: 1 });
 
 export const industryApi = createApi({
   reducerPath: "industry",

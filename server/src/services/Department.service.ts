@@ -1,6 +1,7 @@
 import { ObjectId } from "mongoose";
 import DepartmentModel, { IDepartment } from "../models/Department.model";
 import { Sort } from "../interfaces/Custum.inteface";
+import Logger from "../helpers/Logger";
 
 interface Filter {
   _id?: string;
@@ -14,6 +15,7 @@ class DepartmentService {
       const department = await DepartmentModel.create(data);
       return department;
     } catch (error: any) {
+      Logger.error(`Create Department Error: ${error}`);
       throw new Error(`Error creating department: ${error.message}`);
     }
   }
@@ -23,6 +25,7 @@ class DepartmentService {
       const department = await DepartmentModel.findOne(filter).lean();
       return department;
     } catch (error: any) {
+      Logger.error(`find one Department Error: ${error.message}`);
       throw new Error(`Error getting department: ${error.message}`);
     }
   }
@@ -42,6 +45,7 @@ class DepartmentService {
         .lean();
       return departments;
     } catch (error: any) {
+      Logger.error(`Department list with pagination Error: ${error.message}`);
       throw new Error(`Error getting department: ${error.message}`);
     }
   }
@@ -53,6 +57,7 @@ class DepartmentService {
       });
       return department;
     } catch (error: any) {
+      Logger.error(`Department Update Error: ${error.message}`);
       throw new Error(`Error updating department: ${error.message}`);
     }
   }
@@ -61,6 +66,7 @@ class DepartmentService {
     try {
       await DepartmentModel.findOneAndDelete(filter);
     } catch (error: any) {
+      Logger.error(`Department Delete Error: ${error.message}`);
       throw new Error(`Error deleting department: ${error.message}`);
     }
   }
@@ -113,6 +119,7 @@ class DepartmentService {
       ]);
       return departmentList;
     } catch (error: any) {
+      Logger.error(`Department Stats list Error: ${error.message}`);
       throw new Error(`Error getting department: ${error.message}`);
     }
   }
@@ -126,6 +133,7 @@ class DepartmentService {
         .lean();
       return departmentList;
     } catch (error: any) {
+      Logger.error(`All Department list Error: ${error.message}`);
       throw new Error(`Error getting department: ${error.message}`);
     }
   }
@@ -134,6 +142,7 @@ class DepartmentService {
       const totalProject = await DepartmentModel.countDocuments(filter);
       return totalProject;
     } catch (error: any) {
+      Logger.error(`Department Count Error: ${error.message}`);
       throw new Error(`Error deleting position: ${error.message}`);
     }
   }

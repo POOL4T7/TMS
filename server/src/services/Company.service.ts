@@ -8,6 +8,7 @@ import ProjectService from "./Project.service";
 import UserService from "./User.service";
 import DepartmentService from "./Department.service";
 import PositionService from "./Position.service";
+import Logger from "../helpers/Logger";
 
 interface Filter {
   _id?: string;
@@ -20,6 +21,7 @@ class CompanyService {
       const company = await Company.create(data);
       return company;
     } catch (error: any) {
+      Logger.error(error);
       throw new Error(`Error creating company: ${error.message}`);
     }
   }
