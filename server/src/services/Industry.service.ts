@@ -1,13 +1,7 @@
 import { Sort } from "../interfaces/Custum.inteface";
 import Industry, { IIndustry } from "../models/Industry.model";
 import { createClient } from "redis";
-// const client = await createClient()
-//   .on('error', err => console.log('Redis Client Error', err))
-//   .connect();
 
-// await client.set('key', 'value');
-// const value = await client.get('key');
-// await client.disconnect();
 interface Filter {
   status?: string;
   slug?: string;
@@ -67,7 +61,7 @@ class IndustryService {
         process.env.REDIS_SERVICE === "ON" &&
         process.env.REDIS_INDUSTRY_LIST === "ON"
       ) {
-        const client = await createClient()
+        const client = await createClient({ url: process.env.REDIS_URL })
           .on("error", (err) => console.log("Redis Client Error", err))
           .connect();
         const value = await client.get("industryList");

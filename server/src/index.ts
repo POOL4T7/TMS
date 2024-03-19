@@ -24,6 +24,6 @@ if (process.env.NODE_ENV != "production") {
 app.use("/uploads", express.static(path.join(__dirname, "../uploads/")));
 routesV1(app);
 
-app.listen(8080, () => {
+app.listen(port, () => {
   console.log(`⚡️[server]: Server is running at http://localhost:${port}`);
 });

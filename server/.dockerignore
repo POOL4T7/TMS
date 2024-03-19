@@ -1,0 +1,7 @@
+node_modules/
+dist/
+logs/
+uploads/
+.env
+qwer.txt
+.DS_Store
