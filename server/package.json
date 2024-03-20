@@ -9,7 +9,8 @@
     "lint": "eslint . --ext .ts",
     "dev": "concurrently \"npx tsc --watch\" \"nodemon -q dist/src/index.js\"",
     "format": "npx prettier --write .",
-    "dep-secure": "snyk monitor --all-projects --org=008ccb8c-c162-4bf0-b43c-65e095b91334"
+    "dep-secure": "snyk monitor --all-projects --org=008ccb8c-c162-4bf0-b43c-65e095b91334",
+    "importData": "node dist/src/seeder.js"
   },
   "keywords": [],
   "author": "",

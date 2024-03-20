@@ -1,6 +1,7 @@
 import { Sort } from "../interfaces/Custum.inteface";
-import Industry, { IIndustry } from "../models/Industry.model";
-import { createClient } from "redis";
+import Industry from "../models/Industry.model";
+import IIndustry from "../interfaces/Industry.interface";
+import RedisClientSingleton from "./RedisClientSingleton.service";
 
 interface Filter {
   status?: string;
@@ -11,6 +12,14 @@ class IndustryService {
   async createIndustry(data: IIndustry): Promise<IIndustry> {
     try {
       const industry = await Industry.create(data);
+      return industry;
+    } catch (error: any) {
+      throw new Error(`Error creating industry: ${error.message}`);
+    }
+  }
+  static async createManyIndustry(data: IIndustry[]): Promise<IIndustry[]> {
+    try {
+      const industry = await Industry.insertMany(data);
       return industry;
     } catch (error: any) {
       throw new Error(`Error creating industry: ${error.message}`);
@@ -51,43 +60,39 @@ class IndustryService {
   async getAllIndustries(
     filter: Filter = {},
     select: string = "_id name",
-    sort: Sort = {}, // need to change
+    sort: Sort = {},
     skip: number = 0,
     limit: number = 0
   ): Promise<IIndustry[]> {
     try {
       let industries = [];
-      if (
-        process.env.REDIS_SERVICE === "ON" &&
-        process.env.REDIS_INDUSTRY_LIST === "ON"
-      ) {
-        const client = await createClient({ url: process.env.REDIS_URL })
-          .on("error", (err) => console.log("Redis Client Error", err))
-          .connect();
-        const value = await client.get("industryList");
+      let fromRedis = false;
+      const redisEnabled = process.env.REDIS_INDUSTRY_LIST === "ON";
+
+      const client = RedisClientSingleton.getInstance();
+      if (redisEnabled) {
+        const value = await client?.get("industryList");
         if (value) {
           console.log("from cached");
           industries = JSON.parse(value);
-        } else {
-          industries = await Industry.find(filter)
-            .select(select)
-            .sort(sort)
-            .skip(skip)
-            .limit(limit)
-            .lean();
-          await client.set("industryList", JSON.stringify(industries));
+          fromRedis = true;
         }
-        await client.disconnect();
-      } else {
+      }
+
+      if (!fromRedis) {
         industries = await Industry.find(filter)
           .select(select)
           .sort(sort)
           .skip(skip)
           .limit(limit)
           .lean();
+        if (redisEnabled) {
+          await client?.set("industryList", JSON.stringify(industries));
+        }
       }
       return industries;
     } catch (error: any) {
+      console.log(error);
       throw new Error(`Error getting industries: ${error.message}`);
     }
   }
