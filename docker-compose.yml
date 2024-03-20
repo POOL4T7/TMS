@@ -11,10 +11,11 @@ services:
       NODE_ENV: "development"
       REDIS_SERVICE: "ON"
       REDIS_INDUSTRY_LIST: "ON"
-      MONGO_URI: "mongodb://gulshan:1alyxstar@localhost:27017/social?authSource=admin"
+      MONGO_URI: "mongodb://root:rootpassword@mongodb_server:27017/tms?authSource=admin"
       REDIS_URL: redis://redis-server:6379
     depends_on:
       - redis-server
+      - mongodb_server
   frontend:
     build:
       context: ./client
@@ -28,3 +29,16 @@ services:
     ports:
       - "6379:6379"
     container_name: "redis-container"
+  mongodb_server:
+    image: mongo:jammy
+    restart: always
+    container_name: mongodb_server
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: root
+      MONGO_INITDB_ROOT_PASSWORD: rootpassword
+    ports:
+      - 27017:27017
+    volumes:
+      - "mongodb_server:/data/db"
+volumes:
+  mongodb_server: {}
