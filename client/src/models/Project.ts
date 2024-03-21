@@ -17,8 +17,8 @@ export interface ProjectList {
   teamSize: number;
   slug: string;
   status: string;
-  manager: User;
-  teamLead: User[];
+  manager: User | null;
+  teamLead: User | null;
 }
 
 export interface ProjectGetApiData {

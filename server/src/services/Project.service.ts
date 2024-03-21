@@ -13,8 +13,8 @@ export interface Filter {
   status?: string;
   slug?: string;
   owner?: string | ObjectId;
-  manager?: string | Types.ObjectId;
-  teamLead?: string | Types.ObjectId;
+  manager?: string | Types.ObjectId | null;
+  teamLead?: string | Types.ObjectId | null;
   // team?: ProjectTeam;
   "team.userId"?: Types.ObjectId | string;
 }

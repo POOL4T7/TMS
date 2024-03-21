@@ -84,8 +84,8 @@ const CUPage = () => {
         endDate:
           ProjectDetail?.endDate &&
           format(ProjectDetail?.endDate, "yyyy-MM-dd"),
-        manager: ProjectDetail.manager._id,
-        teamLead: ProjectDetail.teamLead._id,
+        manager: ProjectDetail.manager?._id,
+        teamLead: ProjectDetail.teamLead?._id,
         status: ProjectDetail.status,
         image: ProjectDetail.image,
       });

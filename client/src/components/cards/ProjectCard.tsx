@@ -21,7 +21,7 @@ interface propTypes {
   image: string;
   name: string;
   teamSize: number;
-  manager: User;
+  manager: User | null;
   status: string;
 }
 
@@ -33,11 +33,15 @@ const ProjectCard = ({ image, name, teamSize, manager, status }: propTypes) => {
         <CardMedia component="img" height="210" image={image} alt={name} />
         <CardContent sx={{ padding: "6px" }}>
           <Typography gutterBottom variant="h6" component="div">
-            {name}
+            {name.substring(0, 20)}
           </Typography>
-          <Typography gutterBottom component="div">
-            Manager- {`${manager.firstName} ${manager.lastName}`}
-          </Typography>
+          {manager ? (
+            <Typography gutterBottom component="div">
+              Manager- {`${manager?.firstName} ${manager?.lastName}`}
+            </Typography>
+          ) : (
+            <Typography color={"red"}>Not Assigned</Typography>
+          )}
         </CardContent>
       </CardActionArea>
       <CardActions>

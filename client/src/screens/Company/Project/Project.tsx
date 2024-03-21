@@ -60,7 +60,7 @@ const Project = () => {
                 name={item.name}
                 teamSize={item.teamSize}
                 image={item.image}
-                manager={item.manager}
+                manager={item?.manager}
                 // teamLead={item.teamLead}
                 status={item.status}
               />

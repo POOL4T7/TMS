@@ -11,9 +11,9 @@ export interface IProject {
   description: string;
   shortBio?: string;
   image: string;
-  owner: Schema.Types.ObjectId | string;
-  manager?: Schema.Types.ObjectId | string;
-  teamLead?: Schema.Types.ObjectId;
+  owner: Schema.Types.ObjectId | string | null;
+  manager?: Schema.Types.ObjectId | string | null;
+  teamLead?: Schema.Types.ObjectId | string | null;
   team: ProjectTeam[];
   status: "draft" | "publish" | "deleted";
   startDate: Date;

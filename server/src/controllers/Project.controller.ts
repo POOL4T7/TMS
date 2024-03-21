@@ -18,7 +18,7 @@ class DepartmentController {
         name: req.body.name,
         slug: req.body.slug,
         owner: companyId!,
-        teamLead: req.body.teamLead,
+        teamLead: req.body.teamLead || null,
         status: req.body.status,
         image: req.body.image,
         description: req.body.description,
@@ -26,7 +26,7 @@ class DepartmentController {
         startDate: req.body.startDate,
         endDate: req.body.endDate,
         techStack: req.body.techStack,
-        manager: req.body.manager,
+        manager: req.body.manager || null,
       };
       await ProjectService.createProject(body);
       return res.status(201).json({

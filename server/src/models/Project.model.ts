@@ -11,8 +11,8 @@ interface IProject {
   description: string;
   image: string;
   owner: Schema.Types.ObjectId;
-  manager?: Schema.Types.ObjectId;
-  teamLead?: Schema.Types.ObjectId;
+  manager?: Schema.Types.ObjectId | null;
+  teamLead?: Schema.Types.ObjectId | null;
   team: ProjectTeam[];
   status: "draft" | "publish" | "deleted";
   startDate: Date;
@@ -67,7 +67,7 @@ const projectSchema = new Schema<IProject>(
   },
   {
     timestamps: true,
-  },
+  }
 );
 
 const Project = mongoose.model<IProject>("Project", projectSchema);
