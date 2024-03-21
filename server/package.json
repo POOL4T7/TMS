@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "build": "npx tsc",
-    "start": "node dist/src/index.js",
+    "start": "node dist/src/seeder.js && node dist/src/index.js",
     "lint": "eslint . --ext .ts",
     "dev": "concurrently \"npx tsc --watch\" \"nodemon -q dist/src/index.js\"",
     "format": "npx prettier --write .",

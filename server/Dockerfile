@@ -17,10 +17,10 @@ COPY . .
 RUN npm run build
 
 # import the data to mongodb
-RUN npm run importData
+# RUN npm run importData
 
 # Expose port 8080 for Node.js
 
 EXPOSE 9876
-CMD ["npm", "start"]
+CMD [ "npm", "start"]
 
