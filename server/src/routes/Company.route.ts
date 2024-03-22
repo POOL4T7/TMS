@@ -11,19 +11,19 @@ router
   .get(
     AuthMiddleware.isAuth,
     AuthMiddleware.roleAuthMiddleware(["company"]),
-    CompanyController.getOwnCompany
+    CompanyController.getOwnCompany,
   )
   .patch(
     AuthMiddleware.isAuth,
     AuthMiddleware.roleAuthMiddleware(["company"]),
-    CompanyController.updateCompanyDetails
+    CompanyController.updateCompanyDetails,
   );
 
 router.get(
   "/dashboard-counts",
   AuthMiddleware.isAuth,
   AuthMiddleware.roleAuthMiddleware(["company"]),
-  CompanyController.dashboardCount
+  CompanyController.dashboardCount,
 );
 
 export default router;

@@ -72,7 +72,7 @@ class CompanyController {
     try {
       const updatedCompany = await CompanyService.updateCompany(
         { _id: companyId },
-        companyData
+        companyData,
       );
       if (updatedCompany) {
         return res.status(200).json({
@@ -109,7 +109,7 @@ class CompanyController {
     try {
       const userDetails = Custom.getSessionDetails(req);
       const counts = await CompanyService.dashboardTotalCount(
-        userDetails.companyId
+        userDetails.companyId,
       );
       const teamStats = await UserService.teamCountForDashboard({
         companyId: new Types.ObjectId(userDetails.companyId!),

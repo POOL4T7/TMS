@@ -1,7 +1,7 @@
 import { Sort } from "../interfaces/Custum.inteface";
 import Industry from "../models/Industry.model";
 import IIndustry from "../interfaces/Industry.interface";
-import RedisClientSingleton from "./RedisClientSingleton.service";
+import RedisService from "./RedisService.service";
 
 interface Filter {
   status?: string;
@@ -69,7 +69,7 @@ class IndustryService {
       let fromRedis = false;
       const redisEnabled = process.env.REDIS_INDUSTRY_LIST === "ON";
 
-      const client = RedisClientSingleton.getInstance();
+      const client = RedisService.getInstance();
       if (redisEnabled) {
         const value = await client?.get("industryList");
         if (value) {

@@ -36,7 +36,7 @@ class PositionService {
     select: string = "",
     skip: number = 0,
     limit: number = 10,
-    sort: Sort = { _id: -1 }
+    sort: Sort = { _id: -1 },
   ): Promise<PaginationData | null> {
     try {
       const position = await Position.find(filter)
@@ -56,7 +56,7 @@ class PositionService {
     filter: Filter,
     skip: number = 0,
     limit: number = 10,
-    sort: Sort = { _id: -1 }
+    sort: Sort = { _id: -1 },
   ): Promise<PaginationData | null> {
     try {
       const position = await Position.aggregate([
@@ -137,7 +137,7 @@ class PositionService {
 
   async updatePosition(
     positionId: string,
-    data: Partial<IPosition>
+    data: Partial<IPosition>,
   ): Promise<IPosition | null> {
     try {
       const position = await Position.findByIdAndUpdate(positionId, data, {
@@ -159,7 +159,7 @@ class PositionService {
   }
   static async findOneAndUpdate(
     filter: Filter,
-    formData: any
+    formData: any,
   ): Promise<boolean> {
     try {
       const data = await Position.findOneAndUpdate(filter, formData);

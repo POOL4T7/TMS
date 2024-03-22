@@ -43,11 +43,11 @@ class DepartmentController {
       const departments = await DepartmentService.departmentListWithStats(
         {
           companyId: new Types.ObjectId(
-            userDetails.companyId
+            userDetails.companyId,
           ) as unknown as ObjectId,
         }, // need thinking
         0,
-        10
+        10,
       );
       return res.json({
         success: true,
@@ -68,7 +68,7 @@ class DepartmentController {
 
       const departments = await DepartmentService.findAll(
         { companyId: userDetails.companyId, status: "active" },
-        "name"
+        "name",
       );
       return res.json({
         success: true,
@@ -109,7 +109,7 @@ class DepartmentController {
           companyId: userDetails.companyId,
           _id: req.params.departmentId,
         },
-        { $set: formData }
+        { $set: formData },
       );
       if (!d) {
         return res.status(404).json({

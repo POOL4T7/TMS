@@ -69,7 +69,7 @@ class IndustryController {
     try {
       const updatedIndustry = await this.Industry.updateIndustry(
         industryId,
-        industryData
+        industryData,
       );
       if (updatedIndustry) {
         return res.json(updatedIndustry);

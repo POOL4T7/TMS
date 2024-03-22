@@ -35,7 +35,7 @@ class ProjectService {
     filter: Filter,
     skip: number = 0,
     limit: number = 10,
-    sort: Sort = { _id: -1 }
+    sort: Sort = { _id: -1 },
   ): Promise<ProjectStats> {
     try {
       const projects = await Project.find(filter)
@@ -77,7 +77,7 @@ class ProjectService {
 
   static async findOneAndUpdate(
     filter: Filter,
-    formData: any
+    formData: any,
   ): Promise<boolean> {
     try {
       const data = await Project.findOneAndUpdate(filter, formData);

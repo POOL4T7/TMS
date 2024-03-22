@@ -87,7 +87,7 @@ class DepartmentController {
       const userId = new Types.ObjectId(userDetails._id);
       const filter: Filter = {};
       filter["owner"] = new Types.ObjectId(
-        userDetails.companyId
+        userDetails.companyId,
       ) as unknown as ObjectId;
 
       if (role === "manager") {

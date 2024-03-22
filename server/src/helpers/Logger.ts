@@ -38,7 +38,7 @@ class Logger {
           winston.format.printf((info) => {
             // console.log(info);
             return `{ level: ${info.level}, message: ${info.message} } timestamps: [${info.timestamp}],`;
-          })
+          }),
         ),
       }),
       new winston.transports.File({
@@ -46,14 +46,14 @@ class Logger {
         level: "error",
         format: winston.format.combine(
           winston.format.timestamp({ format: "YYYY-MM-DD HH:mm:ss:ms" }),
-          winston.format.json()
+          winston.format.json(),
         ),
       }),
       new winston.transports.File({
         filename: "logs/all.log",
         format: winston.format.combine(
           winston.format.timestamp({ format: "YYYY-MM-DD HH:mm:ss:ms" }),
-          winston.format.json()
+          winston.format.json(),
         ),
       }),
     ];
