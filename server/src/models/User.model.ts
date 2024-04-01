@@ -75,8 +75,27 @@ const userSchema: Schema<IUser> = new Schema(
       default: Date.now(),
     },
   },
-  { timestamps: true },
+  { timestamps: true }
 );
+
+// userSchema.pre<IUser>("save", async function (next) {
+//   const user = this;
+//   if (!user.isModified("password")) return next();
+
+//   try {
+//     const salt = await bcrypt.genSalt(10);
+//     const hash = await bcrypt.hash(user.password, salt);
+//     user.password = hash;
+//     next();
+//   } catch (error) {
+//     return next(error);
+//   }
+// });
+
+userSchema.pre("findOneAndUpdate", (data) => {
+  console.log(this, data);
+  // if(this.password.isModified)
+});
 
 const User = mongoose.model<IUser>("User", userSchema);
 

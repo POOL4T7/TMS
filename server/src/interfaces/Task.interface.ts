@@ -10,6 +10,7 @@ export interface ITask {
   _id?: Types.ObjectId | string;
   title: string;
   description: string;
+  projectID: Types.ObjectId | string;
   assignedTo: Types.ObjectId | string;
   assignedBy: Types.ObjectId | string;
   comment: Message[];
@@ -17,6 +18,7 @@ export interface ITask {
 
 export interface TaskFilter {
   _id?: Types.ObjectId | string;
-  assignedTo: Types.ObjectId | string;
-  assignedBy: Types.ObjectId | string;
+  assignedTo?: Types.ObjectId | string;
+  assignedBy?: Types.ObjectId | string;
+  status?: string;
 }

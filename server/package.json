@@ -5,9 +5,9 @@
   "main": "index.js",
   "scripts": {
     "build": "npx tsc",
-    "start": "node dist/src/seeder.js && node dist/src/index.js",
+    "start": "node dist/src/seeder.js && node dist/server.js",
     "lint": "eslint . --ext .ts",
-    "dev": "concurrently \"npx tsc --watch\" \"nodemon -q dist/src/index.js\"",
+    "dev": "concurrently \"npx tsc --watch\" \"nodemon -q dist/server.js\"",
     "format": "npx prettier --write .",
     "dep-secure": "snyk monitor --all-projects --org=008ccb8c-c162-4bf0-b43c-65e095b91334",
     "importData": "node dist/src/seeder.js"
@@ -41,7 +41,7 @@
     "nodemon": "^3.0.2",
     "swagger-jsdoc": "^6.2.8",
     "swagger-ui-express": "^5.0.0",
-    "typescript": "^5.3.3",
+    "typescript": "^5.4.3",
     "winston": "^3.11.0"
   }
 }
