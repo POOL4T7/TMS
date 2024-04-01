@@ -1,6 +1,8 @@
-import mongoose, { Schema } from "mongoose";
+import mongoose, { Query, Schema } from "mongoose";
+import BcryptJs from "bcryptjs";
 
 export interface IUser {
+  isModified: any;
   _id?: Schema.Types.ObjectId;
   email: string;
   password: string;
@@ -15,6 +17,7 @@ export interface IUser {
   hireDate?: Date;
   qualification?: string[];
   status: "active" | "inactive" | "deleted" | "suspended";
+  updatePassword(newPassword: string): Promise<boolean>;
 }
 
 const userSchema: Schema<IUser> = new Schema(
@@ -78,23 +81,34 @@ const userSchema: Schema<IUser> = new Schema(
   { timestamps: true }
 );
 
-// userSchema.pre<IUser>("save", async function (next) {
-//   const user = this;
-//   if (!user.isModified("password")) return next();
+userSchema.pre<IUser>("save", async function (next) {
+  if (!this.isModified("password")) return next();
 
-//   try {
-//     const salt = await bcrypt.genSalt(10);
-//     const hash = await bcrypt.hash(user.password, salt);
-//     user.password = hash;
-//     next();
-//   } catch (error) {
-//     return next(error);
-//   }
-// });
+  try {
+    const salt = await BcryptJs.genSalt(10);
+    const hash = await BcryptJs.hash(this.password, salt);
+    this.password = hash;
+    next();
+  } catch (error: any) {
+    return next(error);
+  }
+});
 
-userSchema.pre("findOneAndUpdate", (data) => {
-  console.log(this, data);
-  // if(this.password.isModified)
+userSchema.pre<IUser>("findOneAndUpdate", async function (next) {
+  const query: Query<IUser | null, IUser> = this as unknown as Query<
+    IUser | null,
+    IUser
+  >;
+  const update = query.getUpdate() as any;
+  if (!update || !update.password) return next();
+  try {
+    const salt = await BcryptJs.genSalt(10);
+    const hash = await BcryptJs.hash(update.$set.password, salt);
+    await query.updateOne({ $set: { password: hash } });
+    next();
+  } catch (error: any) {
+    return next(error);
+  }
 });
 
 const User = mongoose.model<IUser>("User", userSchema);

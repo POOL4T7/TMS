@@ -5,6 +5,7 @@ import CompanyService from "../services/Company.service";
 import TokenService from "../services/Token.service";
 import UserService from "../services/User.service";
 import { UserCompany } from "../interfaces/User.interface";
+import BcryptJs from "bcryptjs";
 
 // const waitFiveSeconds = () => {
 //   return new Promise((resolve) => {
@@ -151,15 +152,22 @@ class CompanyController {
           companyId: user._id?.toString(),
         });
       }
-      return res.status(200).json({
-        success: true,
-        data: {
-          accessToken: accessToken,
-          type: role,
-          status: user.status,
-        },
-        message: "successfully logged-In",
-      });
+      if (await BcryptJs.compare(req.body.password, user!.password!)) {
+        return res.status(200).json({
+          success: true,
+          data: {
+            accessToken: accessToken,
+            type: role,
+            status: user.status,
+          },
+          message: "successfully logged-In",
+        });
+      } else {
+        return res.status(400).json({
+          success: false,
+          message: "invalid credentials",
+        });
+      }
     } catch (e: any) {
       return res.status(500).json({
         success: false,
