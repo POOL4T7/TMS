@@ -17,7 +17,10 @@ import { useAppDispatch, useTypedSelector } from "../../redux/store";
 import { userInfo } from "../../redux/features/authSlice";
 import { useNavigate } from "react-router-dom";
 import Loader from "../../components/Loader";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
 import { addToStrorage } from "../../utils/storage";
+import { loginSchema } from "../../schema/authSchema";
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 function Copyright(props: any) {
@@ -40,11 +43,25 @@ function Copyright(props: any) {
 
 const defaultTheme = createTheme();
 
+type LoginFormInputs = {
+  email: string;
+  password: string;
+  remember: boolean;
+};
+
 export default function SignIn() {
   const [companyLogin, { isLoading }] = useLoginMutation();
   const dispatch = useAppDispatch();
   const selector = useTypedSelector((state) => state.authState);
   const navigate = useNavigate();
+
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm<LoginFormInputs>({
+    resolver: zodResolver(loginSchema),
+  });
 
   React.useEffect(() => {
     if (selector.isAuthenticated) {
@@ -52,19 +69,13 @@ export default function SignIn() {
     }
   }, [selector.isAuthenticated, navigate]);
 
-  const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
+  const onSubmit = async (data: LoginFormInputs) => {
     try {
-      event.preventDefault();
-      const data = new FormData(event.currentTarget);
       const response = await companyLogin({
-        email: data.get("email")?.toString() || "",
-        password: data.get("password")?.toString() || "",
+        email: data.email,
+        password: data.password,
       }).unwrap();
-      addToStrorage(
-        "auth",
-        JSON.stringify(response),
-        data.get("remember") ? 2 : -1
-      );
+      addToStrorage("auth", JSON.stringify(response), data.remember ? 2 : -1);
       dispatch(userInfo(response));
     } catch (e) {
       console.log(e);
@@ -91,7 +102,7 @@ export default function SignIn() {
           </Typography>
           <Box
             component="form"
-            onSubmit={handleSubmit}
+            onSubmit={handleSubmit(onSubmit)}
             noValidate
             sx={{ mt: 1 }}
           >
@@ -101,24 +112,28 @@ export default function SignIn() {
               fullWidth
               id="email"
               label="Email Address"
-              name="email"
               autoComplete="email"
               autoFocus
+              {...register("email")}
+              error={!!errors.email?.message}
+              helperText={errors.email?.message}
             />
             <TextField
               margin="normal"
               required
               fullWidth
-              name="password"
               label="Password"
               type="password"
               id="password"
               autoComplete="current-password"
+              {...register("password")}
+              error={!!errors.password?.message}
+              helperText={errors.password?.message}
             />
             <FormControlLabel
               control={<Checkbox value={true} color="primary" />}
               label="Remember me"
-              name="remember"
+              {...register("remember")}
             />
             <Button
               type="submit"

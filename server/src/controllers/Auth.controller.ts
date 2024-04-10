@@ -4,7 +4,7 @@ import { Request, Response } from "express";
 import CompanyService from "../services/Company.service";
 import TokenService from "../services/Token.service";
 import UserService from "../services/User.service";
-// import EmailService from "../services/Email.service";
+import EmailService from "../services/Email.service";
 import { UserCompany } from "../interfaces/User.interface";
 import BcryptJs from "bcryptjs";
 
@@ -181,14 +181,14 @@ class CompanyController {
   async sendLink(req: Request, res: Response): Promise<Response> {
     try {
       const { email } = req.body;
-      const isExists = await UserService.findOne({ email, status: "Active" });
+      const isExists = await UserService.findOne({ email, status: "active" });
       if (isExists) {
-        // const token = TokenService.generateToken({ email });
-        // const subject = "Reset Password Link";
-        // const textPart = `Dear ${isExists?.firstName}, don't worry we are here.`;
-        // const link = `${process.env.WEB_URL}/reset-password?token=${token}`;
-        // const html = `Please click on link for reset password <br/><br/> ${link}`;
-        // await EmailService.sendEmail(email, subject, textPart, html);
+        const token = TokenService.generateToken({ email });
+        const subject = "Reset Password Link";
+        const textPart = `Dear ${isExists?.firstName}, don't worry we are here.`;
+        const link = `${process.env.WEB_URL}/reset-password?token=${token}`;
+        const html = `Please click on link for reset password <br/><br/> ${link}`;
+        await EmailService.sendEmail(email, subject, textPart, html);
 
         return res.status(200).json({
           success: true,

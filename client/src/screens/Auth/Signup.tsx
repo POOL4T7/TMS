@@ -27,6 +27,9 @@ import { useAppDispatch } from "../../redux/store";
 import { userInfo } from "../../redux/features/authSlice";
 import { useTypedSelector } from "../../redux/store";
 import { addToStrorage } from "../../utils/storage";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { signupSchema } from "../../schema/authSchema";
+import { useForm } from "react-hook-form";
 
 const ITEM_HEIGHT = 48;
 const ITEM_PADDING_TOP = 8;
@@ -39,24 +42,12 @@ const MenuProps = {
   },
 };
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-function Copyright(props: any) {
-  return (
-    <Typography
-      variant="body2"
-      color="text.secondary"
-      align="center"
-      {...props}
-    >
-      {"Copyright © "}
-      <Link color="inherit" href="https://mui.com/">
-        Your Website
-      </Link>{" "}
-      {new Date().getFullYear()}
-      {"."}
-    </Typography>
-  );
-}
+type SignupFormInputs = {
+  email: string;
+  password: string;
+  name: string;
+  remember: boolean;
+};
 
 export default function SignUp() {
   const selector = useTypedSelector((state) => state.authState);
@@ -68,6 +59,14 @@ export default function SignUp() {
 
   const { data, isFetching } = useIndustryListQuery();
   const dispatch = useAppDispatch();
+
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm<SignupFormInputs>({
+    resolver: zodResolver(signupSchema),
+  });
 
   useEffect(() => {
     if (selector.isAuthenticated) {
@@ -82,21 +81,15 @@ export default function SignUp() {
     setIndustryId(typeof value === "string" ? value.split(",") : value);
   };
 
-  const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
-    const data = new FormData(event.currentTarget);
+  const onSubmit = async (data: SignupFormInputs) => {
     try {
       const response = await createCompany({
-        name: data.get("name")?.toString() || "",
-        industry: data.get("industryList")?.toString()?.split(",") || [],
-        email: data.get("email")?.toString() || "",
-        password: data.get("password")?.toString() || "",
+        name: data.name,
+        industry: industryId,
+        email: data.email,
+        password: data.password,
       }).unwrap();
-      addToStrorage(
-        "auth",
-        JSON.stringify(response),
-        data.get("remember") ? 2 : -1
-      );
+      addToStrorage("auth", JSON.stringify(response), data.remember ? 2 : -1);
       dispatch(userInfo(response));
       // navigate("/")
     } catch (e) {
@@ -124,19 +117,21 @@ export default function SignUp() {
           <Box
             component="form"
             noValidate
-            onSubmit={handleSubmit}
+            onSubmit={handleSubmit(onSubmit)}
             sx={{ mt: 3 }}
           >
             <Grid container spacing={2}>
               <Grid item xs={12}>
                 <TextField
                   autoComplete="given-name"
-                  name="name"
                   required
                   fullWidth
                   id="name"
                   label="Company Name"
                   autoFocus
+                  {...register("name")}
+                  error={!!errors.name?.message}
+                  helperText={errors.name?.message}
                 />
               </Grid>
               <Grid item xs={12}>
@@ -145,8 +140,10 @@ export default function SignUp() {
                   fullWidth
                   id="email"
                   label="Email Address"
-                  name="email"
                   autoComplete="email"
+                  {...register("email")}
+                  error={!!errors.email?.message}
+                  helperText={errors.email?.message}
                 />
               </Grid>
               <Grid item xs={12}>
@@ -190,18 +187,20 @@ export default function SignUp() {
                 <TextField
                   required
                   fullWidth
-                  name="password"
                   label="Password"
                   type="password"
                   id="password"
                   autoComplete="new-password"
+                  {...register("password")}
+                  error={!!errors.password?.message}
+                  helperText={errors.password?.message}
                 />
               </Grid>
               <Grid item xs={12}>
                 <FormControlLabel
                   control={<Checkbox value={true} color="primary" />}
                   label="I accept the terms and conditions"
-                  name="remember"
+                  {...register("remember")}
                 />
               </Grid>
             </Grid>
@@ -215,14 +214,13 @@ export default function SignUp() {
             </Button>
             <Grid container justifyContent="flex-end">
               <Grid item>
-                <Link href="#" variant="body2">
+                <Link href="/login" color={"text.secondary"} variant="body2">
                   Already have an account? Sign in
                 </Link>
               </Grid>
             </Grid>
           </Box>
         </Box>
-        <Copyright sx={{ mt: 5 }} />
       </Container>
     </>
   );
