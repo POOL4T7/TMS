@@ -60,8 +60,8 @@ function Copyright(props: any) {
 
 export default function SignUp() {
   const selector = useTypedSelector((state) => state.authState);
-  const navigate =useNavigate();
-  
+  const navigate = useNavigate();
+
   const [industryId, setIndustryId] = useState<string[]>([]);
 
   const [createCompany] = useCreateCompanyMutation();
@@ -73,10 +73,8 @@ export default function SignUp() {
     if (selector.isAuthenticated) {
       navigate("/");
     }
-  
-  }, [selector.isAuthenticated, navigate])
-  
-  
+  }, [selector.isAuthenticated, navigate]);
+
   const handleChange = (event: SelectChangeEvent<typeof industryId>) => {
     const {
       target: { value },
@@ -201,9 +199,7 @@ export default function SignUp() {
               </Grid>
               <Grid item xs={12}>
                 <FormControlLabel
-                  control={
-                    <Checkbox value={true} color="primary" />
-                  }
+                  control={<Checkbox value={true} color="primary" />}
                   label="I accept the terms and conditions"
                   name="remember"
                 />

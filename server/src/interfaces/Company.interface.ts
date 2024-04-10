@@ -5,6 +5,17 @@ import { Types } from "mongoose";
 //   name?: string;
 // }
 
+export interface ICompany {
+  _id?: Types.ObjectId;
+  name: string;
+  industry: Types.ObjectId[];
+  email: string;
+  phone?: string;
+  password?: string;
+  status: string;
+  profile?: string;
+}
+
 interface Company {
   name: string;
   // industry: Industry[];

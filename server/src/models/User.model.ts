@@ -1,7 +1,7 @@
-import mongoose, { Query, Schema } from "mongoose";
+import mongoose, { Document, Query, Schema } from "mongoose";
 import BcryptJs from "bcryptjs";
 
-export interface IUser {
+export interface IUser extends Document {
   isModified: any;
   _id?: Schema.Types.ObjectId;
   email: string;

@@ -4,6 +4,7 @@ import { Request, Response } from "express";
 import CompanyService from "../services/Company.service";
 import TokenService from "../services/Token.service";
 import UserService from "../services/User.service";
+// import EmailService from "../services/Email.service";
 import { UserCompany } from "../interfaces/User.interface";
 import BcryptJs from "bcryptjs";
 
@@ -166,6 +167,37 @@ class CompanyController {
         return res.status(400).json({
           success: false,
           message: "invalid credentials",
+        });
+      }
+    } catch (e: any) {
+      return res.status(500).json({
+        success: false,
+        error: e.message,
+        message: "server error",
+      });
+    }
+  }
+
+  async sendLink(req: Request, res: Response): Promise<Response> {
+    try {
+      const { email } = req.body;
+      const isExists = await UserService.findOne({ email, status: "Active" });
+      if (isExists) {
+        // const token = TokenService.generateToken({ email });
+        // const subject = "Reset Password Link";
+        // const textPart = `Dear ${isExists?.firstName}, don't worry we are here.`;
+        // const link = `${process.env.WEB_URL}/reset-password?token=${token}`;
+        // const html = `Please click on link for reset password <br/><br/> ${link}`;
+        // await EmailService.sendEmail(email, subject, textPart, html);
+
+        return res.status(200).json({
+          success: true,
+          message: "Email is sended to your registred email",
+        });
+      } else {
+        return res.status(404).json({
+          success: false,
+          message: "User not found",
         });
       }
     } catch (e: any) {

@@ -1,6 +1,7 @@
-import mongoose, { Schema, Types } from "mongoose";
+import mongoose, { Document, Schema, Types } from "mongoose";
+import BcryptJs from "bcryptjs";
 
-export interface ICompany {
+export interface ICompany extends Document {
   _id?: Types.ObjectId;
   name: string;
   industry: Types.ObjectId[];
@@ -45,7 +46,20 @@ const companySchema = new Schema<ICompany>(
       default: "inactive",
     },
   },
-  { timestamps: true },
+  { timestamps: true }
 );
+
+companySchema.pre<ICompany>("save", async function (next) {
+  if (!this.isModified("password")) return next();
+
+  try {
+    const salt = await BcryptJs.genSalt(10);
+    const hash = await BcryptJs.hash(this.password || "", salt);
+    this.password = hash;
+    next();
+  } catch (error: any) {
+    return next(error);
+  }
+});
 
 export default mongoose.model<ICompany>("Company", companySchema);

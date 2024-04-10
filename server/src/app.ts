@@ -3,6 +3,7 @@ import express, { Express } from "express";
 // import connectDB from "../config/db";
 import cors from "cors";
 import swaggerUi from "swagger-ui-express";
+import cookieParser from "cookie-parser";
 import specs from "./swaggerConfig";
 
 // dotenv.config();
@@ -12,10 +13,26 @@ const app: Express = express();
 
 import routesV1 from "./routesV1";
 import path from "path";
-app.use(cors());
+// app.use(cors({}));
 app.use(express.json());
+app.use(cookieParser());
 app.use(express.urlencoded({ extended: false }));
+app.use(
+  cors({
+    // origin: "http://localhost:5173",
+    // credentials: true,
+  })
+);
 
+// app.get("/", (req, res) => {
+//   const { myHttpOnlyCookie } = req.cookies;
+//   console.log("myHttpOnlyCookie", myHttpOnlyCookie);
+//   // console.log("res.cookie.length", res.cookie.length);
+//   console.log("Cookies: ", req.cookies);
+//   // console.log("signedCookies", cookieParser.signedCookies);
+//   // res.cookie("myHttpOnlyCookie", "cookieValue", { httpOnly: true });
+//   return res.status(200).json(req.cookies);
+// });
 // const port = process.env.PORT;
 if (process.env.NODE_ENV != "production") {
   app.use("/swagger-api-docs", swaggerUi.serve, swaggerUi.setup(specs));
