@@ -1,5 +1,3 @@
-// routes/industryRoutes.ts
-
 import express, { Router } from "express";
 import PositionController from "../controllers/Position.controller";
 import AuthMiddleware from "../middlewares/Auth.middleware";

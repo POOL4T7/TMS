@@ -7,7 +7,7 @@ class EmailService {
     // Initialize the Mailjet client instance
     EmailService.Instance = Mailjet.apiConnect(
       process.env.MAILJET_API_KEY || "",
-      process.env.MAILJET_SECRET_KEY || ""
+      process.env.MAILJET_SECRET_KEY || "",
     );
   }
 
@@ -22,7 +22,7 @@ class EmailService {
     recipient: string,
     subject: string,
     textPart: string,
-    htmlPart: string
+    htmlPart: string,
   ): Promise<void> {
     try {
       const mailjet = EmailService.getInstance();
@@ -41,12 +41,13 @@ class EmailService {
             ],
             Subject: subject,
             TextPart: textPart,
-            HTMLPart: htmlPart, 
+            HTMLPart: htmlPart,
           },
         ],
       });
 
-      await request;
+      const res = await request;
+      console.log("res", res);
     } catch (e: any) {
       throw new Error(e.message);
     }

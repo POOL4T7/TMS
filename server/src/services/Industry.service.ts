@@ -2,6 +2,7 @@ import { Sort } from "../interfaces/Custum.inteface";
 import Industry from "../models/Industry.model";
 import IIndustry from "../interfaces/Industry.interface";
 import RedisService from "./RedisService.service";
+import IndustryRepo from "../repository/Industry.repository";
 
 interface Filter {
   status?: string;
@@ -68,9 +69,12 @@ class IndustryService {
       let industries = [];
       let fromRedis = false;
       const redisEnabled = process.env.REDIS_INDUSTRY_LIST === "ON";
-
+      let IndustryClient;
       const client = RedisService.getInstance();
       if (redisEnabled) {
+        IndustryClient = await IndustryRepo();
+        const dat = await IndustryClient?.search().count();
+        console.log("Industry List :", dat);
         const value = await client?.get("industryList");
         if (value) {
           console.log("from cached");
@@ -88,8 +92,16 @@ class IndustryService {
           .lean();
         if (redisEnabled) {
           await client?.set("industryList", JSON.stringify(industries));
+          // IndustryClient = await IndustryRepo();
+          
         }
       }
+      // const res = await IndustryClient?.save({
+      //   name: "sde 2",
+      //   slug: "sde-2",
+      //   description: "sdczsdcsdc sdcsdc bsdjkcj,",
+      // });
+      // console.log("res", res);
       return industries;
     } catch (error: any) {
       console.log(error);

@@ -1,4 +1,4 @@
-// routes/industryRoutes.ts
+// routes/departmentRoutes.ts
 
 import express, { Router } from "express";
 import DepartmentController from "../controllers/Department.controller";

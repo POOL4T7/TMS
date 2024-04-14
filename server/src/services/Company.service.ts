@@ -51,7 +51,7 @@ class CompanyService {
     select: string = "",
     skip: number = 0,
     limit: number = 10,
-    sort: Sort = { _id: -1 }
+    sort: Sort = { _id: -1 },
   ): Promise<CompanyPaginationData | null> {
     try {
       const companyList = await Company.find(filter)
@@ -70,7 +70,7 @@ class CompanyService {
 
   static async updateCompany(
     filter: Filter,
-    data: Partial<ICompany>
+    data: Partial<ICompany>,
   ): Promise<ICompany | null> {
     try {
       const company = await Company.findByIdAndUpdate(filter, data, {

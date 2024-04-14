@@ -1,4 +1,4 @@
-// routes/industryRoutes.ts
+// routes/customRoutes.ts
 
 import express, { Router } from "express";
 import multer from "multer";

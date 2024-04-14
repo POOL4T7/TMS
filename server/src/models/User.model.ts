@@ -78,7 +78,7 @@ const userSchema: Schema<IUser> = new Schema(
       default: Date.now(),
     },
   },
-  { timestamps: true }
+  { timestamps: true },
 );
 
 userSchema.pre<IUser>("save", async function (next) {

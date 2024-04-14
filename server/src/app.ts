@@ -13,16 +13,18 @@ const app: Express = express();
 
 import routesV1 from "./routesV1";
 import path from "path";
-// app.use(cors({}));
-app.use(express.json());
-app.use(cookieParser());
-app.use(express.urlencoded({ extended: false }));
+
 app.use(
   cors({
-    // origin: "http://localhost:5173",
+    origin: "http://localhost:5173",
     // credentials: true,
   })
 );
+
+// connectRedisClient();
+app.use(express.json());
+app.use(cookieParser());
+app.use(express.urlencoded({ extended: false }));
 
 // app.get("/", (req, res) => {
 //   const { myHttpOnlyCookie } = req.cookies;

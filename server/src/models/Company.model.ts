@@ -46,7 +46,7 @@ const companySchema = new Schema<ICompany>(
       default: "inactive",
     },
   },
-  { timestamps: true }
+  { timestamps: true },
 );
 
 companySchema.pre<ICompany>("save", async function (next) {
