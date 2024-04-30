@@ -5,8 +5,8 @@ import cors from "cors";
 import swaggerUi from "swagger-ui-express";
 import cookieParser from "cookie-parser";
 import specs from "./swaggerConfig";
-
 // dotenv.config();
+
 
 const app: Express = express();
 // connectDB();

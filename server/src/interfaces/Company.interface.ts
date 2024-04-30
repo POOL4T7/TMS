@@ -14,6 +14,7 @@ export interface ICompany {
   password?: string;
   status: string;
   profile?: string;
+  resetToken?: string;
 }
 
 interface Company {

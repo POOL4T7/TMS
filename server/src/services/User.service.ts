@@ -13,6 +13,7 @@ export interface Filter {
   positionId?: Schema.Types.ObjectId | string;
   employeeId?: string;
   status?: string;
+  resetToken?: string;
 }
 
 interface TeamDashboardCount {
@@ -153,6 +154,18 @@ class UserService {
       return departmentList;
     } catch (error: any) {
       throw new Error(`Error getting department: ${error.message}`);
+    }
+  }
+// ----------------------DS---------------------
+  static async updatePassword(
+    filter: Filter,
+    data: Partial<IUser>,
+  ): Promise<IUser | null> {
+    try {
+      const user = await User.findOneAndUpdate(filter, data, { new: true });
+      return user;
+    } catch (error: any) {
+      throw new Error(`Error updating user: ${error.message}`);
     }
   }
 }
