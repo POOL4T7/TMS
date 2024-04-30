@@ -14,7 +14,7 @@ const router: Router = express.Router();
 
 router
   .route("/company/create")
-  .post(companySignUpValidator, validator, AuthController.createCompany);
+  .post( AuthController.createCompany);
 router.route("/login").post(loginValidator, validator, AuthController.login);
 
 // router.route("/user/login").post(AuthController.userLogin);
@@ -22,5 +22,15 @@ router.route("/login").post(loginValidator, validator, AuthController.login);
 router
   .route("/send-link")
   .post(emailLinkValidator, validator, AuthController.sendLink);
+
+// ------------------------------------DS------------------------------------------
+// this route for forgot password
+router
+  .route("/forgot-password")
+  .post(emailLinkValidator, validator, AuthController.sendResetToken);
+
+router
+  .route("/reset-password")
+  .post(AuthController.resetPassword);
 
 export default router;

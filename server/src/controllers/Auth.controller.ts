@@ -208,6 +208,69 @@ class CompanyController {
       });
     }
   }
+
+  // -----------------------------DS-----------------------------
+
+  async sendResetToken(req: Request, res: Response): Promise<Response> {
+    try {
+      const {email} = req.body;
+      
+      let user, resetToken;
+      resetToken = Math.random().toString(36).substring(2,8);
+      // mail info
+      user = await UserService.findOne({ email } , "");
+      let updatedUser;
+      if(user){
+        updatedUser = await UserService.updateUser({_id : user._id?.toString()} , {resetToken})
+      }
+      else {
+        user = await CompanyService.findOne({ email });
+        if(!user) return res.status(404).json({ message: 'User not found' });
+        updatedUser = await CompanyService.updateCompany({_id : user._id?.toString()} , {resetToken});
+      }
+      
+      const recipient = email;
+      const subject = "Action Required: Reset Your Password";
+      const textPart = `To reset your password, click on this link: ${process.env.WEB_URL}/auth/reset-password?resetToken=${resetToken}`
+      await EmailService.sendEmail(recipient, subject, textPart, "");
+      return res.status(200).json({message: 'Password reset link sent successfully'});
+
+    } catch (e: any) {
+      return res.status(500).json({
+        success: false,
+        error: e.message,
+        message: "server error",
+      });
+    }
+  }
+
+  async resetPassword(req: Request, res: Response): Promise<Response> {
+    try {
+      const {email , newPassword} = req.body;
+      const resetToken = req.query.resetToken as string;
+      let user , updatedUser;
+      user = await UserService.findOne({ resetToken } , "");
+      if(user){
+        updatedUser = await UserService.updatePassword({email} , {password : newPassword , resetToken : undefined});
+      }
+      else {
+        user = await CompanyService.findOne({resetToken});
+        if (!user) {
+          return res.status(404).json({ message: 'Invalid or expired token' });
+        }
+        updatedUser = await CompanyService.updatePassword({email} , {password : newPassword , resetToken : undefined});
+      }
+
+      return res.status(200).json({ updatedUser , message: 'Password reset successful' });
+
+    } catch (e: any) {
+      return res.status(500).json({
+        success: false,
+        error: e.message,
+        message: "server error",
+      });
+    }
+  }
 }
 
 export default new CompanyController();

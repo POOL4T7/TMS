@@ -21,6 +21,7 @@ export interface IUser {
   qualification?: string[];
   companyId?: UserCompany | ObjectId | null | undefined | string;
   status: "active" | "inactive" | "deleted" | "suspended";
+  resetToken?: string;
 }
 
 interface Department {

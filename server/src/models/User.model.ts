@@ -18,6 +18,8 @@ export interface IUser extends Document {
   qualification?: string[];
   status: "active" | "inactive" | "deleted" | "suspended";
   updatePassword(newPassword: string): Promise<boolean>;
+  // change --------------
+  resetToken?: string; 
 }
 
 const userSchema: Schema<IUser> = new Schema(
@@ -77,6 +79,12 @@ const userSchema: Schema<IUser> = new Schema(
       type: Date,
       default: Date.now(),
     },
+    // change --------------
+    resetToken: {
+      type: String,
+      default: undefined,
+    }
+    // --------------------
   },
   { timestamps: true },
 );

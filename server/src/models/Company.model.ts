@@ -1,4 +1,4 @@
-import mongoose, { Document, Schema, Types } from "mongoose";
+import mongoose, { Document, Query, Schema, Types } from "mongoose";
 import BcryptJs from "bcryptjs";
 
 export interface ICompany extends Document {
@@ -10,6 +10,7 @@ export interface ICompany extends Document {
   password?: string;
   status: string;
   profile?: string;
+  resetToken?: string;
 }
 
 const companySchema = new Schema<ICompany>(
@@ -45,6 +46,10 @@ const companySchema = new Schema<ICompany>(
       enum: ["active", "inactive", "blocked", "suspended"],
       default: "inactive",
     },
+    resetToken: {
+      type: String,
+      default: undefined
+    }
   },
   { timestamps: true },
 );
@@ -56,6 +61,24 @@ companySchema.pre<ICompany>("save", async function (next) {
     const salt = await BcryptJs.genSalt(10);
     const hash = await BcryptJs.hash(this.password || "", salt);
     this.password = hash;
+    next();
+  } catch (error: any) {
+    return next(error);
+  }
+});
+
+companySchema.pre<ICompany>("findOneAndUpdate", async function (next) {
+  const query: Query<ICompany | null, ICompany> = this as unknown as Query<
+  ICompany | null,
+  ICompany
+  >;
+  const update = query.getUpdate() as any;
+  if (!update || !update.password) return next();
+  try {
+    const salt = await BcryptJs.genSalt(10);
+    const hash = await BcryptJs.hash(update.password, salt);
+    update.password = hash;
+    // await query.updateOne({ $set: { password: hash } });
     next();
   } catch (error: any) {
     return next(error);
