@@ -222,13 +222,11 @@ class CompanyController {
       let updatedUser;
       if(user){
         updatedUser = await UserService.updateUser({_id : user._id?.toString()} , {resetToken})
-        console.log(updatedUser);
       }
       else {
         user = await CompanyService.findOne({ email });
         if(!user) return res.status(404).json({ message: 'User not found' });
         updatedUser = await CompanyService.updateCompany({_id : user._id?.toString()} , {resetToken});
-        console.log(updatedUser);
       }
       
       const recipient = email;

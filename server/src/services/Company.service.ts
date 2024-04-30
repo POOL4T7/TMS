@@ -130,10 +130,7 @@ class CompanyService {
       data: Partial<ICompany>,
   ): Promise<ICompany | null> {
     try {
-      console.log(filter);
-      console.log(data);
       const company = await Company.findOneAndUpdate(filter, data, { new: true });
-      console.log(company);
       return company;
     } catch (error: any) {
       throw new Error(`Error updating company's password: ${error.message}`);
