@@ -1,4 +1,4 @@
-import Mailjet, { Client } from "node-mailjet";
+import Mailjet, { Client } from 'node-mailjet';
 
 class EmailService {
   private static Instance: Client | null = null;
@@ -6,8 +6,8 @@ class EmailService {
   private constructor() {
     // Initialize the Mailjet client instance
     EmailService.Instance = Mailjet.apiConnect(
-      process.env.MAILJET_API_KEY || "",
-      process.env.MAILJET_SECRET_KEY || "",
+      process.env.MAILJET_API_KEY || '',
+      process.env.MAILJET_SECRET_KEY || ''
     );
   }
 
@@ -22,17 +22,17 @@ class EmailService {
     recipient: string,
     subject: string,
     textPart: string,
-    htmlPart: string,
+    htmlPart: string
   ): Promise<void> {
     try {
       const mailjet = EmailService.getInstance();
 
-      const request = mailjet.post("send", { version: "v3.1" }).request({
+      const request = mailjet.post('send', { version: 'v3.1' }).request({
         Messages: [
           {
             From: {
-              Email: "gulshan.gupta@omlogic.co.in",
-              Name: "Genesis",
+              Email: 'gulshan.gupta@omlogic.co.in',
+              Name: 'Genesis',
             },
             To: [
               {
@@ -46,8 +46,8 @@ class EmailService {
         ],
       });
 
-      const res = await request;
-      console.log("res", res);
+      await request;
+      // console.log("res", res);
     } catch (e: any) {
       throw new Error(e.message);
     }

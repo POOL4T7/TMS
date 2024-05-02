@@ -1,8 +1,8 @@
-import { Schema, Types } from "mongoose";
-import { Sort } from "../interfaces/Custum.inteface";
-import { UserPaginationData } from "../interfaces/User.interface";
-import User from "../models/User.model";
-import { IUser } from "../interfaces/User.interface";
+import { Schema, Types } from 'mongoose';
+import { Sort } from '../interfaces/Custum.inteface';
+import { UserPaginationData } from '../interfaces/User.interface';
+import User from '../models/User.model';
+import { IUser } from '../interfaces/User.interface';
 
 export interface Filter {
   _id?: string;
@@ -13,7 +13,7 @@ export interface Filter {
   positionId?: Schema.Types.ObjectId | string;
   employeeId?: string;
   status?: string;
-  resetToken?: string;
+  resetToken?: string | null;
 }
 
 interface TeamDashboardCount {
@@ -34,14 +34,14 @@ class UserService {
 
   static async findOne(
     filter: Filter,
-    select: string = "",
+    select: string = ''
   ): Promise<IUser | null> {
     try {
       const user = await User.findOne(filter)
         .select(select)
-        .populate({ path: "departmentId", select: "name" })
-        .populate({ path: "positionId", select: "name" })
-        .populate({ path: "companyId", select: "name" })
+        .populate({ path: 'departmentId', select: 'name' })
+        .populate({ path: 'positionId', select: 'name' })
+        .populate({ path: 'companyId', select: 'name' })
         .lean();
       return user;
     } catch (error: any) {
@@ -51,16 +51,16 @@ class UserService {
 
   static async find(
     filter: Filter,
-    select: string = "",
+    select: string = '',
     skip: number = 0,
     limit: number = 10,
-    sort: Sort = { _id: -1 },
+    sort: Sort = { _id: -1 }
   ): Promise<UserPaginationData> {
     try {
       const userList = await User.find(filter)
-        .populate({ path: "departmentId", select: "name" })
-        .populate({ path: "positionId", select: "name" })
-        .populate({ path: "companyId", select: "name" })
+        .populate({ path: 'departmentId', select: 'name' })
+        .populate({ path: 'positionId', select: 'name' })
+        .populate({ path: 'companyId', select: 'name' })
         .select(select)
         .sort(sort)
         .skip(skip)
@@ -75,7 +75,7 @@ class UserService {
 
   static async updateUser(
     filter: Filter,
-    data: Partial<IUser>,
+    data: Partial<IUser>
   ): Promise<IUser | null> {
     try {
       const user = await User.findByIdAndUpdate(filter, data, { new: true });
@@ -110,7 +110,7 @@ class UserService {
     }
   }
   static async teamCountForDashboard(
-    filter: Filter,
+    filter: Filter
   ): Promise<TeamDashboardCount | any> {
     try {
       const departmentList: TeamDashboardCount[] = await User.aggregate([
@@ -119,15 +119,15 @@ class UserService {
         },
         {
           $group: {
-            _id: "$departmentId",
+            _id: '$departmentId',
             userCount: { $sum: 1 },
           },
         },
         {
           $lookup: {
-            from: "departments",
-            localField: "_id",
-            foreignField: "_id",
+            from: 'departments',
+            localField: '_id',
+            foreignField: '_id',
             pipeline: [
               {
                 $project: {
@@ -135,19 +135,19 @@ class UserService {
                 },
               },
             ],
-            as: "team",
+            as: 'team',
           },
         },
         {
           $unwind: {
-            path: "$team",
+            path: '$team',
           },
         },
         {
           $project: {
-            id: "$_id",
-            value: "$userCount",
-            label: "$team.name",
+            id: '$_id',
+            value: '$userCount',
+            label: '$team.name',
           },
         },
       ]);
@@ -156,13 +156,19 @@ class UserService {
       throw new Error(`Error getting department: ${error.message}`);
     }
   }
-// ----------------------DS---------------------
+  // ----------------------DS---------------------
   static async updatePassword(
     filter: Filter,
-    data: Partial<IUser>,
+    data: Partial<IUser>
   ): Promise<IUser | null> {
     try {
-      const user = await User.findOneAndUpdate(filter, data, { new: true });
+      const user = await User.findOneAndUpdate(
+        filter,
+        {
+          $set: data,
+        },
+        { new: true }
+      );
       return user;
     } catch (error: any) {
       throw new Error(`Error updating user: ${error.message}`);

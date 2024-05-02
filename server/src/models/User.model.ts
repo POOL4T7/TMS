@@ -1,12 +1,12 @@
-import mongoose, { Document, Query, Schema } from "mongoose";
-import BcryptJs from "bcryptjs";
+import mongoose, { Document, Query, Schema } from 'mongoose';
+import BcryptJs from 'bcryptjs';
 
 export interface IUser extends Document {
   isModified: any;
   _id?: Schema.Types.ObjectId;
   email: string;
   password: string;
-  role: "manager" | "admin" | "employee";
+  role: 'manager' | 'admin' | 'employee';
   firstName: string;
   lastName?: string;
   profilePicture?: string;
@@ -16,10 +16,8 @@ export interface IUser extends Document {
   companyId?: Schema.Types.ObjectId | string;
   hireDate?: Date;
   qualification?: string[];
-  status: "active" | "inactive" | "deleted" | "suspended";
-  updatePassword(newPassword: string): Promise<boolean>;
-  // change --------------
-  resetToken?: string; 
+  status: 'active' | 'inactive' | 'deleted' | 'suspended';
+  resetToken?: string;
 }
 
 const userSchema: Schema<IUser> = new Schema(
@@ -35,8 +33,8 @@ const userSchema: Schema<IUser> = new Schema(
     },
     role: {
       type: String,
-      enum: ["manager", "admin", "employee", "teamlead"],
-      default: "employee",
+      enum: ['manager', 'admin', 'employee', 'teamlead'],
+      default: 'employee',
     },
     firstName: {
       type: String,
@@ -54,12 +52,12 @@ const userSchema: Schema<IUser> = new Schema(
     },
     departmentId: {
       type: mongoose.Schema.Types.ObjectId,
-      ref: "Department",
+      ref: 'Department',
       default: null,
     },
     positionId: {
       type: mongoose.Schema.Types.ObjectId,
-      ref: "Position",
+      ref: 'Position',
       default: null,
     },
     qualification: {
@@ -67,58 +65,61 @@ const userSchema: Schema<IUser> = new Schema(
     },
     companyId: {
       type: mongoose.Schema.Types.ObjectId,
-      ref: "Company",
+      ref: 'Company',
       required: true,
     },
     status: {
       type: String,
-      default: "inactive",
-      enum: ["active", "inactive", "deleted", "suspended"],
+      default: 'inactive',
+      enum: ['active', 'inactive', 'deleted', 'suspended'],
     },
     hireDate: {
       type: Date,
       default: Date.now(),
     },
-    // change --------------
     resetToken: {
       type: String,
-      default: undefined,
-    }
-    // --------------------
+      default: null,
+    },
   },
-  { timestamps: true },
+  { timestamps: true }
 );
 
-userSchema.pre<IUser>("save", async function (next) {
-  if (!this.isModified("password")) return next();
+userSchema.pre<IUser>('save', async function (next) {
+  console.log('!this.isModified(password)', !this.isModified('password'));
+  if (!this.isModified('password')) return next();
 
   try {
     const salt = await BcryptJs.genSalt(10);
     const hash = await BcryptJs.hash(this.password, salt);
     this.password = hash;
+    console.log('Password updated');
     next();
   } catch (error: any) {
     return next(error);
   }
 });
 
-userSchema.pre<IUser>("findOneAndUpdate", async function (next) {
+userSchema.pre<IUser>('findOneAndUpdate', async function (next) {
   const query: Query<IUser | null, IUser> = this as unknown as Query<
     IUser | null,
     IUser
   >;
   const update = query.getUpdate() as any;
-  if (!update || !update.password) return next();
+  console.log('update', update);
+  if (!update || !update.$set.password) return next();
   try {
     const salt = await BcryptJs.genSalt(10);
     const hash = await BcryptJs.hash(update.$set.password, salt);
-    await query.updateOne({ $set: { password: hash } });
+    update.password = hash;
+    // await query.updateOne({ $set: { password: hash } });
+    console.log('Password updated');
     next();
   } catch (error: any) {
     return next(error);
   }
 });
 
-const User = mongoose.model<IUser>("User", userSchema);
+const User = mongoose.model<IUser>('User', userSchema);
 
 export default User;

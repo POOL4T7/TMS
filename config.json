@@ -24,14 +24,10 @@
     }
   ],
   "points": [
-    "remove message if data is there",
-    "hashed password need to be save and verify it on login",
     "implement reset and forgot password along with mail",
     "complete the task flow",
     "implement redis for project and users listing",
     "implement image compression for all the images",
-    "validate the data before saving it to db",
-    "add validation in frontend for all the input forms",
     "❌ implement elastic search on project and users listing",
     "save the socket id to redis instead to mongodb",
     "built the eye catching UI of tasks"

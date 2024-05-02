@@ -1,4 +1,4 @@
-import { Types } from "mongoose";
+import { Types } from 'mongoose';
 
 // interface Industry {
 //   _id?: string;
@@ -14,7 +14,7 @@ export interface ICompany {
   password?: string;
   status: string;
   profile?: string;
-  resetToken?: string;
+  resetToken?: string | null;
 }
 
 interface Company {

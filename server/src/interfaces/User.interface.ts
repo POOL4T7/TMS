@@ -1,4 +1,4 @@
-import { ObjectId, Types } from "mongoose";
+import { ObjectId, Types } from 'mongoose';
 
 export interface UserCompany {
   _id: string;
@@ -9,7 +9,7 @@ export interface IUser {
   _id?: string | Types.ObjectId | ObjectId;
   username?: string;
   email: string;
-  role: "manager" | "admin" | "employee";
+  role: 'manager' | 'admin' | 'employee';
   password?: string;
   firstName: string;
   lastName?: string;
@@ -20,8 +20,8 @@ export interface IUser {
   hireDate?: Date;
   qualification?: string[];
   companyId?: UserCompany | ObjectId | null | undefined | string;
-  status: "active" | "inactive" | "deleted" | "suspended";
-  resetToken?: string;
+  status: 'active' | 'inactive' | 'deleted' | 'suspended';
+  resetToken?: string | null;
 }
 
 interface Department {
