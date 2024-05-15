@@ -1,4 +1,4 @@
-import { Types } from "mongoose";
+import { Types } from 'mongoose';
 
 interface Message {
   message: string;
@@ -21,4 +21,10 @@ export interface TaskFilter {
   assignedTo?: Types.ObjectId | string;
   assignedBy?: Types.ObjectId | string;
   status?: string;
+}
+
+export interface TaskLog {
+  message: string;
+  createdAt: Date;
+  userId: string;
 }

@@ -19,8 +19,8 @@ import Project from './screens/Project';
 import CUPage from './screens/Company/Project/CUPage';
 import ForgotPassword from './screens/Auth/ForgotPassword';
 import ResetPassword from './screens/Auth/ResetPassword';
-
-// import EmployeeProject from "./screens/Employee/Project/EmployeeProject";
+import CreateTask from './screens/Company/Task/CreateTask';
+import TaskList from './screens/Company/Task/TaskList';
 
 const router = (authState: AuthState) => {
   return createBrowserRouter([
@@ -60,6 +60,19 @@ const router = (authState: AuthState) => {
           path: '/project/:projectID',
           element: <CUPage />,
         },
+        {
+          path: '/task',
+          children: [
+            {
+              path: 'create',
+              element: <CreateTask />,
+            },
+            {
+              path: 'assigned',
+              element: <TaskList />,
+            },
+          ],
+        },
       ],
     },
     {
@@ -83,7 +96,7 @@ const router = (authState: AuthState) => {
       element: <ResetPassword />,
     },
     {
-      path: '404',
+      path: '/404',
       element: <NotFound />,
     },
     {

@@ -1,4 +1,4 @@
-import mongoose, { Schema, Document } from "mongoose";
+import mongoose, { Schema, Document } from 'mongoose';
 
 interface Message {
   message: string;
@@ -14,6 +14,13 @@ interface ITask extends Document {
   comment: Message[];
   status: string;
   projectID: Schema.Types.ObjectId;
+  logs: Logs[];
+}
+
+interface Logs {
+  message: string;
+  createdAt: Date;
+  userId: string;
 }
 
 const TaskSchema = new Schema<ITask>(
@@ -22,24 +29,31 @@ const TaskSchema = new Schema<ITask>(
     description: { type: String, required: true },
     status: {
       type: String,
-      enum: ["inactive", "pending", "completed"],
+      enum: ['inactive', 'pending', 'completed'],
     },
-    assignedTo: { type: Schema.Types.ObjectId, ref: "User", required: true },
-    projectID: { type: Schema.Types.ObjectId, ref: "Project", required: true },
-    assignedBy: { type: Schema.Types.ObjectId, ref: "User", required: true },
+    assignedTo: { type: Schema.Types.ObjectId, ref: 'User', required: true },
+    projectID: { type: Schema.Types.ObjectId, ref: 'Project', required: true },
+    assignedBy: { type: Schema.Types.ObjectId, ref: 'User', required: true },
     comment: [
       {
         message: { type: String, required: true },
-        userId: { type: Schema.Types.ObjectId, ref: "User", required: true },
+        userId: { type: Schema.Types.ObjectId, ref: 'User', required: true },
         time: { type: Date, required: true },
+      },
+    ],
+    logs: [
+      {
+        message: String,
+        createdAt: Date,
+        userId: String,
       },
     ],
   },
   {
     timestamps: true,
-  },
+  }
 );
 
-const Task = mongoose.model<ITask>("Task", TaskSchema);
+const Task = mongoose.model<ITask>('Task', TaskSchema);
 
 export default Task;
