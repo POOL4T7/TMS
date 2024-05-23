@@ -8,6 +8,7 @@ import ListItemButton from '@mui/material/ListItemButton';
 import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
 import MenuIcon from '@mui/icons-material/Menu';
+import ChecklistRtlIcon from '@mui/icons-material/ChecklistRtl';
 import {
   FolderShared,
   Groups,
@@ -134,7 +135,7 @@ export default function CompanyMobileSideBar() {
         <ListItem>
           <ListItemButton sx={{ '&:hover': { backgroundColor: '#e8effa' } }}>
             <ListItemIcon>
-              <People />
+              <ChecklistRtlIcon />
             </ListItemIcon>
             <NavLink
               to={'/task/assigned'}

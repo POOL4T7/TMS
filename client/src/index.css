@@ -6,6 +6,7 @@ body {
 a {
   text-decoration: none;
   color: #637481;
+  width: 100%;
 }
 
 .active-link {
@@ -19,4 +20,3 @@ a {
 .profile-card {
   cursor: pointer;
 }
-

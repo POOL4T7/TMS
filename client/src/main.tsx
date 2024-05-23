@@ -24,15 +24,22 @@ const defaultTheme = createTheme({
     },
     success: {
       main: '#275929', // Green
+      light: '#81c784',
+      dark: '#1b5e20',
     },
     warning: {
+      light: '#fff17690', // Orange
       main: '#ff9800', // Orange
     },
     info: {
-      main: '#2196f3', // Light Blue
+      main: '#64b5f6', // Light Blue
+      dark: 'blue',
+      light: '#bbdefb',
     },
     error: {
-      main: '#f32020', // red
+      main: '#e5737390', // red
+      light: '#f320200d',
+      dark: '#f32020',
     },
   },
 });

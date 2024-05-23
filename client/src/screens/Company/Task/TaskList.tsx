@@ -1,42 +1,10 @@
 import { Box, Paper, Stack, Typography } from '@mui/material';
 import TaskCard from '../../../components/Task/TaskCard';
 import { useState } from 'react';
-
-interface Task {
-  name: string;
-  status: string;
-  description: string;
-  id: string;
-}
-const taskData: Task[] = [
-  {
-    id: 'scsbcsdbc1',
-    name: 'bxjas',
-    status: 'pending',
-    description: 'sdbc wuhc wnc cn sdcnl s',
-  },
-  {
-    id: 'scsbcssdcsdcdbc2',
-    name: 'bxjas',
-    status: 'pending',
-    description: 'sdbc wuhc wnc cn sdcnl s',
-  },
-  {
-    id: 'scsbdcdccsdbc3',
-    name: 'bxjas',
-    status: 'pending',
-    description: 'sdbc wuhc wnc cn sdcnl s',
-  },
-  {
-    id: 'scsbrtrtcsdbc4',
-    name: 'bxjas',
-    status: 'active',
-    description: 'sdbc wuhc wnc cn sdcnl s',
-  },
-];
+import { TaskListData } from '../../../data';
 
 const TaskList = () => {
-  const [tasks, setTasks] = useState(taskData);
+  const [tasks, setTasks] = useState(TaskListData);
 
   const [draggedTaskIndex, setDraggedTaskIndex] = useState<string | null>(null);
 
@@ -53,9 +21,8 @@ const TaskList = () => {
     console.log('handleDrop', status);
     if (draggedTaskIndex !== null) {
       const updatedTasks = [...tasks];
-      // updatedTasks[draggedTaskIndex].status = status;
       const data = updatedTasks.map((task) => {
-        if (task.id == draggedTaskIndex) {
+        if (task._id == draggedTaskIndex) {
           task.status = status;
         }
         return task;
@@ -73,24 +40,23 @@ const TaskList = () => {
         direction={'row'}
         spacing={1}
         justifyContent={'space-between'}
-        sx={{ minHeight: '90vh', maxHeight: '100%', width: '100%' }}
+        sx={{
+          minHeight: '90vh',
+          maxHeight: '100%',
+          width: '100%',
+          maxWidth: '100vw',
+        }}
       >
         <Paper
           sx={{
-            width: '33%',
+            width: '24%',
             backgroundColor: 'secondary.light',
           }}
           component={'div'}
           onDragOver={handleDragOver}
           onDrop={() => handleDrop('pending')}
         >
-          <Typography
-            variant="h5"
-            align="center"
-            color={'error.main'}
-            bgcolor={'secondary.dark'}
-            borderRadius={'7px'}
-          >
+          <Typography variant="h5" align="center" bgcolor={'error.main'}>
             Pending
           </Typography>
           {filterTasks('pending').map((task, idx) => {
@@ -98,7 +64,7 @@ const TaskList = () => {
               <TaskCard
                 task={task}
                 key={idx}
-                index={task.id}
+                index={task._id}
                 onDragStart={handleDragStart}
               />
             );
@@ -106,28 +72,22 @@ const TaskList = () => {
         </Paper>
         <Paper
           sx={{
-            width: '33%',
+            width: '24%',
             backgroundColor: 'secondary.light',
           }}
           component={'div'}
           onDragOver={handleDragOver}
-          onDrop={() => handleDrop('active')}
+          onDrop={() => handleDrop('inprogress')}
         >
-          <Typography
-            variant="h5"
-            align="center"
-            color={'warning.main'}
-            bgcolor={'secondary.dark'}
-            borderRadius={'7px'}
-          >
-            In-Progress
+          <Typography variant="h5" align="center" bgcolor={'warning.light'}>
+            In progress
           </Typography>
-          {filterTasks('active').map((task, idx) => {
+          {filterTasks('inprogress').map((task, idx) => {
             return (
               <TaskCard
                 task={task}
                 key={idx}
-                index={task.id}
+                index={task._id}
                 onDragStart={handleDragStart}
               />
             );
@@ -135,28 +95,45 @@ const TaskList = () => {
         </Paper>
         <Paper
           sx={{
-            width: '33%',
+            width: '24%',
+            backgroundColor: 'secondary.light',
+          }}
+          component={'div'}
+          onDragOver={handleDragOver}
+          onDrop={() => handleDrop('inreview')}
+        >
+          <Typography variant="h5" align="center" bgcolor={'info.light'}>
+            In review
+          </Typography>
+          {filterTasks('inreview').map((task, idx) => {
+            return (
+              <TaskCard
+                task={task}
+                key={idx}
+                index={task._id}
+                onDragStart={handleDragStart}
+              />
+            );
+          })}
+        </Paper>
+        <Paper
+          sx={{
+            width: '24%',
             backgroundColor: 'secondary.light',
           }}
           component={'div'}
           onDragOver={handleDragOver}
           onDrop={() => handleDrop('completed')}
         >
-          <Typography
-            variant="h5"
-            align="center"
-            color={'success.main'}
-            bgcolor={'secondary.dark'}
-            borderRadius={'7px'}
-          >
-            Completed
+          <Typography variant="h5" align="center" bgcolor={'success.light'}>
+            Done
           </Typography>
           {filterTasks('completed').map((task, idx) => {
             return (
               <TaskCard
                 task={task}
                 key={idx}
-                index={task.id}
+                index={task._id}
                 onDragStart={handleDragStart}
               />
             );
