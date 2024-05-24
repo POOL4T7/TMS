@@ -35,8 +35,14 @@ const TaskList = () => {
     tasks.filter((task) => task.status === status);
 
   return (
-    <Box sx={{ overflowX: 'auto', whiteSpace: 'nowrap' }}>
+    <Box
+      sx={{
+        height: '100%',
+        width: '100vw',
+      }}
+    >
       <Stack
+        component={'div'}
         direction={'row'}
         spacing={1}
         justifyContent={'space-between'}
@@ -49,7 +55,7 @@ const TaskList = () => {
       >
         <Paper
           sx={{
-            width: '24%',
+            width: '24.4%',
             backgroundColor: 'secondary.light',
           }}
           component={'div'}
@@ -59,20 +65,22 @@ const TaskList = () => {
           <Typography variant="h5" align="center" bgcolor={'error.main'}>
             Pending
           </Typography>
-          {filterTasks('pending').map((task, idx) => {
-            return (
-              <TaskCard
-                task={task}
-                key={idx}
-                index={task._id}
-                onDragStart={handleDragStart}
-              />
-            );
-          })}
+          <Box sx={{ overflow: 'scroll', maxHeight: 'calc(100vh - 100px)' }}>
+            {filterTasks('pending').map((task, idx) => {
+              return (
+                <TaskCard
+                  task={task}
+                  key={idx}
+                  index={task._id}
+                  onDragStart={handleDragStart}
+                />
+              );
+            })}
+          </Box>
         </Paper>
         <Paper
           sx={{
-            width: '24%',
+            width: '24.4%',
             backgroundColor: 'secondary.light',
           }}
           component={'div'}
@@ -82,20 +90,22 @@ const TaskList = () => {
           <Typography variant="h5" align="center" bgcolor={'warning.light'}>
             In progress
           </Typography>
-          {filterTasks('inprogress').map((task, idx) => {
-            return (
-              <TaskCard
-                task={task}
-                key={idx}
-                index={task._id}
-                onDragStart={handleDragStart}
-              />
-            );
-          })}
+          <Box sx={{ overflow: 'scroll', maxHeight: 'calc(100vh - 100px)' }}>
+            {filterTasks('inprogress').map((task, idx) => {
+              return (
+                <TaskCard
+                  task={task}
+                  key={idx}
+                  index={task._id}
+                  onDragStart={handleDragStart}
+                />
+              );
+            })}
+          </Box>
         </Paper>
         <Paper
           sx={{
-            width: '24%',
+            width: '24.4%',
             backgroundColor: 'secondary.light',
           }}
           component={'div'}
@@ -105,20 +115,22 @@ const TaskList = () => {
           <Typography variant="h5" align="center" bgcolor={'info.light'}>
             In review
           </Typography>
-          {filterTasks('inreview').map((task, idx) => {
-            return (
-              <TaskCard
-                task={task}
-                key={idx}
-                index={task._id}
-                onDragStart={handleDragStart}
-              />
-            );
-          })}
+          <Box sx={{ overflow: 'scroll', maxHeight: 'calc(100vh - 100px)' }}>
+            {filterTasks('inreview').map((task, idx) => {
+              return (
+                <TaskCard
+                  task={task}
+                  key={idx}
+                  index={task._id}
+                  onDragStart={handleDragStart}
+                />
+              );
+            })}
+          </Box>
         </Paper>
         <Paper
           sx={{
-            width: '24%',
+            width: '24.4%',
             backgroundColor: 'secondary.light',
           }}
           component={'div'}
@@ -128,16 +140,18 @@ const TaskList = () => {
           <Typography variant="h5" align="center" bgcolor={'success.light'}>
             Done
           </Typography>
-          {filterTasks('completed').map((task, idx) => {
-            return (
-              <TaskCard
-                task={task}
-                key={idx}
-                index={task._id}
-                onDragStart={handleDragStart}
-              />
-            );
-          })}
+          <Box sx={{ overflow: 'scroll', maxHeight: 'calc(100vh - 100px)' }}>
+            {filterTasks('completed').map((task, idx) => {
+              return (
+                <TaskCard
+                  task={task}
+                  key={idx}
+                  index={task._id}
+                  onDragStart={handleDragStart}
+                />
+              );
+            })}
+          </Box>
         </Paper>
       </Stack>
     </Box>
