@@ -7,13 +7,31 @@ interface Message {
 }
 
 export interface ITask {
-  _id?: Types.ObjectId | string;
   title: string;
   description: string;
-  projectID: Types.ObjectId | string;
-  assignedTo: Types.ObjectId | string;
-  assignedBy: Types.ObjectId | string;
+  assignedTo:
+    | [
+        {
+          _id: string;
+          firstName: string;
+        }
+      ]
+    | [string];
+  assignedBy:
+    | string
+    | {
+        _id: string;
+        firstName: string;
+      };
   comment: Message[];
+  status: string;
+  projectID: string;
+  logs: TaskLog[];
+  labels: string[];
+  priority: string;
+  taskType: string;
+  startDate: Date | string;
+  dueDate: Date | string;
 }
 
 export interface TaskFilter {

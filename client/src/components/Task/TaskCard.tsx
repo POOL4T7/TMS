@@ -28,26 +28,7 @@ import { DateTimePicker } from '@mui/x-date-pickers/DateTimePicker';
 import { useState, useCallback, useEffect } from 'react';
 import { Add } from '@mui/icons-material';
 import dayjs, { Dayjs } from 'dayjs';
-
-interface Task {
-  _id: string;
-  title: string;
-  status: string;
-  project: {
-    _id: string;
-    name: string;
-  };
-  assignedTo: {
-    _id: string;
-    firstName: string;
-  };
-  labels: string[];
-  priority: string;
-  type: string;
-  description: string;
-  startDate: string;
-  dueDate: string;
-}
+import { Task } from '../../models/Task';
 
 const userList = [
   {
@@ -67,7 +48,7 @@ const userList = [
 interface PropType {
   task: Task;
   index: string;
-  onDragStart: (index: string) => void;
+  onDragStart: (index: string, status: string) => void;
 }
 
 const getColor = (label: string) => {
@@ -136,7 +117,7 @@ const TaskUpdateForm = ({
     // project,
     // assignedTo,
     // labels,
-    type,
+    taskType,
     priority,
     description,
     startDate,
@@ -262,7 +243,7 @@ const TaskUpdateForm = ({
             labelId="type"
             id="type"
             name="type"
-            value={type}
+            value={taskType}
             label="Task Type *"
             onChange={handleSelectChange('type')}
           >
@@ -298,7 +279,7 @@ const TaskUpdateForm = ({
               labelId="type"
               id="type"
               name="type"
-              value={type}
+              value={taskType}
               label="Task Type *"
               onChange={handleSelectChange('type')}
             >
@@ -324,30 +305,17 @@ const TaskCard = ({ task, index, onDragStart }: PropType) => {
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const [drawerOpen, setDrawerOpen] = useState(false);
   const [taskDetails, setTaskDetails] = useState(task);
-
   const open = Boolean(anchorEl);
 
-  const {
-    // _id,
-    title,
-    // status,
-    project,
-    // assignedTo,
-    labels,
-    priority,
-    // type,
-    description,
-    // startDate,
-    // dueDate,
-  } = taskDetails;
+  const { title, projectID, labels, priority, description } = taskDetails;
 
   useEffect(() => {
     setTaskDetails(task);
   }, [task]);
 
-  const handleDragStart = useCallback(() => {
-    onDragStart(index);
-  }, [index, onDragStart]);
+  const handleDragStart = () => {
+    onDragStart(index, task.status);
+  };
 
   const handleClick = useCallback((event: React.MouseEvent<HTMLElement>) => {
     setAnchorEl(event.currentTarget);
@@ -441,7 +409,7 @@ const TaskCard = ({ task, index, onDragStart }: PropType) => {
         <Stack direction={'row'} justifyContent={'space-between'}>
           <Box>
             <Chip
-              label={project.name}
+              label={projectID.name}
               size="small"
               variant="outlined"
               color="secondary"

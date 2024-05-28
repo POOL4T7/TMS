@@ -1,22 +1,21 @@
-import express, { Express } from "express";
+import express, { Express } from 'express';
 // import dotenv from "dotenv";
 // import connectDB from "../config/db";
-import cors from "cors";
-import swaggerUi from "swagger-ui-express";
-import cookieParser from "cookie-parser";
-import specs from "./swaggerConfig";
+import cors from 'cors';
+import swaggerUi from 'swagger-ui-express';
+import cookieParser from 'cookie-parser';
+import specs from './swaggerConfig';
 // dotenv.config();
-
 
 const app: Express = express();
 // connectDB();
 
-import routesV1 from "./routesV1";
-import path from "path";
+import routesV1 from './routesV1';
+import path from 'path';
 
 app.use(
   cors({
-    origin: "http://localhost:5173",
+    origin: 'http://localhost:5173',
     // credentials: true,
   })
 );
@@ -36,11 +35,11 @@ app.use(express.urlencoded({ extended: false }));
 //   return res.status(200).json(req.cookies);
 // });
 // const port = process.env.PORT;
-if (process.env.NODE_ENV != "production") {
-  app.use("/swagger-api-docs", swaggerUi.serve, swaggerUi.setup(specs));
+if (process.env.NODE_ENV != 'production') {
+  app.use('/swagger-api-docs', swaggerUi.serve, swaggerUi.setup(specs));
 }
 
-app.use("/uploads", express.static(path.join(__dirname, "../uploads/")));
+app.use('/uploads', express.static(path.join(__dirname, '../uploads/')));
 routesV1(app);
 
 // app.listen(port, () => {

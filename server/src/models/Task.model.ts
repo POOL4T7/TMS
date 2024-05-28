@@ -9,12 +9,17 @@ interface Message {
 interface ITask extends Document {
   title: string;
   description: string;
-  assignedTo: Schema.Types.ObjectId;
+  assignedTo: [Schema.Types.ObjectId];
   assignedBy: Schema.Types.ObjectId;
   comment: Message[];
   status: string;
   projectID: Schema.Types.ObjectId;
   logs: Logs[];
+  labels: string[];
+  priority: string;
+  taskType: string;
+  startDate: Date;
+  dueDate: Date;
 }
 
 interface Logs {
@@ -29,9 +34,9 @@ const TaskSchema = new Schema<ITask>(
     description: { type: String, required: true },
     status: {
       type: String,
-      enum: ['inactive', 'pending', 'completed'],
+      enum: ['inactive', 'pending', 'completed', 'review', 'inprogress'],
     },
-    assignedTo: { type: Schema.Types.ObjectId, ref: 'User', required: true },
+    assignedTo: [{ type: Schema.Types.ObjectId, ref: 'User', required: true }],
     projectID: { type: Schema.Types.ObjectId, ref: 'Project', required: true },
     assignedBy: { type: Schema.Types.ObjectId, ref: 'User', required: true },
     comment: [
@@ -48,6 +53,24 @@ const TaskSchema = new Schema<ITask>(
         userId: String,
       },
     ],
+    labels: [String],
+    priority: {
+      type: String,
+      enum: ['high', 'moderate', 'critical', 'low'],
+      default: 'low',
+    },
+    taskType: {
+      type: String,
+      required: true,
+    },
+    startDate: {
+      type: Date,
+      required: true,
+    },
+    dueDate: {
+      type: Date,
+      required: true,
+    },
   },
   {
     timestamps: true,

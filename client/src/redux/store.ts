@@ -1,18 +1,19 @@
-import { configureStore, ConfigureStoreOptions } from "@reduxjs/toolkit";
-import { TypedUseSelectorHook, useDispatch, useSelector } from "react-redux";
-import { industryApi } from "./services/industry";
-import { authApi } from "./services/auth";
-import authReducer from "./features/authSlice";
-import { companyApi } from "./services/company";
-import { teamsApi } from "./services/teams";
-import { positionApi } from "./services/position";
-import { userAPI } from "./services/user";
-import { rtkQueryToast } from "./rtkQueryToast";
-import { projectAPI } from "./services/project";
-import { customAPI } from "./services/custom";
+import { configureStore, ConfigureStoreOptions } from '@reduxjs/toolkit';
+import { TypedUseSelectorHook, useDispatch, useSelector } from 'react-redux';
+import { industryApi } from './services/industry';
+import { authApi } from './services/auth';
+import authReducer from './features/authSlice';
+import { companyApi } from './services/company';
+import { teamsApi } from './services/teams';
+import { positionApi } from './services/position';
+import { userAPI } from './services/user';
+import { rtkQueryToast } from './rtkQueryToast';
+import { projectAPI } from './services/project';
+import { customAPI } from './services/custom';
+import { taskAPI } from './services/task';
 
 export const createStore = (
-  options?: ConfigureStoreOptions["preloadedState"] | undefined
+  options?: ConfigureStoreOptions['preloadedState'] | undefined
 ) =>
   configureStore({
     reducer: {
@@ -24,6 +25,7 @@ export const createStore = (
       [positionApi.reducerPath]: positionApi.reducer,
       [userAPI.reducerPath]: userAPI.reducer,
       [customAPI.reducerPath]: customAPI.reducer,
+      [taskAPI.reducerPath]: taskAPI.reducer,
       [projectAPI.reducerPath]: projectAPI.reducer,
     },
     middleware: (getDefaultMiddleware) =>
@@ -36,8 +38,9 @@ export const createStore = (
         .concat(userAPI.middleware)
         .concat(projectAPI.middleware)
         .concat(customAPI.middleware)
+        .concat(taskAPI.middleware)
         .concat(positionApi.middleware),
-    devTools: import.meta.env.NODE_ENV !== "production",
+    devTools: import.meta.env.NODE_ENV !== 'production',
     ...options,
   });
 

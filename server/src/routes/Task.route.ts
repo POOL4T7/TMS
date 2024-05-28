@@ -6,7 +6,7 @@ const TaskRouter: Router = express.Router();
 TaskRouter.route('/')
   .post(
     AuthMiddleware.isAuth,
-    AuthMiddleware.roleAuthMiddleware(['manager']),
+    AuthMiddleware.roleAuthMiddleware(['manager', 'company']),
     TaskController.addTask
   )
   .get(
@@ -22,8 +22,14 @@ TaskRouter.route('/')
 
 TaskRouter.route('/get-own-task').get(
   AuthMiddleware.isAuth,
-  AuthMiddleware.roleAuthMiddleware(['manager']),
+  AuthMiddleware.roleAuthMiddleware(['manager', 'company']),
   TaskController.getOwnerTaskList
+);
+
+TaskRouter.route('/update-task/:taskId').patch(
+  AuthMiddleware.isAuth,
+  AuthMiddleware.roleAuthMiddleware(['manager', 'company']),
+  TaskController.updateTask
 );
 
 TaskRouter.route('/:taskId').post(

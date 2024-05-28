@@ -2,6 +2,7 @@ import { Request, Response } from 'express';
 import TaskService from '../services/Task.service';
 import { ITask, TaskLog, TaskFilter } from '../interfaces/Task.interface';
 import Custom from '../helpers/custom';
+import mongoose from 'mongoose';
 
 class TaskController {
   async addTask(req: Request, res: Response): Promise<Response> {
@@ -11,7 +12,7 @@ class TaskController {
         description: req.body.description,
         projectID: req.body.projectID,
         assignedTo: req.body.assignedTo,
-        assignedBy: req.body.assignedBy,
+        assignedBy: Custom.getSessionDetails(req)._id.toString(),
         comment: [],
         logs: [
           {
@@ -20,6 +21,12 @@ class TaskController {
             userId: Custom.getSessionDetails(req)._id.toString(),
           },
         ],
+        priority: req.body.priority,
+        taskType: req.body.taskType,
+        startDate: req.body.startDate,
+        dueDate: req.body.dueDate,
+        status: req.body.status,
+        labels: req.body.labels,
       };
       await TaskService.add(body);
       return res.status(201).json({
@@ -79,6 +86,46 @@ class TaskController {
           userId: Custom.getSessionDetails(req).toString(),
         });
       }
+      if (req.body.status) {
+        formData.status = req.body.status;
+        logs.push({
+          message: `Task status updated to ${req.body.status}`,
+          createdAt: new Date(),
+          userId: Custom.getSessionDetails(req).toString(),
+        });
+      }
+      if (req.body.priority) {
+        formData.priority = req.body.priority;
+        logs.push({
+          message: `Task priority updated to ${req.body.priority}`,
+          createdAt: new Date(),
+          userId: Custom.getSessionDetails(req).toString(),
+        });
+      }
+      if (req.body.taskType) {
+        formData.taskType = req.body.taskType;
+        logs.push({
+          message: `Task taskType updated to ${req.body.taskType}`,
+          createdAt: new Date(),
+          userId: Custom.getSessionDetails(req).toString(),
+        });
+      }
+      if (req.body.startDate) {
+        formData.startDate = req.body.startDate;
+        logs.push({
+          message: `Task startDate updated to ${req.body.startDate}`,
+          createdAt: new Date(),
+          userId: Custom.getSessionDetails(req).toString(),
+        });
+      }
+      if (req.body.dueDate) {
+        formData.dueDate = req.body.dueDate;
+        logs.push({
+          message: `Task dueDate updated to ${req.body.dueDate}`,
+          createdAt: new Date(),
+          userId: Custom.getSessionDetails(req).toString(),
+        });
+      }
 
       const filter: TaskFilter = {};
       filter._id = req.params.taskId;
@@ -100,12 +147,16 @@ class TaskController {
   async getOwnerTaskList(req: Request, res: Response): Promise<Response> {
     try {
       const filter: TaskFilter = {};
-      filter.assignedBy = Custom.getSessionDetails(req)._id;
-      const list = await TaskService.assignedTask(filter);
+      filter.assignedBy = new mongoose.Types.ObjectId(
+        Custom.getSessionDetails(req)._id
+      );
+      console.log(JSON.stringify(Custom.getSessionDetails(req), null, 2));
+      const response = await TaskService.assignedTask(filter);
       return res.status(201).json({
         success: true,
-        message: 'Task Updated successfully',
-        taskList: list,
+        message: 'Own Task list',
+        taskList: response.taskList,
+        totalTask: response.totalCount,
       });
     } catch (e: any) {
       return res.status(500).json({
@@ -123,7 +174,7 @@ class TaskController {
       const list = await TaskService.assignedTask(filter);
       return res.status(201).json({
         success: true,
-        message: 'Task Updated successfully',
+        message: 'Task list',
         taskList: list,
       });
     } catch (e: any) {
