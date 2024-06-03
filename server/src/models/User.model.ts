@@ -86,14 +86,12 @@ const userSchema: Schema<IUser> = new Schema(
 );
 
 userSchema.pre<IUser>('save', async function (next) {
-  console.log('!this.isModified(password)', !this.isModified('password'));
   if (!this.isModified('password')) return next();
 
   try {
     const salt = await BcryptJs.genSalt(10);
     const hash = await BcryptJs.hash(this.password, salt);
     this.password = hash;
-    console.log('Password updated');
     next();
   } catch (error: any) {
     return next(error);
@@ -106,14 +104,11 @@ userSchema.pre<IUser>('findOneAndUpdate', async function (next) {
     IUser
   >;
   const update = query.getUpdate() as any;
-  console.log('update', update);
   if (!update || !update.$set.password) return next();
   try {
     const salt = await BcryptJs.genSalt(10);
     const hash = await BcryptJs.hash(update.$set.password, salt);
     update.password = hash;
-    // await query.updateOne({ $set: { password: hash } });
-    console.log('Password updated');
     next();
   } catch (error: any) {
     return next(error);

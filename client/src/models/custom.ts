@@ -4,6 +4,7 @@ export interface AuthState {
   status: string;
   error: string;
   isAuthenticated: boolean;
+  fullScreen: boolean;
 }
 
 export interface ErrorType {

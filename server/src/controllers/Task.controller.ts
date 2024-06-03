@@ -131,7 +131,7 @@ class TaskController {
       filter._id = req.params.taskId;
       filter.assignedBy = Custom.getSessionDetails(req)._id;
       await TaskService.update(filter, formData);
-      return res.status(201).json({
+      return res.status(200).json({
         success: true,
         message: 'Task Updated successfully',
       });
@@ -150,9 +150,9 @@ class TaskController {
       filter.assignedBy = new mongoose.Types.ObjectId(
         Custom.getSessionDetails(req)._id
       );
-      console.log(JSON.stringify(Custom.getSessionDetails(req), null, 2));
+
       const response = await TaskService.assignedTask(filter);
-      return res.status(201).json({
+      return res.status(200).json({
         success: true,
         message: 'Own Task list',
         taskList: response.taskList,
@@ -172,10 +172,32 @@ class TaskController {
       const filter: TaskFilter = {};
       filter.assignedTo = Custom.getSessionDetails(req)._id;
       const list = await TaskService.assignedTask(filter);
-      return res.status(201).json({
+      return res.status(200).json({
         success: true,
         message: 'Task list',
-        taskList: list,
+        taskList: list.taskList,
+        totalTask: list.totalCount,
+      });
+    } catch (e: any) {
+      return res.status(500).json({
+        success: false,
+        error: e.message,
+        message: 'server error',
+      });
+    }
+  }
+
+  async getTaskDetails(req: Request, res: Response): Promise<Response> {
+    try {
+      console.log('dcb sbdc');
+      const filter: TaskFilter = {};
+      filter._id = req.params.taskId;
+      const list = await TaskService.find(filter, '-createdAt');
+
+      return res.status(200).json({
+        success: true,
+        message: 'Task Details',
+        taskDetails: list.taskList.length ? list.taskList[0] : {},
       });
     } catch (e: any) {
       return res.status(500).json({

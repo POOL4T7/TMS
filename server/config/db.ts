@@ -1,12 +1,13 @@
-import mongoose from "mongoose";
-import Common from "./common";
+import mongoose from 'mongoose';
+import Common from './common';
+import Logger from '../src/helpers/Logger';
 
 const connectDB = async () => {
   try {
     await mongoose.connect(process.env.MONGO_URI || Common.DB.URL);
-    console.log("mongodb connected");
+    Logger.info('mongodb connected');
   } catch (e: any) {
-    console.log("Mongodb Error: ", e.message);
+    Logger.error('Mongodb Error: ', e.message);
   }
 };
 

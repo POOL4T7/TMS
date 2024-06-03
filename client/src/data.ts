@@ -331,3 +331,38 @@ export const TaskListData = [
     dueDate: '2024-05-31T08:25:00+05:30',
   },
 ];
+
+export const labelList = [
+  {
+    _id: 'label-1',
+    name: 'server',
+  },
+  {
+    _id: 'label-2',
+    name: 'web',
+  },
+  {
+    _id: 'label-3',
+    name: 'UI',
+  },
+  {
+    _id: 'label-4',
+    name: 'automation',
+  },
+  {
+    _id: 'label-5',
+    name: 'CI/CD',
+  },
+  {
+    _id: 'label-6',
+    name: 'deployment',
+  },
+  {
+    _id: 'label-7',
+    name: 'bug',
+  },
+  {
+    _id: 'label-8',
+    name: 'issue',
+  },
+];

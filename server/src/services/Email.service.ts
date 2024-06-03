@@ -47,7 +47,6 @@ class EmailService {
       });
 
       await request;
-      // console.log("res", res);
     } catch (e: any) {
       throw new Error(e.message);
     }

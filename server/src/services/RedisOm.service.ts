@@ -1,5 +1,6 @@
-import { RedisClientType, createClient } from "redis";
-import { Client } from "redis-om";
+import { RedisClientType, createClient } from 'redis';
+import { Client } from 'redis-om';
+import Logger from '../helpers/Logger';
 
 class RedisConnection {
   private client: RedisClientType | undefined;
@@ -12,23 +13,23 @@ class RedisConnection {
     try {
       if (
         !RedisConnection.redisOMClient &&
-        process.env.REDIS_SERVICE === "ON"
+        process.env.REDIS_SERVICE === 'ON'
       ) {
-        console.log("trying to connect with redis...");
+        Logger.info('trying to connect with redis...');
         const client = createClient({ url: url });
         await client.connect();
         RedisConnection.redisOMClient = await new Client().use(client);
       }
       return RedisConnection.redisOMClient!;
     } catch (e: any) {
-      console.log("Redis connection error: ", e);
+      Logger.error('Redis connection error: ', e);
       throw Error(e);
     }
   }
 
   public static getClient(): Client {
     if (!RedisConnection.redisOMClient) {
-      throw new Error("Redis client is not initialized");
+      throw new Error('Redis client is not initialized');
     }
     return RedisConnection.redisOMClient;
   }

@@ -26,9 +26,15 @@ TaskRouter.route('/get-own-task').get(
   TaskController.getOwnerTaskList
 );
 
+TaskRouter.route('/get-task-details/:taskId').get(
+  AuthMiddleware.isAuth,
+  AuthMiddleware.roleAuthMiddleware(['manager', 'company', 'employee']),
+  TaskController.getTaskDetails
+);
+
 TaskRouter.route('/update-task/:taskId').patch(
   AuthMiddleware.isAuth,
-  AuthMiddleware.roleAuthMiddleware(['manager', 'company']),
+  AuthMiddleware.roleAuthMiddleware(['manager', 'company', 'employee']),
   TaskController.updateTask
 );
 

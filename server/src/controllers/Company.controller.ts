@@ -1,11 +1,12 @@
 // controllers/CompanyController.ts
 
-import { Request, Response } from "express";
-import CompanyService from "../services/Company.service";
-import { RequestWithSessionDetails } from "../interfaces/Custum.inteface";
-import Custom from "../helpers/custom";
-import UserService from "../services/User.service";
-import { Types } from "mongoose";
+import { Request, Response } from 'express';
+import CompanyService from '../services/Company.service';
+import { RequestWithSessionDetails } from '../interfaces/Custum.inteface';
+import Custom from '../helpers/custom';
+import UserService from '../services/User.service';
+import { Types } from 'mongoose';
+import Logger from '../helpers/Logger';
 
 class CompanyController {
   constructor() {
@@ -20,14 +21,14 @@ class CompanyController {
       return res.status(200).json({
         success: true,
         company: company,
-        message: "compnay details",
+        message: 'compnay details',
       });
     } catch (e: any) {
-      console.log("e", e);
+      Logger.error(`Get own company error: ${e.message}`);
       return res.status(500).json({
         success: false,
         error: e,
-        message: "server error",
+        message: 'server error',
       });
     }
   }
@@ -39,7 +40,7 @@ class CompanyController {
       return res.status(500).json({
         success: false,
         error: e.message,
-        message: "server error",
+        message: 'server error',
       });
     }
   }
@@ -51,13 +52,13 @@ class CompanyController {
       if (industry) {
         return res.json(industry);
       } else {
-        return res.status(404).json({ error: "Company not found" });
+        return res.status(404).json({ error: 'Company not found' });
       }
     } catch (e: any) {
       return res.status(500).json({
         success: false,
         error: e.message,
-        message: "server error",
+        message: 'server error',
       });
     }
   }
@@ -72,21 +73,21 @@ class CompanyController {
     try {
       const updatedCompany = await CompanyService.updateCompany(
         { _id: companyId },
-        companyData,
+        companyData
       );
       if (updatedCompany) {
         return res.status(200).json({
           success: true,
-          message: "Company Updated successfully",
+          message: 'Company Updated successfully',
         });
       } else {
-        return res.status(404).json({ error: "Company not found" });
+        return res.status(404).json({ error: 'Company not found' });
       }
     } catch (e: any) {
       return res.status(500).json({
         success: false,
         error: e.message,
-        message: "server error",
+        message: 'server error',
       });
     }
   }
@@ -100,7 +101,7 @@ class CompanyController {
       return res.status(500).json({
         success: false,
         error: e.message,
-        message: "server error",
+        message: 'server error',
       });
     }
   }
@@ -109,7 +110,7 @@ class CompanyController {
     try {
       const userDetails = Custom.getSessionDetails(req);
       const counts = await CompanyService.dashboardTotalCount(
-        userDetails.companyId,
+        userDetails.companyId
       );
       const teamStats = await UserService.teamCountForDashboard({
         companyId: new Types.ObjectId(userDetails.companyId!),
@@ -123,7 +124,7 @@ class CompanyController {
       return res.status(500).json({
         success: false,
         error: e.message,
-        message: "server error",
+        message: 'server error',
       });
     }
   }

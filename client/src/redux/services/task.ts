@@ -10,6 +10,8 @@ import {
   TaskGetApiData,
   ReturnObject,
   Task,
+  TaskDetailsGetApiResponse,
+  TaskDetailsGetApiData,
 } from '../../models/Task';
 import { ErrorType } from '../../models/custom';
 
@@ -40,7 +42,7 @@ export const taskAPI = createApi({
   tagTypes: ['task-list'],
   endpoints: (build) => ({
     assignedTask: build.query<TaskGetApiData, void>({
-      query: () => `/get-own-task`,
+      query: () => `/`,
       transformResponse: (response: TaskGetApiResponse) => {
         return {
           taskList: response.taskList,
@@ -51,6 +53,17 @@ export const taskAPI = createApi({
         return response.data as ErrorType;
       },
       providesTags: ['task-list'],
+    }),
+    getTaskDetails: build.query<TaskDetailsGetApiData, string>({
+      query: (taskId) => `/get-task-details/${taskId}`,
+      transformResponse: (response: TaskDetailsGetApiResponse) => {
+        return {
+          taskDetails: response.taskDetails,
+        };
+      },
+      transformErrorResponse: (response: FetchBaseQueryError) => {
+        return response.data as ErrorType;
+      },
     }),
     updateTask: build.mutation<ReturnObject, Partial<Task>>({
       query(data) {
@@ -65,7 +78,25 @@ export const taskAPI = createApi({
       },
       invalidatesTags: ['task-list'],
     }),
+    addTask: build.mutation<ReturnObject, Partial<Task>>({
+      query(data) {
+        return {
+          url: `/`,
+          method: 'POST',
+          body: data,
+        };
+      },
+      transformErrorResponse: (response: FetchBaseQueryError) => {
+        return response.data as ErrorType;
+      },
+      invalidatesTags: ['task-list'],
+    }),
   }),
 });
 
-export const { useAssignedTaskQuery, useUpdateTaskMutation } = taskAPI;
+export const {
+  useAssignedTaskQuery,
+  useUpdateTaskMutation,
+  useGetTaskDetailsQuery,
+  useAddTaskMutation,
+} = taskAPI;

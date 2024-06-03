@@ -1,5 +1,6 @@
 import { Schema } from 'redis-om';
 import RedisOM from '../services/RedisOm.service';
+import Logger from '../helpers/Logger';
 
 const IndustrySchema = new Schema(
   'Industry',
@@ -19,8 +20,8 @@ const repo = async () => {
     const repo = Client?.fetchRepository(IndustrySchema);
     await repo?.createIndex();
     return repo;
-  } catch (err) {
-    console.log('err', err);
+  } catch (err: any) {
+    Logger.error(`RedisOm Industry Repo error: ${err.message}`);
   }
 };
 

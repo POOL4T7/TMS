@@ -2,6 +2,7 @@ interface User {
   _id: string;
   firstName: string;
   lastName?: string;
+  profilePicture?: string;
 }
 
 interface Message {
@@ -14,20 +15,22 @@ export interface Task {
   _id: string;
   title: string;
   description: string;
-  assignedTo: [User];
+  assignedTo: User[];
   assignedBy: User;
   comment?: Message[];
   status: string;
-  projectID: {
-    _id: string;
-    name: string;
-  };
+  projectID:
+    | {
+        _id: string;
+        name: string;
+      }
+    | string;
   logs: TaskLog[];
   labels: string[];
   priority: string;
   taskType: string;
-  startDate?: Date | string;
-  dueDate: Date | string;
+  startDate?: string;
+  dueDate: string;
 }
 
 export interface TaskLog {
@@ -45,8 +48,16 @@ export interface TaskGetApiData {
   taskList: TaskObj[];
   totalTask: number;
 }
+export interface TaskDetailsGetApiData {
+  taskDetails: TaskObj;
+}
 
 export interface TaskGetApiResponse extends TaskGetApiData {
+  success: boolean;
+  message: string;
+}
+
+export interface TaskDetailsGetApiResponse extends TaskDetailsGetApiData {
   success: boolean;
   message: string;
 }

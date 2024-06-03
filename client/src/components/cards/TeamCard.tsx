@@ -1,11 +1,11 @@
-import Card from "@mui/material/Card";
-import CardContent from "@mui/material/CardContent";
-import CardMedia from "@mui/material/CardMedia";
-import Typography from "@mui/material/Typography";
-import { Button, CardActionArea, CardActions } from "@mui/material";
-import { Group, RemoveRedEye } from "@mui/icons-material";
-import AddUpdateTeam from "../Team/AddUpdateTeam";
-import { colorHelper } from "../../utils/Helper";
+import Card from '@mui/material/Card';
+import CardContent from '@mui/material/CardContent';
+import CardMedia from '@mui/material/CardMedia';
+import Typography from '@mui/material/Typography';
+import { Button, CardActionArea, CardActions } from '@mui/material';
+import { Group, RemoveRedEye } from '@mui/icons-material';
+import AddUpdateTeam from '../Team/AddUpdateTeam';
+import { getColor } from '../../utils/Helper';
 
 interface propTypes {
   image: string;
@@ -24,7 +24,7 @@ export default function TeamCard({
   _id,
   slug,
 }: propTypes) {
-  console.log("propTypes", { image, name, totalMember, status, _id, slug });
+  console.log('propTypes', { image, name, totalMember, status, _id, slug });
   return (
     <Card>
       <CardActionArea>
@@ -47,7 +47,7 @@ export default function TeamCard({
           Icon={RemoveRedEye}
           teamSlug={slug}
         />
-        <Button size="small" color={colorHelper(status)}>
+        <Button size="small" color={getColor(status)}>
           {status}
         </Button>
       </CardActions>

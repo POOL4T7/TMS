@@ -22,7 +22,8 @@ class TaskService {
   ): Promise<TaskWithPagination> {
     try {
       const data = await Task.find(filter)
-        .populate({ path: 'assignedTo' })
+        .populate({ path: 'assignedTo', select: 'firstName' })
+        .populate({ path: 'assignedBy', select: 'firstName' })
         .select(select)
         .lean();
       return { taskList: data as unknown as ITask[], totalCount: 0 };
@@ -62,6 +63,8 @@ class TaskService {
               {
                 $project: {
                   firstName: 1,
+                  profilePicture: 1,
+                  lastName: 1,
                 },
               },
             ],
@@ -117,8 +120,7 @@ class TaskService {
   }
   static async update(filter: TaskFilter, formData: any): Promise<void> {
     try {
-      const data = await Task.findOneAndUpdate(filter, { $set: formData });
-      console.log('data', data);
+      await Task.findOneAndUpdate(filter, { $set: formData });
     } catch (e: any) {
       throw Error(e);
     }

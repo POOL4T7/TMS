@@ -16,7 +16,6 @@ class JwtService {
       const decoded = jwt.verify(token, secretKey) as TokenOutput;
       return decoded;
     } catch (e: any) {
-      console.log(e.message);
       throw new Error(e);
     }
   }

@@ -1,12 +1,30 @@
-import { Box, Paper, Stack, Typography } from '@mui/material';
-import TaskCard from '../../../components/Task/TaskCard';
 import { useEffect, useState, useCallback } from 'react';
-// import { TaskListData } from '../../../data';
+import {
+  Box,
+  Drawer,
+  IconButton,
+  Paper,
+  Stack,
+  Typography,
+} from '@mui/material';
+import TaskCard from '../../../components/Task/TaskCard';
+import {
+  Add,
+  Autorenew,
+  FilterAlt,
+  OpenInFull,
+  CloseFullscreen,
+} from '@mui/icons-material';
 import {
   useAssignedTaskQuery,
   useUpdateTaskMutation,
 } from '../../../redux/services/task';
+
 import { Task } from '../../../models/Task';
+
+import { useTypedSelector } from '../../../redux/store';
+import { AuthState } from '../../../models/custom';
+import TaskForm from '../../../components/Task/TaskForm';
 
 interface TaskListProps {
   pending: Task[];
@@ -26,9 +44,13 @@ const TaskList = () => {
     _id: '',
     status: '',
   });
+  const [drawerOpen, setDrawerOpen] = useState(false);
+
+  const authState: AuthState = useTypedSelector((state) => state.authState);
+
   const { data } = useAssignedTaskQuery();
-  const [updateTask, { isError, isLoading }] = useUpdateTaskMutation();
-  console.log('{ isError, isLoading }', { isError, isLoading });
+  const [updateTask] = useUpdateTaskMutation();
+
   useEffect(() => {
     if (data?.taskList) {
       const tempObj: TaskListProps = {
@@ -37,7 +59,7 @@ const TaskList = () => {
         completed: [],
         inprogress: [],
       };
-      data.taskList.forEach((task: { _id: string; taskList: Task[] }) => {
+      data.taskList?.forEach((task: { _id: string; taskList: Task[] }) => {
         if (task._id in tempObj) {
           tempObj[task._id as keyof TaskListProps] = task.taskList;
         }
@@ -59,9 +81,6 @@ const TaskList = () => {
 
   const handleDrop = useCallback(
     async (status: string) => {
-      console.log(
-        `Dragged Task ID: ${draggedTask._id}, Current Status: ${draggedTask.status}, New Status: ${status}`
-      );
       if (draggedTask._id && status !== draggedTask.status) {
         setTaskList((prevTaskList) => {
           const updatedTaskList = { ...prevTaskList };
@@ -86,7 +105,6 @@ const TaskList = () => {
             // Update the task list for the dragged task's current status
             updatedTaskList[draggedTask.status as keyof TaskListProps] =
               currentTaskList;
-            console.log(task);
             // task.status = status;
 
             // Add the task to the target status array
@@ -99,12 +117,10 @@ const TaskList = () => {
           return updatedTaskList;
         });
         try {
-          const d = await updateTask({
+          await updateTask({
             status: status,
             _id: draggedTask._id,
           });
-          console.log('d', d);
-          // Clear dragged task after drop
           setDraggedTask({ _id: '', status: '' });
         } catch (e) {
           console.log(e);
@@ -155,23 +171,53 @@ const TaskList = () => {
     }
   };
 
+  const toggleDrawer =
+    (isOpen: boolean) => (event: React.KeyboardEvent | React.MouseEvent) => {
+      if (
+        event.type === 'keydown' &&
+        ((event as React.KeyboardEvent).key === 'Tab' ||
+          (event as React.KeyboardEvent).key === 'Shift')
+      ) {
+        return;
+      }
+
+      setDrawerOpen(isOpen);
+      // handleClose();
+    };
+
   return (
-    <Box
-      sx={{
-        height: '100%',
-        width: '100vw',
-      }}
-    >
+    <>
+      <Stack
+        direction={'row'}
+        justifyContent={'space-between'}
+        useFlexGap
+        sx={{ marginBottom: '25px' }}
+      >
+        <Typography variant="h4">Assigned Task</Typography>
+        <Box>
+          <IconButton aria-label="filter alt">
+            {authState.fullScreen ? <CloseFullscreen /> : <OpenInFull />}
+          </IconButton>
+          <IconButton aria-label="filter alt">
+            <FilterAlt />
+          </IconButton>
+          <IconButton aria-label="autorenew alt">
+            <Autorenew />
+          </IconButton>
+          <IconButton aria-label="add alt" onClick={toggleDrawer(true)}>
+            <Add />
+          </IconButton>
+        </Box>
+      </Stack>
       <Stack
         component={'div'}
         direction={'row'}
         spacing={1}
         justifyContent={'space-between'}
         sx={{
-          minHeight: '90vh',
+          minHeight: '82vh',
           maxHeight: '100%',
           width: '100%',
-          maxWidth: '100vw',
         }}
       >
         {renderTaskColumn('Pending', 'pending', taskList.pending)}
@@ -179,7 +225,17 @@ const TaskList = () => {
         {renderTaskColumn('In review', 'review', taskList.review)}
         {renderTaskColumn('Done', 'completed', taskList.completed)}
       </Stack>
-    </Box>
+      <Drawer
+        anchor={'right'}
+        open={drawerOpen}
+        onClose={toggleDrawer(false)}
+        className="drawer-testing"
+      >
+        <Box sx={{ maxWidth: '100vw', width: '100%' }} role="presentation">
+          <TaskForm taskId="" />
+        </Box>
+      </Drawer>
+    </>
   );
 };
 

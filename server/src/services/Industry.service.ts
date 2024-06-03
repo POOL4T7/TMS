@@ -1,8 +1,9 @@
-import { Sort } from "../interfaces/Custum.inteface";
-import Industry from "../models/Industry.model";
-import IIndustry from "../interfaces/Industry.interface";
-import RedisService from "./RedisService.service";
-import IndustryRepo from "../repository/Industry.repository";
+import { Sort } from '../interfaces/Custum.inteface';
+import Industry from '../models/Industry.model';
+import IIndustry from '../interfaces/Industry.interface';
+import RedisService from './RedisService.service';
+import IndustryRepo from '../repository/Industry.repository';
+import Logger from '../helpers/Logger';
 
 interface Filter {
   status?: string;
@@ -60,7 +61,7 @@ class IndustryService {
 
   async getAllIndustries(
     filter: Filter = {},
-    select: string = "_id name",
+    select: string = '_id name',
     sort: Sort = {},
     skip: number = 0,
     limit: number = 0
@@ -68,16 +69,15 @@ class IndustryService {
     try {
       let industries = [];
       let fromRedis = false;
-      const redisEnabled = process.env.REDIS_INDUSTRY_LIST === "ON";
+      const redisEnabled = process.env.REDIS_INDUSTRY_LIST === 'ON';
       let IndustryClient;
       const client = RedisService.getInstance();
       if (redisEnabled) {
         IndustryClient = await IndustryRepo();
         const dat = await IndustryClient?.search().count();
-        console.log("Industry List :", dat);
-        const value = await client?.get("industryList");
+        Logger.info(JSON.stringify(dat, null, 2));
+        const value = await client?.get('industryList');
         if (value) {
-          console.log("from cached");
           industries = JSON.parse(value);
           fromRedis = true;
         }
@@ -91,9 +91,8 @@ class IndustryService {
           .limit(limit)
           .lean();
         if (redisEnabled) {
-          await client?.set("industryList", JSON.stringify(industries));
+          await client?.set('industryList', JSON.stringify(industries));
           // IndustryClient = await IndustryRepo();
-          
         }
       }
       // const res = await IndustryClient?.save({
@@ -101,10 +100,8 @@ class IndustryService {
       //   slug: "sde-2",
       //   description: "sdczsdcsdc sdcsdc bsdjkcj,",
       // });
-      // console.log("res", res);
       return industries;
     } catch (error: any) {
-      console.log(error);
       throw new Error(`Error getting industries: ${error.message}`);
     }
   }

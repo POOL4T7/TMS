@@ -1,25 +1,26 @@
-import Industry from "./models/Industry.model";
-import Data from "./utils/Data";
-import mongoose from "mongoose";
-import dotenv from "dotenv";
-dotenv.config({ path: "../.env" });
+import Industry from './models/Industry.model';
+import Data from './utils/Data';
+import mongoose from 'mongoose';
+import dotenv from 'dotenv';
+import Logger from './helpers/Logger';
+dotenv.config({ path: '../.env' });
 
 async function main() {
   try {
     const MONGO_URI =
       process.env.MONGO_URI ||
-      "mongodb://root:rootpassword@mongodb_server:27017/tms?authSource=admin";
+      'mongodb://root:rootpassword@mongodb_server:27017/tms?authSource=admin';
     await mongoose.connect(MONGO_URI);
-    console.log("Connected to the database successfully");
+    Logger.info('Connected to the database successfully');
 
     await addIndustryListToDB();
-    console.log("Data added successfully");
-  } catch (error) {
-    console.error("Error:", error);
+    Logger.info('Data added successfully');
+  } catch (error: any) {
+    Logger.error(error.message);
     process.exit(1);
   } finally {
     mongoose.disconnect();
-    console.log("Disconnected from the database");
+    Logger.warn('Disconnected from the database');
     process.exit(0);
   }
 }
@@ -29,10 +30,10 @@ async function addIndustryListToDB() {
     await Industry.insertMany(Data.IndustryList, {
       ordered: false,
     });
-    console.log("Data inserted successfully:");
+    Logger.info('Data inserted successfully:');
   } catch (error: any) {
     if (error.code === 11000) {
-      console.error("Duplicate key error:", error);
+      Logger.error(`'Duplicate key error:', ${error.message}`);
     } else {
       throw error;
     }

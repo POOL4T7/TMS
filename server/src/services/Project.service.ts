@@ -1,7 +1,7 @@
-import { ObjectId, Types } from "mongoose";
-import Project from "../models/Project.model";
-import { Sort } from "../interfaces/Custum.inteface";
-import { IProject, ProjectStats } from "../interfaces/Project.interface";
+import { ObjectId, Types } from 'mongoose';
+import Project from '../models/Project.model';
+import { Sort } from '../interfaces/Custum.inteface';
+import { IProject, ProjectStats } from '../interfaces/Project.interface';
 
 // interface ProjectTeam {
 //   departmentId?: string;
@@ -16,7 +16,7 @@ export interface Filter {
   manager?: string | Types.ObjectId | null;
   teamLead?: string | Types.ObjectId | null;
   // team?: ProjectTeam;
-  "team.userId"?: Types.ObjectId | string;
+  'team.userId'?: Types.ObjectId | string;
 }
 
 class ProjectService {
@@ -35,17 +35,17 @@ class ProjectService {
     filter: Filter,
     skip: number = 0,
     limit: number = 10,
-    sort: Sort = { _id: -1 },
+    sort: Sort = { _id: -1 }
   ): Promise<ProjectStats> {
     try {
       const projects = await Project.find(filter)
-        .populate({ path: "manager", select: "firstName lastName" })
-        .populate({ path: "teamLead", select: "firstName lastName" })
+        .populate({ path: 'manager', select: 'firstName lastName' })
+        .populate({ path: 'teamLead', select: 'firstName lastName' })
         .select({
           slug: 1,
           name: 1,
           image: 1,
-          teamSize: { $size: "$team" },
+          teamSize: { $size: '$team' },
           status: 1,
         })
         .sort(sort)
@@ -56,7 +56,6 @@ class ProjectService {
 
       return { projectList: projects, totalProject };
     } catch (error: any) {
-      console.log(error);
       throw new Error(`Error getting projects: ${error.message}`);
     }
   }
@@ -64,10 +63,10 @@ class ProjectService {
   static async findOne(filter: Filter): Promise<IProject | null> {
     try {
       const position = await Project.findOne(filter)
-        .populate({ path: "team.departmentId", select: "name" })
-        .populate({ path: "team.userId", select: "firstName lastName" })
-        .populate({ path: "manager", select: "firstName lastName" })
-        .populate({ path: "teamLead", select: "firstName lastName" })
+        .populate({ path: 'team.departmentId', select: 'name' })
+        .populate({ path: 'team.userId', select: 'firstName lastName' })
+        .populate({ path: 'manager', select: 'firstName lastName' })
+        .populate({ path: 'teamLead', select: 'firstName lastName' })
         .lean();
       return position;
     } catch (error: any) {
@@ -77,7 +76,7 @@ class ProjectService {
 
   static async findOneAndUpdate(
     filter: Filter,
-    formData: any,
+    formData: any
   ): Promise<boolean> {
     try {
       const data = await Project.findOneAndUpdate(filter, formData);

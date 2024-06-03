@@ -7,6 +7,7 @@ import UserService from '../services/User.service';
 import EmailService from '../services/Email.service';
 import { UserCompany } from '../interfaces/User.interface';
 import BcryptJs from 'bcryptjs';
+import Logger from '../helpers/Logger';
 
 // const waitFiveSeconds = () => {
 //   return new Promise((resolve) => {
@@ -252,7 +253,6 @@ class CompanyController {
   async resetPassword(req: Request, res: Response): Promise<Response> {
     try {
       const { password, resetToken } = req.body;
-      console.log('req.body', req.body);
       let user;
       user = await UserService.findOne({ resetToken });
       if (user) {
@@ -260,7 +260,6 @@ class CompanyController {
           { resetToken },
           { password: password, resetToken: null }
         );
-        console.log('here');
       } else {
         user = await CompanyService.findOne({ resetToken });
         if (!user) {
@@ -270,12 +269,10 @@ class CompanyController {
           { resetToken },
           { password: password, resetToken: null }
         );
-        console.log('here2');
       }
-      console.log(user);
       return res.status(200).json({ message: 'Password reset successful' });
     } catch (e: any) {
-      console.log('e', e);
+      Logger.error(`Reset password error: ${e.message}`);
       return res.status(500).json({
         success: false,
         error: e.message,

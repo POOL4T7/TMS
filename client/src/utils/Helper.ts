@@ -1,9 +1,9 @@
 export const toInternationalNumberSystem = (num: number) => {
   if (isNaN(num)) {
-    return "Invalid count";
+    return 'Invalid count';
   }
 
-  const abbreviations = ["", "K", "M", "B"];
+  const abbreviations = ['', 'K', 'M', 'B'];
   let index = 0;
 
   while (num >= 1000 && index < abbreviations.length - 1) {
@@ -18,8 +18,21 @@ export const toInternationalNumberSystem = (num: number) => {
   return `${formattedNumber} ${abbreviations[index]}`;
 };
 
-export const colorHelper = (status: string) => {
-  if (status == "active" || status == "publish") return "success";
-  else if (status == "draft" || status == "inactive") return "primary";
-  else if (status == "deleted") return "error";
+export const getColor = (label: string) => {
+  switch (label) {
+    case 'server':
+    case 'web':
+      return 'success';
+    case 'employeePanel':
+    case 'companyPanel':
+    case 'high':
+      return 'error';
+    case 'UI':
+    case 'medium':
+      return 'secondary';
+    case 'low':
+      return 'info';
+    default:
+      return 'primary';
+  }
 };

@@ -1,27 +1,29 @@
-import { createSlice } from "@reduxjs/toolkit";
-import type { RootState } from "../store";
-import { getCookie, getSessionStorage } from "../../utils/storage";
+import { createSlice } from '@reduxjs/toolkit';
+import type { RootState } from '../store';
+import { getCookie, getSessionStorage } from '../../utils/storage';
 
 interface AuthInitialState {
   accessToken: string;
   type: string;
-  error: "";
-  status: "";
+  error: '';
+  status: '';
   isAuthenticated: boolean;
+  fullScreen: boolean;
 }
 
-const data = JSON.parse(getCookie("auth") || getSessionStorage("auth") || "{}");
+const data = JSON.parse(getCookie('auth') || getSessionStorage('auth') || '{}');
 
 const initialState: AuthInitialState = {
-  type: data.type || "",
-  accessToken: data.accessToken || "",
-  error: "",
-  status: data.status || "",
+  type: data.type || '',
+  accessToken: data.accessToken || '',
+  error: '',
+  status: data.status || '',
   isAuthenticated: data?.accessToken && true,
+  fullScreen: false,
 };
 
 const slice = createSlice({
-  name: "auth",
+  name: 'auth',
   initialState,
   reducers: {
     logout: () => initialState,
@@ -29,8 +31,10 @@ const slice = createSlice({
       state.accessToken = action.payload.accessToken;
       state.type = action.payload.type;
       state.status = action.payload.status;
-      state.error = action.payload.error || "";
+      state.error = action.payload.error || '';
       state.isAuthenticated = action.payload.accessToken && true;
+      state.isAuthenticated = action.payload.accessToken && true;
+      state.fullScreen = false;
     },
   },
 });

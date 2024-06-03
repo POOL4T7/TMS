@@ -1,4 +1,4 @@
-import winston from "winston";
+import winston from 'winston';
 
 class Logger {
   private levels = {
@@ -9,11 +9,11 @@ class Logger {
     debug: 4,
   };
   private colors = {
-    error: "red",
-    warn: "yellow",
-    info: "green",
-    http: "magenta",
-    debug: "white",
+    error: 'red',
+    warn: 'yellow',
+    info: 'green',
+    http: 'magenta',
+    debug: 'white',
   };
   public log: winston.Logger;
   constructor() {
@@ -25,35 +25,34 @@ class Logger {
     });
   }
   private level() {
-    const env = process.env.NODE_ENV || "development";
-    const isDevelopment = env === "development";
-    return isDevelopment ? "debug" : "warn";
+    const env = process.env.NODE_ENV || 'development';
+    const isDevelopment = env === 'development';
+    return isDevelopment ? 'debug' : 'warn';
   }
   private winstonTransports() {
     return [
       new winston.transports.Console({
         format: winston.format.combine(
           winston.format.colorize(),
-          winston.format.timestamp({ format: "YYYY-MM-DD HH:mm:ss:ms" }),
+          winston.format.timestamp({ format: 'YYYY-MM-DD HH:mm:ss:ms' }),
           winston.format.printf((info) => {
-            // console.log(info);
             return `{ level: ${info.level}, message: ${info.message} } timestamps: [${info.timestamp}],`;
-          }),
+          })
         ),
       }),
       new winston.transports.File({
-        filename: "logs/error.log",
-        level: "error",
+        filename: 'logs/error.log',
+        level: 'error',
         format: winston.format.combine(
-          winston.format.timestamp({ format: "YYYY-MM-DD HH:mm:ss:ms" }),
-          winston.format.json(),
+          winston.format.timestamp({ format: 'YYYY-MM-DD HH:mm:ss:ms' }),
+          winston.format.json()
         ),
       }),
       new winston.transports.File({
-        filename: "logs/all.log",
+        filename: 'logs/all.log',
         format: winston.format.combine(
-          winston.format.timestamp({ format: "YYYY-MM-DD HH:mm:ss:ms" }),
-          winston.format.json(),
+          winston.format.timestamp({ format: 'YYYY-MM-DD HH:mm:ss:ms' }),
+          winston.format.json()
         ),
       }),
     ];

@@ -1,6 +1,7 @@
-import app from "./src/app";
-import connectDB from "./config/db";
-import dotenv from "dotenv";
+import app from './src/app';
+import connectDB from './config/db';
+import dotenv from 'dotenv';
+import Logger from './src/helpers/Logger';
 dotenv.config();
 
 const startServer = async () => {
@@ -11,7 +12,7 @@ const startServer = async () => {
       console.log(`server is listing in ${NODE_ENV} on ${PORT} `);
     });
   } catch (e: any) {
-    console.log(e.message);
+    Logger.error(e.message);
     process.exit(1);
   }
 };
