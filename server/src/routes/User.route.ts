@@ -15,7 +15,7 @@ router
   .route('/users-list')
   .get(
     AuthMiddleware.isAuth,
-    AuthMiddleware.roleAuthMiddleware(['company']),
+    AuthMiddleware.roleAuthMiddleware(['company', 'manager']),
     UserController.getCompanyUsers
   );
 

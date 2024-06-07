@@ -15,7 +15,7 @@ export interface Task {
   _id: string;
   title: string;
   description: string;
-  assignedTo: User[];
+  assignedTo: User[] | string[];
   assignedBy: User;
   comment?: Message[];
   status: string;

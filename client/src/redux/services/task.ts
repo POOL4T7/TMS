@@ -42,7 +42,20 @@ export const taskAPI = createApi({
   tagTypes: ['task-list'],
   endpoints: (build) => ({
     assignedTask: build.query<TaskGetApiData, void>({
-      query: () => `/`,
+      query: () => ``,
+      transformResponse: (response: TaskGetApiResponse) => {
+        return {
+          taskList: response.taskList,
+          totalTask: response.totalTask,
+        };
+      },
+      transformErrorResponse: (response: FetchBaseQueryError) => {
+        return response.data as ErrorType;
+      },
+      providesTags: ['task-list'],
+    }),
+    ownTask: build.query<TaskGetApiData, void>({
+      query: () => `/get-own-task`,
       transformResponse: (response: TaskGetApiResponse) => {
         return {
           taskList: response.taskList,
@@ -99,4 +112,5 @@ export const {
   useUpdateTaskMutation,
   useGetTaskDetailsQuery,
   useAddTaskMutation,
+  useOwnTaskQuery,
 } = taskAPI;

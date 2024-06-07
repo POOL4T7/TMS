@@ -15,9 +15,12 @@ import {
 } from '@mui/material';
 import MoreVertIcon from '@mui/icons-material/MoreVert';
 import AccessTimeIcon from '@mui/icons-material/AccessTime';
-import { useState, useCallback, useEffect } from 'react';
+import { useState, useCallback, useEffect, Suspense, lazy } from 'react';
 import { Task } from '../../models/Task';
-import TaskForm from './TaskForm';
+import { User } from '../../models/users';
+
+const TaskForm = lazy(() => import('./TaskForm'));
+
 interface PropType {
   task: Task;
   index: string;
@@ -192,7 +195,7 @@ const TaskCard = ({ task, index, onDragStart }: PropType) => {
         <Stack direction={'row'} justifyContent={'space-between'}>
           <Box>
             <Chip
-              label={projectID.name}
+              label={typeof projectID !== 'string' && projectID?.name}
               size="small"
               variant="outlined"
               color="secondary"
@@ -221,7 +224,7 @@ const TaskCard = ({ task, index, onDragStart }: PropType) => {
                   src={assignedBy.profilePicture}
                 />
               </Tooltip>
-              {assignedTo.map((user) => {
+              {assignedTo.map((user: Partial<User>) => {
                 return (
                   <Tooltip
                     title={`${user.firstName} ${
@@ -248,7 +251,9 @@ const TaskCard = ({ task, index, onDragStart }: PropType) => {
         className="drawer-testing"
       >
         <Box sx={{ maxWidth: '100vw', width: '100%' }} role="presentation">
-          <TaskForm taskId={taskDetails._id} />
+          <Suspense fallback={<div>Loading...</div>}>
+            <TaskForm taskId={taskDetails._id} />
+          </Suspense>
         </Box>
       </Drawer>
     </Box>

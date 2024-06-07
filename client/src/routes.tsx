@@ -21,6 +21,7 @@ import ForgotPassword from './screens/Auth/ForgotPassword';
 import ResetPassword from './screens/Auth/ResetPassword';
 import CreateTask from './screens/Company/Task/CreateTask';
 import TaskList from './screens/Company/Task/TaskList';
+import OwnTaskList from './screens/Employee/Task/OwnTaskList';
 
 const router = (authState: AuthState) => {
   return createBrowserRouter([
@@ -70,6 +71,10 @@ const router = (authState: AuthState) => {
             {
               path: 'assigned',
               element: <TaskList />,
+            },
+            {
+              path: 'own-task-list',
+              element: <OwnTaskList />,
             },
           ],
         },

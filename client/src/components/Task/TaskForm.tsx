@@ -3,11 +3,15 @@ import {
   Autocomplete,
   Box,
   Button,
+  Checkbox,
+  Chip,
   FormControl,
   Grid,
   IconButton,
   InputLabel,
+  ListItemText,
   MenuItem,
+  OutlinedInput,
   Select,
   SelectChangeEvent,
   Stack,
@@ -29,6 +33,17 @@ import {
 } from '../../redux/services/task';
 import { labelList } from '../../data';
 import { useProjectListQuery } from '../../redux/services/project';
+import { useUserListQuery } from '../../redux/services/user';
+const ITEM_HEIGHT = 48;
+const ITEM_PADDING_TOP = 8;
+const MenuProps = {
+  PaperProps: {
+    style: {
+      maxHeight: ITEM_HEIGHT * 4.5 + ITEM_PADDING_TOP,
+      width: 250,
+    },
+  },
+};
 
 const TaskForm = ({ taskId }: { taskId: string }) => {
   const [taskDetails, setTaskDetails] = useState<Task>({
@@ -60,11 +75,20 @@ const TaskForm = ({ taskId }: { taskId: string }) => {
     dueDate,
   } = taskDetails;
 
+  const [userIds, setUserIds] = useState<string[]>([]);
+
   const [updateTask] = useUpdateTaskMutation();
   const [createTask] = useAddTaskMutation();
 
   const { data } = useGetTaskDetailsQuery(taskId, {
     skip: !taskId,
+  });
+
+  const { data: userList, isLoading: userListFetching } = useUserListQuery({
+    page: 1,
+    rowsPerPage: 100,
+    orderBy: '_id',
+    order: 'asc',
   });
 
   const { data: projectList } = useProjectListQuery({
@@ -76,7 +100,6 @@ const TaskForm = ({ taskId }: { taskId: string }) => {
 
   useEffect(() => {
     setTaskDetails({ ...taskDetails, ...data?.taskDetails });
-    console.log('data', data);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [taskId, data]);
 
@@ -85,12 +108,6 @@ const TaskForm = ({ taskId }: { taskId: string }) => {
       ...taskDetails,
       startDate: newValue?.format().toString() || '',
     });
-    // if (newValue && (!dueDate || dayjs(dueDate).isBefore(dayjs(newValue)))) {
-    //   setTaskDetails({
-    //     ...taskDetails,
-    //     dueDate: newValue?.format().toString() || '',
-    //   });
-    // }
   };
 
   const handleSelectChange = (name: string) => (event: SelectChangeEvent) => {
@@ -102,6 +119,14 @@ const TaskForm = ({ taskId }: { taskId: string }) => {
     (event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
       setTaskDetails({ ...taskDetails, [name]: event.target.value });
     };
+
+  const handleMultiSelectChange = (
+    event: SelectChangeEvent<typeof userIds>
+  ) => {
+    const value = event.target.value;
+    console.log(value);
+    setUserIds(typeof value === 'string' ? value.split(',') : value);
+  };
 
   const submitHandler = async (
     e: React.MouseEvent<HTMLButtonElement, MouseEvent>
@@ -317,6 +342,54 @@ const TaskForm = ({ taskId }: { taskId: string }) => {
           })}
         </Select>
       </FormControl>
+
+      <FormControl
+        fullWidth
+        style={{
+          marginTop: '10px',
+        }}
+      >
+        <InputLabel id="demo-multiple-checkbox-label">Assigned To</InputLabel>
+        <Select
+          labelId="demo-multiple-checkbox-label"
+          id="demo-multiple-checkbox"
+          multiple
+          value={userIds}
+          onChange={handleMultiSelectChange}
+          input={<OutlinedInput label="Assigned To" />}
+          renderValue={(selected) => (
+            <Box>
+              {selected.map((value) => {
+                const option = userList?.userList?.find((o) => o._id === value);
+                return (
+                  <Chip
+                    key={value}
+                    label={option?.firstName}
+                    style={{
+                      margin: '2px',
+                    }}
+                  />
+                );
+              })}
+            </Box>
+          )}
+          MenuProps={MenuProps}
+          name="assignedTo"
+        >
+          {userListFetching && (
+            <MenuItem disabled>
+              <ListItemText primary={'Loading..'} />
+            </MenuItem>
+          )}
+          {userList?.userList?.map((item, idx) => (
+            <MenuItem key={idx} value={item._id}>
+              <Checkbox checked={userIds.indexOf(item._id) > -1} />
+              <ListItemText primary={item.firstName} />
+            </MenuItem>
+          ))}
+        </Select>
+      </FormControl>
+
       <Stack direction={'row'} marginTop={'15px'}></Stack>
       <Button
         type="submit"
