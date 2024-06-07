@@ -6,7 +6,6 @@ import DepartmentService from '../services/Department.service';
 import Custom from '../helpers/custom';
 import { UpdateFormData } from '../interfaces/Department.interface';
 import Logger from '../helpers/Logger';
-// import Logger from "../helpers/Logger";
 
 class DepartmentController {
   constructor() {
@@ -40,6 +39,7 @@ class DepartmentController {
 
   async getDepartments(req: Request, res: Response): Promise<Response> {
     try {
+      await Custom.waitFiveSeconds();
       const userDetails = Custom.getSessionDetails(req);
       const departments = await DepartmentService.departmentListWithStats(
         {
@@ -65,6 +65,7 @@ class DepartmentController {
   }
   async getDepartmentList(req: Request, res: Response): Promise<Response> {
     try {
+      await Custom.waitFiveSeconds();
       const userDetails = Custom.getSessionDetails(req);
 
       const departments = await DepartmentService.findAll(

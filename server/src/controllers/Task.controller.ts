@@ -4,14 +4,6 @@ import { ITask, TaskLog, TaskFilter } from '../interfaces/Task.interface';
 import Custom from '../helpers/custom';
 import mongoose from 'mongoose';
 
-const waitFiveSeconds = () => {
-  return new Promise((resolve) => {
-    setTimeout(() => {
-      resolve('Operation completed after 5 seconds');
-    }, 5000);
-  });
-};
-
 class TaskController {
   async addTask(req: Request, res: Response): Promise<Response> {
     try {
@@ -197,7 +189,7 @@ class TaskController {
 
   async getTaskDetails(req: Request, res: Response): Promise<Response> {
     try {
-      await waitFiveSeconds();
+      await Custom.waitFiveSeconds();
       const filter: TaskFilter = {};
       filter._id = req.params.taskId;
       const list = await TaskService.find(filter, '-createdAt');

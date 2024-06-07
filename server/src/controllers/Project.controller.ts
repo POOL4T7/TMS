@@ -1,9 +1,9 @@
-import { Request, Response } from "express";
-import { Types, ObjectId } from "mongoose";
-import ProjectService, { Filter } from "../services/Project.service";
-import { IProject } from "../interfaces/Project.interface";
-import Custom from "../helpers/custom";
-import Logger from "../helpers/Logger";
+import { Request, Response } from 'express';
+import { Types, ObjectId } from 'mongoose';
+import ProjectService, { Filter } from '../services/Project.service';
+import { IProject } from '../interfaces/Project.interface';
+import Custom from '../helpers/custom';
+import Logger from '../helpers/Logger';
 
 class DepartmentController {
   constructor() {
@@ -31,14 +31,14 @@ class DepartmentController {
       await ProjectService.createProject(body);
       return res.status(201).json({
         success: true,
-        message: "Project added successfully",
+        message: 'Project added successfully',
       });
     } catch (e: any) {
       Logger.error(e.message);
       return res.status(500).json({
         success: false,
         error: e.message,
-        message: "server error",
+        message: 'server error',
       });
     }
   }
@@ -68,49 +68,50 @@ class DepartmentController {
       });
       return res.status(201).json({
         success: true,
-        message: "Project Updated Successfully",
+        message: 'Project Updated Successfully',
       });
     } catch (e: any) {
       Logger.error(e.message);
       return res.status(500).json({
         success: false,
         error: e.message,
-        message: "server error",
+        message: 'server error',
       });
     }
   }
 
   async getProjectList(req: Request, res: Response): Promise<Response> {
     try {
+      await Custom.waitFiveSeconds();
       const userDetails = Custom.getSessionDetails(req);
       const role = userDetails.role;
       const userId = new Types.ObjectId(userDetails._id);
       const filter: Filter = {};
-      filter["owner"] = new Types.ObjectId(
-        userDetails.companyId,
+      filter['owner'] = new Types.ObjectId(
+        userDetails.companyId
       ) as unknown as ObjectId;
 
-      if (role === "manager") {
+      if (role === 'manager') {
         filter.manager = userId;
-      } else if (role === "teamlead") {
+      } else if (role === 'teamlead') {
         filter.teamLead = userId;
-      } else if (role === "employee") {
+      } else if (role === 'employee') {
         // filter.team = {};
-        filter["team.userId"] = userId;
+        filter['team.userId'] = userId;
       }
-      role != "company" ? (filter.status = "publish") : "";
+      role != 'company' ? (filter.status = 'publish') : '';
       const projects = await ProjectService.findWithStats(filter, 0, 10);
       return res.status(200).json({
         success: true,
         projectList: projects.projectList,
         totalProject: projects.totalProject,
-        message: "Project List",
+        message: 'Project List',
       });
     } catch (e: any) {
       return res.status(500).json({
         success: false,
         error: e.message,
-        message: "server error",
+        message: 'server error',
       });
     }
   }
@@ -122,7 +123,7 @@ class DepartmentController {
         slug: req.params.projectId,
         owner: userDetail.companyId,
       };
-      userDetail.role != "company" ? (filter.status = "publish") : "";
+      userDetail.role != 'company' ? (filter.status = 'publish') : '';
       const d = await ProjectService.findOne(filter);
       return res.status(200).json({
         success: true,
@@ -132,7 +133,7 @@ class DepartmentController {
       return res.status(500).json({
         success: false,
         error: e.message,
-        message: "server error",
+        message: 'server error',
       });
     }
   }
