@@ -16,6 +16,7 @@ import {
   FolderShared,
   People,
   ChecklistRtl,
+  Assignment,
 } from '@mui/icons-material';
 import { NavLink, useNavigate } from 'react-router-dom';
 import { useCompanyProfileQuery } from '../../../../redux/services/company';
@@ -104,7 +105,6 @@ const CompanySideBar = () => {
                 </ListItemButton>
               </NavLink>
             </ListItem>
-
             <ListItem>
               <NavLink
                 to={'/positions'}
@@ -148,7 +148,24 @@ const CompanySideBar = () => {
                   <ListItemIcon>
                     <ChecklistRtl />
                   </ListItemIcon>
-                  <ListItemText primary="Task" />
+                  <ListItemText primary="Assigned Task" />
+                </ListItemButton>
+              </NavLink>
+            </ListItem>
+            <ListItem>
+              <NavLink
+                to={'/task/own-task-list'}
+                className={({ isActive }) => (isActive ? 'active-link' : '')}
+              >
+                <ListItemButton
+                  sx={{
+                    '&:hover': { backgroundColor: '#e8effa' },
+                  }}
+                >
+                  <ListItemIcon>
+                    <Assignment />
+                  </ListItemIcon>
+                  <ListItemText primary="Own Task" />
                 </ListItemButton>
               </NavLink>
             </ListItem>

@@ -8,22 +8,13 @@ import {
   Typography,
 } from '@mui/material';
 import TaskCard from '../../../components/Task/TaskCard';
-import {
-  Add,
-  Autorenew,
-  FilterAlt,
-  OpenInFull,
-  CloseFullscreen,
-} from '@mui/icons-material';
+import { Add, Autorenew, FilterAlt } from '@mui/icons-material';
 import {
   useOwnTaskQuery,
   useUpdateTaskMutation,
 } from '../../../redux/services/task';
 
 import { Task } from '../../../models/Task';
-
-import { useTypedSelector } from '../../../redux/store';
-import { AuthState } from '../../../models/custom';
 import TaskForm from '../../../components/Task/TaskForm';
 
 interface TaskListProps {
@@ -45,8 +36,6 @@ const OwnTaskList = () => {
     status: '',
   });
   const [drawerOpen, setDrawerOpen] = useState(false);
-
-  const authState: AuthState = useTypedSelector((state) => state.authState);
 
   const { data } = useOwnTaskQuery();
   const [updateTask] = useUpdateTaskMutation();
@@ -195,9 +184,6 @@ const OwnTaskList = () => {
       >
         <Typography variant="h4">Own Task</Typography>
         <Box>
-          <IconButton aria-label="filter alt">
-            {authState.fullScreen ? <CloseFullscreen /> : <OpenInFull />}
-          </IconButton>
           <IconButton aria-label="filter alt">
             <FilterAlt />
           </IconButton>

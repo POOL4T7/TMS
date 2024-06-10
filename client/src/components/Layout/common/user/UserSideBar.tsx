@@ -9,7 +9,12 @@ import {
   Stack,
   Typography,
 } from '@mui/material';
-import { WebStories, QueryStats } from '@mui/icons-material';
+import {
+  WebStories,
+  QueryStats,
+  Assignment,
+  ChecklistRtl,
+} from '@mui/icons-material';
 import { NavLink, useNavigate } from 'react-router-dom';
 import Loader from '../../../Loader';
 import { useOwnProfileQuery } from '../../../../redux/services/user';
@@ -87,13 +92,28 @@ const UserSideBar = () => {
                 sx={{ '&:hover': { backgroundColor: '#e8effa' } }}
               >
                 <ListItemIcon>
-                  <WebStories />
+                  <ChecklistRtl />
                 </ListItemIcon>
                 <NavLink
                   to={'/task/assigned'}
                   className={({ isActive }) => (isActive ? 'active-link' : '')}
                 >
-                  <ListItemText primary="Task" />
+                  <ListItemText primary="Assigned Task" />
+                </NavLink>
+              </ListItemButton>
+            </ListItem>
+            <ListItem>
+              <ListItemButton
+                sx={{ '&:hover': { backgroundColor: '#e8effa' } }}
+              >
+                <ListItemIcon>
+                  <Assignment />
+                </ListItemIcon>
+                <NavLink
+                  to={'/task/own-task-list'}
+                  className={({ isActive }) => (isActive ? 'active-link' : '')}
+                >
+                  <ListItemText primary="Own Task" />
                 </NavLink>
               </ListItemButton>
             </ListItem>

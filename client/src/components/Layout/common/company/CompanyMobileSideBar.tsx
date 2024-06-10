@@ -10,6 +10,7 @@ import ListItemText from '@mui/material/ListItemText';
 import MenuIcon from '@mui/icons-material/Menu';
 import ChecklistRtlIcon from '@mui/icons-material/ChecklistRtl';
 import {
+  Assignment,
   FolderShared,
   Groups,
   People,
@@ -141,7 +142,20 @@ export default function CompanyMobileSideBar() {
               to={'/task/assigned'}
               className={({ isActive }) => (isActive ? 'active-link' : '')}
             >
-              <ListItemText primary="Task" />
+              <ListItemText primary="Assigned Task" />
+            </NavLink>
+          </ListItemButton>
+        </ListItem>
+        <ListItem>
+          <ListItemButton sx={{ '&:hover': { backgroundColor: '#e8effa' } }}>
+            <ListItemIcon>
+              <Assignment />
+            </ListItemIcon>
+            <NavLink
+              to={'/task/own-task-list'}
+              className={({ isActive }) => (isActive ? 'active-link' : '')}
+            >
+              <ListItemText primary="Own Task" />
             </NavLink>
           </ListItemButton>
         </ListItem>

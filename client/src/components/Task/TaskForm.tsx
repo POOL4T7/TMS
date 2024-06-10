@@ -7,7 +7,6 @@ import {
   Chip,
   FormControl,
   Grid,
-  IconButton,
   InputLabel,
   ListItemText,
   MenuItem,
@@ -23,7 +22,6 @@ import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { DateTimePicker } from '@mui/x-date-pickers/DateTimePicker';
 import { useEffect } from 'react';
-import { Add } from '@mui/icons-material';
 import dayjs, { Dayjs } from 'dayjs';
 import { Task } from '../../models/Task';
 import {
@@ -34,6 +32,8 @@ import {
 import { labelList } from '../../data';
 import { useProjectListQuery } from '../../redux/services/project';
 import { useUserListQuery } from '../../redux/services/user';
+import Loader from '../Loader';
+
 const ITEM_HEIGHT = 48;
 const ITEM_PADDING_TOP = 8;
 const MenuProps = {
@@ -80,9 +80,12 @@ const TaskForm = ({ taskId }: { taskId: string }) => {
   const [updateTask] = useUpdateTaskMutation();
   const [createTask] = useAddTaskMutation();
 
-  const { data } = useGetTaskDetailsQuery(taskId, {
-    skip: !taskId,
-  });
+  const { data, isLoading: taskDetailLoading } = useGetTaskDetailsQuery(
+    taskId,
+    {
+      skip: !taskId,
+    }
+  );
 
   const { data: userList, isLoading: userListFetching } = useUserListQuery({
     page: 1,
@@ -161,18 +164,19 @@ const TaskForm = ({ taskId }: { taskId: string }) => {
     }
   };
 
+  if (taskDetailLoading) {
+    return (
+      <Box >
+        <Loader size={100} thickness={2} />
+      </Box>
+    );
+  }
+
   return (
     <Box margin={'10px'} component={'form'}>
-      <Stack direction={'row'} justifyContent={'space-between'}>
-        <Box>
-          <Typography component={'span'} variant="h5">
-            #{_id}{' '}
-          </Typography>
-        </Box>
-        <IconButton>
-          <Add />
-        </IconButton>
-      </Stack>
+      <Typography component={'span'} variant="h5">
+        #{_id}
+      </Typography>
       <FormControl fullWidth>
         <TextField
           margin="normal"

@@ -1,26 +1,25 @@
-import * as React from "react";
-import Box from "@mui/material/Box";
-import Drawer from "@mui/material/Drawer";
-import Button from "@mui/material/Button";
-import List from "@mui/material/List";
-import ListItem from "@mui/material/ListItem";
-import ListItemButton from "@mui/material/ListItemButton";
-import ListItemIcon from "@mui/material/ListItemIcon";
-import ListItemText from "@mui/material/ListItemText";
-import MenuIcon from "@mui/icons-material/Menu";
+import * as React from 'react';
+import Box from '@mui/material/Box';
+import Drawer from '@mui/material/Drawer';
+import Button from '@mui/material/Button';
+import List from '@mui/material/List';
+import ListItem from '@mui/material/ListItem';
+import ListItemButton from '@mui/material/ListItemButton';
+import ListItemIcon from '@mui/material/ListItemIcon';
+import ListItemText from '@mui/material/ListItemText';
+import MenuIcon from '@mui/icons-material/Menu';
 import {
-  FolderShared,
-  Groups,
-  People,
+  Assignment,
+  ChecklistRtl,
   QueryStats,
   WebStories,
-} from "@mui/icons-material";
-import { NavLink, useNavigate } from "react-router-dom";
-import { Avatar, Typography } from "@mui/material";
-import Loader from "../../../Loader";
-import { useOwnProfileQuery } from "../../../../redux/services/user";
+} from '@mui/icons-material';
+import { NavLink, useNavigate } from 'react-router-dom';
+import { Avatar, Typography } from '@mui/material';
+import Loader from '../../../Loader';
+import { useOwnProfileQuery } from '../../../../redux/services/user';
 
-type Anchor = "left";
+type Anchor = 'left';
 
 export default function UserMobileSideBar() {
   const [state, setState] = React.useState({
@@ -33,9 +32,9 @@ export default function UserMobileSideBar() {
     (anchor: Anchor, open: boolean) =>
     (event: React.KeyboardEvent | React.MouseEvent) => {
       if (
-        event.type === "keydown" &&
-        ((event as React.KeyboardEvent).key === "Tab" ||
-          (event as React.KeyboardEvent).key === "Shift")
+        event.type === 'keydown' &&
+        ((event as React.KeyboardEvent).key === 'Tab' ||
+          (event as React.KeyboardEvent).key === 'Shift')
       ) {
         return;
       }
@@ -52,82 +51,69 @@ export default function UserMobileSideBar() {
     >
       <Box
         sx={{
-          margin: "24px 20px",
-          padding: "16px 20px",
-          backgroundColor: "#EDEFF2",
-          borderRadius: "12px",
-          display: "flex",
-          alignItems: "center",
+          margin: '24px 20px',
+          padding: '16px 20px',
+          backgroundColor: '#EDEFF2',
+          borderRadius: '12px',
+          display: 'flex',
+          alignItems: 'center',
         }}
         className="profile-card"
-        onClick={() => navigate("/profile")}
+        onClick={() => navigate('/profile')}
       >
-        <Avatar alt={"User"} src={"/"} sx={{ marginRight: "10px" }} />
+        <Avatar alt={'User'} src={'/'} sx={{ marginRight: '10px' }} />
         {isLoading ? <Loader /> : <Typography>{data?.firstName}</Typography>}
       </Box>
       <List>
         <ListItem>
-          <ListItemButton sx={{ "&:hover": { backgroundColor: "#e8effa" } }}>
+          <ListItemButton sx={{ '&:hover': { backgroundColor: '#e8effa' } }}>
             <ListItemIcon>
               <QueryStats />
             </ListItemIcon>
             <NavLink
-              to={"/"}
-              className={({ isActive }) => (isActive ? "active-link" : "")}
+              to={'/'}
+              className={({ isActive }) => (isActive ? 'active-link' : '')}
             >
               <ListItemText primary="Dashboard" />
             </NavLink>
           </ListItemButton>
         </ListItem>
         <ListItem>
-          <ListItemButton sx={{ "&:hover": { backgroundColor: "#e8effa" } }}>
+          <ListItemButton sx={{ '&:hover': { backgroundColor: '#e8effa' } }}>
             <ListItemIcon>
               <WebStories />
             </ListItemIcon>
             <NavLink
-              to={"/projects"}
-              className={({ isActive }) => (isActive ? "active-link" : "")}
+              to={'/projects'}
+              className={({ isActive }) => (isActive ? 'active-link' : '')}
             >
               <ListItemText primary="Projects" />
             </NavLink>
           </ListItemButton>
         </ListItem>
         <ListItem>
-          <ListItemButton sx={{ "&:hover": { backgroundColor: "#e8effa" } }}>
+          <ListItemButton sx={{ '&:hover': { backgroundColor: '#e8effa' } }}>
             <ListItemIcon>
-              <Groups />
+              <ChecklistRtl />
             </ListItemIcon>
             <NavLink
-              to={"/teams"}
-              className={({ isActive }) => (isActive ? "active-link" : "")}
+              to={'/task/assigned'}
+              className={({ isActive }) => (isActive ? 'active-link' : '')}
             >
-              <ListItemText primary="Teams" />
+              <ListItemText primary="Assigned Task" />
             </NavLink>
           </ListItemButton>
         </ListItem>
         <ListItem>
-          <ListItemButton sx={{ "&:hover": { backgroundColor: "#e8effa" } }}>
+          <ListItemButton sx={{ '&:hover': { backgroundColor: '#e8effa' } }}>
             <ListItemIcon>
-              <FolderShared />
+              <Assignment />
             </ListItemIcon>
             <NavLink
-              to={"/positions"}
-              className={({ isActive }) => (isActive ? "active-link" : "")}
+              to={'/task/own-task-list'}
+              className={({ isActive }) => (isActive ? 'active-link' : '')}
             >
-              <ListItemText primary="Position & Roles" />
-            </NavLink>
-          </ListItemButton>
-        </ListItem>
-        <ListItem>
-          <ListItemButton sx={{ "&:hover": { backgroundColor: "#e8effa" } }}>
-            <ListItemIcon>
-              <People />
-            </ListItemIcon>
-            <NavLink
-              to={"/users"}
-              className={({ isActive }) => (isActive ? "active-link" : "")}
-            >
-              <ListItemText primary="Users" />
+              <ListItemText primary="Own Task" />
             </NavLink>
           </ListItemButton>
         </ListItem>
@@ -137,15 +123,15 @@ export default function UserMobileSideBar() {
 
   return (
     <div>
-      <Button sx={{ color: "#fff" }} onClick={toggleDrawer("left", true)}>
+      <Button sx={{ color: '#fff' }} onClick={toggleDrawer('left', true)}>
         <MenuIcon />
       </Button>
       <Drawer
-        anchor={"left"}
-        open={state["left"]}
-        onClose={toggleDrawer("left", false)}
+        anchor={'left'}
+        open={state['left']}
+        onClose={toggleDrawer('left', false)}
       >
-        {list("left")}
+        {list('left')}
       </Drawer>
     </div>
   );

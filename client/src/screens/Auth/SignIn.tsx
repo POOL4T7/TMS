@@ -65,7 +65,7 @@ export default function SignIn() {
 
   React.useEffect(() => {
     if (selector.isAuthenticated) {
-      navigate('/dashboard');
+      navigate('/');
     }
   }, [selector.isAuthenticated, navigate]);
 
