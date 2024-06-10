@@ -23,17 +23,24 @@
       "tech": ["Flutter"]
     }
   ],
-  "points": [
-    "implement dnd with static data then make it dynamic.",
+  "TBD": [
     "integrate whiteboard with download functinality",
-    "implement Internationalization",
-    "A kanban board is an agile project management tool designed to help visualize work, limit work-in-progress, and maximize efficiency (or flow).",
-    "implement reset and forgot password along with mail",
-    "complete the task flow",
-    "implement redis for project and users listing",
     "implement image compression for all the images",
     "❌ implement elastic search on project and users listing",
-    "save the socket id to redis instead to mongodb",
-    "built the eye catching UI of tasks"
+    "save the socket id to redis instead to mongodb"
+  ],
+  "completed": [
+    "Redis implemented for master data",
+    "drag & drop implemented for task list",
+    "login and registration flow implemented for users",
+    "login and registration flow implemented for company",
+    "RTkQuery integrated for better fetching and caching.",
+    "vagrant file added for deploying of project on virtual machine(ubuntu)",
+    "docker-compose file added along with redis, mongodb",
+    "typescript setup for server and client",
+    "winston setup for logging of server",
+    "swagger integrated for api documentation",
+    "linting is added with eslint",
+    "implement Internationalization"
   ]
 }

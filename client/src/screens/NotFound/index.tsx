@@ -3,6 +3,8 @@ import Button from '@mui/material/Button';
 import Container from '@mui/material/Container';
 import Typography from '@mui/material/Typography';
 import ErrorOutlineIcon from '@mui/icons-material/ErrorOutline';
+import { useTranslation } from 'react-i18next';
+// import { t } from 'i18next';
 
 // import { Link } from 'src/routes/components';
 
@@ -11,6 +13,8 @@ import ErrorOutlineIcon from '@mui/icons-material/ErrorOutline';
 // ----------------------------------------------------------------------
 
 export default function NotFound() {
+  const { t } = useTranslation();
+
   const renderHeader = (
     <Box
       component="header"
@@ -20,7 +24,10 @@ export default function NotFound() {
         width: 1,
         lineHeight: 0,
         position: 'fixed',
-        p: (theme) => ({ xs: theme.spacing(3, 3, 0), sm: theme.spacing(5, 5, 0) }),
+        p: (theme) => ({
+          xs: theme.spacing(3, 3, 0),
+          sm: theme.spacing(5, 5, 0),
+        }),
       }}
     >
       {/* <ErrorOutlineIcon /> */}
@@ -46,31 +53,22 @@ export default function NotFound() {
           }}
         >
           <Typography variant="h3" sx={{ mb: 3 }}>
-            Sorry, page not found!
+            {t('notFound.title')}
           </Typography>
 
           <Typography sx={{ color: 'text.secondary' }}>
-            Sorry, we couldn’t find the page you’re looking for. Perhaps you’ve mistyped the URL? Be
-            sure to check your spelling.
+            {t('notFound.description')}
           </Typography>
-
-          {/* <Box
-            component="img"
-            src="/assets/illustrations/illustration_404.svg"
+          <ErrorOutlineIcon
             sx={{
               mx: 'auto',
               height: 260,
               my: { xs: 5, sm: 10 },
             }}
-          /> */}
-          <ErrorOutlineIcon  sx={{
-              mx: 'auto',
-              height: 260,
-              my: { xs: 5, sm: 10 },
-            }} />
+          />
 
-          <Button href="/" size="large" variant="contained" >
-            Go to Home
+          <Button href="/" size="large" variant="contained">
+            {t('notFound.buttonText')}
           </Button>
         </Box>
       </Container>

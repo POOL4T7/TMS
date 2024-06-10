@@ -18,6 +18,7 @@ import {
 import { NavLink, useNavigate } from 'react-router-dom';
 import Loader from '../../../Loader';
 import { useOwnProfileQuery } from '../../../../redux/services/user';
+import { t } from 'i18next';
 
 const UserSideBar = () => {
   const navigate = useNavigate();
@@ -55,70 +56,60 @@ const UserSideBar = () => {
           {isLoading ? <Loader /> : <Typography>{data?.firstName}</Typography>}
         </Box>
 
-        <Box>
-          <List>
-            <ListItem>
-              <ListItemButton
-                sx={{ '&:hover': { backgroundColor: '#e8effa' } }}
+        <List>
+          <ListItem>
+            <ListItemButton sx={{ '&:hover': { backgroundColor: '#e8effa' } }}>
+              <ListItemIcon>
+                <QueryStats />
+              </ListItemIcon>
+              <NavLink
+                to={'/'}
+                className={({ isActive }) => (isActive ? 'active-link' : '')}
               >
-                <ListItemIcon>
-                  <QueryStats />
-                </ListItemIcon>
-                <NavLink
-                  to={'/'}
-                  className={({ isActive }) => (isActive ? 'active-link' : '')}
-                >
-                  <ListItemText primary="Dashboard" />
-                </NavLink>
-              </ListItemButton>
-            </ListItem>
-            <ListItem>
-              <ListItemButton
-                sx={{ '&:hover': { backgroundColor: '#e8effa' } }}
+                <ListItemText primary={t('dashboard')} />
+              </NavLink>
+            </ListItemButton>
+          </ListItem>
+          <ListItem>
+            <ListItemButton sx={{ '&:hover': { backgroundColor: '#e8effa' } }}>
+              <ListItemIcon>
+                <WebStories />
+              </ListItemIcon>
+              <NavLink
+                to={'/projects'}
+                className={({ isActive }) => (isActive ? 'active-link' : '')}
               >
-                <ListItemIcon>
-                  <WebStories />
-                </ListItemIcon>
-                <NavLink
-                  to={'/projects'}
-                  className={({ isActive }) => (isActive ? 'active-link' : '')}
-                >
-                  <ListItemText primary="Projects" />
-                </NavLink>
-              </ListItemButton>
-            </ListItem>
-            <ListItem>
-              <ListItemButton
-                sx={{ '&:hover': { backgroundColor: '#e8effa' } }}
+                <ListItemText primary={t('project')} />
+              </NavLink>
+            </ListItemButton>
+          </ListItem>
+          <ListItem>
+            <ListItemButton sx={{ '&:hover': { backgroundColor: '#e8effa' } }}>
+              <ListItemIcon>
+                <ChecklistRtl />
+              </ListItemIcon>
+              <NavLink
+                to={'/task/assigned'}
+                className={({ isActive }) => (isActive ? 'active-link' : '')}
               >
-                <ListItemIcon>
-                  <ChecklistRtl />
-                </ListItemIcon>
-                <NavLink
-                  to={'/task/assigned'}
-                  className={({ isActive }) => (isActive ? 'active-link' : '')}
-                >
-                  <ListItemText primary="Assigned Task" />
-                </NavLink>
-              </ListItemButton>
-            </ListItem>
-            <ListItem>
-              <ListItemButton
-                sx={{ '&:hover': { backgroundColor: '#e8effa' } }}
+                <ListItemText primary={t('assigned-task')} />
+              </NavLink>
+            </ListItemButton>
+          </ListItem>
+          <ListItem>
+            <ListItemButton sx={{ '&:hover': { backgroundColor: '#e8effa' } }}>
+              <ListItemIcon>
+                <Assignment />
+              </ListItemIcon>
+              <NavLink
+                to={'/task/own-task-list'}
+                className={({ isActive }) => (isActive ? 'active-link' : '')}
               >
-                <ListItemIcon>
-                  <Assignment />
-                </ListItemIcon>
-                <NavLink
-                  to={'/task/own-task-list'}
-                  className={({ isActive }) => (isActive ? 'active-link' : '')}
-                >
-                  <ListItemText primary="Own Task" />
-                </NavLink>
-              </ListItemButton>
-            </ListItem>
-          </List>
-        </Box>
+                <ListItemText primary={t('own-task')} />
+              </NavLink>
+            </ListItemButton>
+          </ListItem>
+        </List>
       </Box>
     </Stack>
   );

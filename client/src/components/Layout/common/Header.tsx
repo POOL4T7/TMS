@@ -5,7 +5,6 @@ import Toolbar from '@mui/material/Toolbar';
 import IconButton from '@mui/material/IconButton';
 import Typography from '@mui/material/Typography';
 import Menu from '@mui/material/Menu';
-// import MenuIcon from '@mui/icons-material/Menu';
 import Container from '@mui/material/Container';
 import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
@@ -13,12 +12,13 @@ import Tooltip from '@mui/material/Tooltip';
 import MenuItem from '@mui/material/MenuItem';
 import AdbIcon from '@mui/icons-material/Adb';
 import { Link, NavLink } from 'react-router-dom';
-// import SideBar from "./company/Sidebar";
 import { useAppDispatch, useTypedSelector } from '../../../redux/store';
 import { userInfo } from '../../../redux/features/authSlice';
-import { emptyStorage } from '../../../utils/storage';
+import { emptyStorage, setLocalStorage } from '../../../utils/storage';
 import { Theme, useMediaQuery } from '@mui/material';
 import logo from '../../../assets/logo.gif';
+import { changeLanguage } from '../../../redux/features/languageSlice';
+import { useTranslation } from 'react-i18next';
 
 const pages: string[] = [];
 
@@ -33,9 +33,20 @@ function Navbar({ SideBar }: PropType) {
   const [anchorElUser, setAnchorElUser] = React.useState<null | HTMLElement>(
     null
   );
+  const [anchorElLang, setAnchorElLang] = React.useState<null | HTMLElement>(
+    null
+  );
   const isMobile = useMediaQuery((theme: Theme) =>
     theme.breakpoints.down('md')
   );
+  const { t } = useTranslation();
+
+  const lang = useTypedSelector((state) => state.lang);
+
+  const handleChangeLanguage = (lng: string) => {
+    setLocalStorage('lang', lng);
+    dispatch(changeLanguage(lng));
+  };
   const dispatch = useAppDispatch();
 
   const authState = useTypedSelector((state) => state.authState);
@@ -67,7 +78,7 @@ function Navbar({ SideBar }: PropType) {
             sx={{ display: { xs: 'none', md: 'flex' }, mr: 1 }}
           >
             <Link style={{ textDecoration: 'none', color: 'white' }} to={'/'}>
-              Genesis
+              {t('brandName')}
             </Link>
           </Typography>
 
@@ -168,6 +179,45 @@ function Navbar({ SideBar }: PropType) {
               </Link>
             </Box>
           )}
+
+          <Box sx={{ flexGrow: 0 }}>
+            <Tooltip title="Open settings">
+              <IconButton
+                onClick={(e) => setAnchorElLang(e.currentTarget)}
+                sx={{ p: 0 }}
+              >
+                {lang}
+              </IconButton>
+            </Tooltip>
+            <Menu
+              sx={{ mt: '45px' }}
+              id="menu-appbar"
+              anchorEl={anchorElLang}
+              anchorOrigin={{
+                vertical: 'top',
+                horizontal: 'right',
+              }}
+              keepMounted
+              transformOrigin={{
+                vertical: 'top',
+                horizontal: 'right',
+              }}
+              open={Boolean(anchorElLang)}
+              onClose={() => setAnchorElLang(null)}
+            >
+              {['en', 'fr', 'hi']
+                .filter((l) => l != lang)
+                .map((item) => (
+                  <MenuItem
+                    key={item}
+                    onClick={() => handleChangeLanguage(item)}
+                  >
+                    <Typography>{item}</Typography>
+                  </MenuItem>
+                ))}
+              <MenuItem></MenuItem>
+            </Menu>
+          </Box>
         </Toolbar>
       </Container>
     </AppBar>

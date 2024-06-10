@@ -8,9 +8,9 @@ import ListItemButton from '@mui/material/ListItemButton';
 import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
 import MenuIcon from '@mui/icons-material/Menu';
-import ChecklistRtlIcon from '@mui/icons-material/ChecklistRtl';
 import {
   Assignment,
+  ChecklistRtl,
   FolderShared,
   Groups,
   People,
@@ -21,6 +21,7 @@ import { NavLink, useNavigate } from 'react-router-dom';
 import { Avatar, Typography } from '@mui/material';
 import Loader from '../../../Loader';
 import { useCompanyProfileQuery } from '../../../../redux/services/company';
+import { t } from 'i18next';
 
 type Anchor = 'left';
 
@@ -69,95 +70,103 @@ export default function CompanyMobileSideBar() {
       </Box>
       <List>
         <ListItem>
-          <ListItemButton sx={{ '&:hover': { backgroundColor: '#e8effa' } }}>
-            <ListItemIcon>
-              <QueryStats />
-            </ListItemIcon>
-            <NavLink
-              to={'/'}
-              className={({ isActive }) => (isActive ? 'active-link' : '')}
-            >
-              <ListItemText primary="Dashboard" />
-            </NavLink>
-          </ListItemButton>
+          <NavLink
+            to={'/'}
+            className={({ isActive }) => (isActive ? 'active-link' : '')}
+          >
+            <ListItemButton sx={{ '&:hover': { backgroundColor: '#e8effa' } }}>
+              <ListItemIcon>
+                <QueryStats />
+              </ListItemIcon>
+              <ListItemText primary={t('dashboard')} />
+            </ListItemButton>
+          </NavLink>
         </ListItem>
         <ListItem>
-          <ListItemButton sx={{ '&:hover': { backgroundColor: '#e8effa' } }}>
-            <ListItemIcon>
-              <WebStories />
-            </ListItemIcon>
-            <NavLink
-              to={'/projects'}
-              className={({ isActive }) => (isActive ? 'active-link' : '')}
-            >
-              <ListItemText primary="Projects" />
-            </NavLink>
-          </ListItemButton>
+          <NavLink
+            to={'/projects'}
+            className={({ isActive }) => (isActive ? 'active-link' : '')}
+          >
+            <ListItemButton sx={{ '&:hover': { backgroundColor: '#e8effa' } }}>
+              <ListItemIcon>
+                <WebStories />
+              </ListItemIcon>
+              <ListItemText primary={t('project')} />
+            </ListItemButton>
+          </NavLink>
         </ListItem>
         <ListItem>
-          <ListItemButton sx={{ '&:hover': { backgroundColor: '#e8effa' } }}>
-            <ListItemIcon>
-              <Groups />
-            </ListItemIcon>
-            <NavLink
-              to={'/teams'}
-              className={({ isActive }) => (isActive ? 'active-link' : '')}
-            >
-              <ListItemText primary="Teams" />
-            </NavLink>
-          </ListItemButton>
+          <NavLink
+            to={'/teams'}
+            className={({ isActive }) => (isActive ? 'active-link' : '')}
+          >
+            <ListItemButton sx={{ '&:hover': { backgroundColor: '#e8effa' } }}>
+              <ListItemIcon>
+                <Groups />
+              </ListItemIcon>
+              <ListItemText primary={t('team')} />
+            </ListItemButton>
+          </NavLink>
         </ListItem>
         <ListItem>
-          <ListItemButton sx={{ '&:hover': { backgroundColor: '#e8effa' } }}>
-            <ListItemIcon>
-              <FolderShared />
-            </ListItemIcon>
-            <NavLink
-              to={'/positions'}
-              className={({ isActive }) => (isActive ? 'active-link' : '')}
-            >
-              <ListItemText primary="Position & Roles" />
-            </NavLink>
-          </ListItemButton>
+          <NavLink
+            to={'/positions'}
+            className={({ isActive }) => (isActive ? 'active-link' : '')}
+          >
+            <ListItemButton sx={{ '&:hover': { backgroundColor: '#e8effa' } }}>
+              <ListItemIcon>
+                <FolderShared />
+              </ListItemIcon>
+              <ListItemText primary={t('position-role')} />
+            </ListItemButton>
+          </NavLink>
         </ListItem>
         <ListItem>
-          <ListItemButton sx={{ '&:hover': { backgroundColor: '#e8effa' } }}>
-            <ListItemIcon>
-              <People />
-            </ListItemIcon>
-            <NavLink
-              to={'/users'}
-              className={({ isActive }) => (isActive ? 'active-link' : '')}
-            >
-              <ListItemText primary="Users" />
-            </NavLink>
-          </ListItemButton>
+          <NavLink
+            to={'/users'}
+            className={({ isActive }) => (isActive ? 'active-link' : '')}
+          >
+            <ListItemButton sx={{ '&:hover': { backgroundColor: '#e8effa' } }}>
+              <ListItemIcon>
+                <People />
+              </ListItemIcon>
+              <ListItemText primary={t('users')} />
+            </ListItemButton>
+          </NavLink>
         </ListItem>
         <ListItem>
-          <ListItemButton sx={{ '&:hover': { backgroundColor: '#e8effa' } }}>
-            <ListItemIcon>
-              <ChecklistRtlIcon />
-            </ListItemIcon>
-            <NavLink
-              to={'/task/assigned'}
-              className={({ isActive }) => (isActive ? 'active-link' : '')}
+          <NavLink
+            to={'/task/assigned'}
+            className={({ isActive }) => (isActive ? 'active-link' : '')}
+          >
+            <ListItemButton
+              sx={{
+                '&:hover': { backgroundColor: '#e8effa' },
+              }}
             >
-              <ListItemText primary="Assigned Task" />
-            </NavLink>
-          </ListItemButton>
+              <ListItemIcon>
+                <ChecklistRtl />
+              </ListItemIcon>
+              <ListItemText primary={t('assigned-task')} />
+            </ListItemButton>
+          </NavLink>
         </ListItem>
         <ListItem>
-          <ListItemButton sx={{ '&:hover': { backgroundColor: '#e8effa' } }}>
-            <ListItemIcon>
-              <Assignment />
-            </ListItemIcon>
-            <NavLink
-              to={'/task/own-task-list'}
-              className={({ isActive }) => (isActive ? 'active-link' : '')}
+          <NavLink
+            to={'/task/own-task-list'}
+            className={({ isActive }) => (isActive ? 'active-link' : '')}
+          >
+            <ListItemButton
+              sx={{
+                '&:hover': { backgroundColor: '#e8effa' },
+              }}
             >
-              <ListItemText primary="Own Task" />
-            </NavLink>
-          </ListItemButton>
+              <ListItemIcon>
+                <Assignment />
+              </ListItemIcon>
+              <ListItemText primary={t('own-task')} />
+            </ListItemButton>
+          </NavLink>
         </ListItem>
       </List>
     </Box>

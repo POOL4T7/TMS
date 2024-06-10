@@ -1,0 +1,22 @@
+{
+  "welcome": "Bienvenue chez TMS",
+  "description": "Cette application de gestion des tâches est conçue pour aider les individus et les équipes à organiser, prioriser et suivre leurs tâches efficacement. Que vous gériez des projets personnels ou que vous collaboriez sur des tâches professionnelles, cette application offre une interface conviviale pour rationaliser votre flux de travail. Le projet vise à créer une plateforme centralisée pour la gestion des tâches d'équipe, améliorant ainsi la collaboration et la productivité.",
+  "brandName": "Genèse",
+  "notFound": {
+    "description": "Désolé, nous n'avons pas pu trouver la page que vous recherchez. Peut-être avez-vous mal tapé l'URL ? Assurez-vous de vérifier votre orthographe.",
+    "title": "Désolé, la page est introuvable !",
+    "buttonText": "Aller à l'accueil"
+  },
+  "projectHeading": "Projets",
+  "dashboard": "Tableau de bord",
+  "project": "Projet",
+  "team": "Équipes",
+  "position-role": "Poste et rôles",
+  "users": "Utilisateurs",
+  "assigned-task": "Tâche assignée",
+  "own-task": "Propre tâche",
+  "add": "Ajouter",
+  "update": "Mettre à jour",
+  "loading": "Chargement",
+  "please-wait": "Veuillez patienter"
+}

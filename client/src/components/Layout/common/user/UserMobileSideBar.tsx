@@ -18,6 +18,7 @@ import { NavLink, useNavigate } from 'react-router-dom';
 import { Avatar, Typography } from '@mui/material';
 import Loader from '../../../Loader';
 import { useOwnProfileQuery } from '../../../../redux/services/user';
+import { t } from 'i18next';
 
 type Anchor = 'left';
 
@@ -74,7 +75,7 @@ export default function UserMobileSideBar() {
               to={'/'}
               className={({ isActive }) => (isActive ? 'active-link' : '')}
             >
-              <ListItemText primary="Dashboard" />
+              <ListItemText primary={t('dashboard')} />
             </NavLink>
           </ListItemButton>
         </ListItem>
@@ -87,7 +88,7 @@ export default function UserMobileSideBar() {
               to={'/projects'}
               className={({ isActive }) => (isActive ? 'active-link' : '')}
             >
-              <ListItemText primary="Projects" />
+              <ListItemText primary={t('project')} />
             </NavLink>
           </ListItemButton>
         </ListItem>
@@ -100,7 +101,7 @@ export default function UserMobileSideBar() {
               to={'/task/assigned'}
               className={({ isActive }) => (isActive ? 'active-link' : '')}
             >
-              <ListItemText primary="Assigned Task" />
+              <ListItemText primary={t('assigned-task')} />
             </NavLink>
           </ListItemButton>
         </ListItem>
@@ -113,7 +114,7 @@ export default function UserMobileSideBar() {
               to={'/task/own-task-list'}
               className={({ isActive }) => (isActive ? 'active-link' : '')}
             >
-              <ListItemText primary="Own Task" />
+              <ListItemText primary={t('own-task')} />
             </NavLink>
           </ListItemButton>
         </ListItem>

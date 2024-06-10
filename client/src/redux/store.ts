@@ -3,6 +3,7 @@ import { TypedUseSelectorHook, useDispatch, useSelector } from 'react-redux';
 import { industryApi } from './services/industry';
 import { authApi } from './services/auth';
 import authReducer from './features/authSlice';
+import languageReducer from './features/languageSlice';
 import { companyApi } from './services/company';
 import { teamsApi } from './services/teams';
 import { positionApi } from './services/position';
@@ -18,6 +19,7 @@ export const createStore = (
   configureStore({
     reducer: {
       authState: authReducer,
+      lang: languageReducer,
       [industryApi.reducerPath]: industryApi.reducer,
       [authApi.reducerPath]: authApi.reducer,
       [companyApi.reducerPath]: companyApi.reducer,

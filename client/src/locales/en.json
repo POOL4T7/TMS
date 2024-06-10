@@ -1,0 +1,22 @@
+{
+  "welcome": "Welcome to TMS",
+  "description": "This task management app is designed to help individuals and teams organize, prioritize, and track their tasks efficiently. Whether you're managing personal projects or collaborating on work tasks, this app provides a user-friendly interface to streamline your workflow. The project aimed to create a centralized platform for team task management, enhancing collaboration and productivity.",
+  "brandName": "Gensis",
+  "notFound": {
+    "description": "Sorry, we couldn't find the page you're looking for. Perhaps you've mistyped the URL? Besure to check your spelling.",
+    "title": "Sorry, the page is not found!",
+    "buttonText": "Go to Home"
+  },
+  "projectHeading": "Projects",
+  "dashboard": "Dashboard",
+  "project": "Project",
+  "team": "Teams",
+  "position-role": "Position & roles",
+  "users": "Users",
+  "assigned-task": "Assigned task",
+  "own-task": "Own task",
+  "add": "Add",
+  "update": "Update",
+  "loading": "Loading",
+  "please-wait": "Please wait"
+}

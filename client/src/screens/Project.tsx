@@ -6,15 +6,24 @@ import { ErrorType } from '../models/custom';
 import ProjectCard from '../components/cards/ProjectCard';
 import { Link, useNavigate } from 'react-router-dom';
 import TeamCardShimmer from '../components/Shimmer/CardShimmer';
+import { t } from 'i18next';
 
 const ShimmerEffect = () => {
   return (
     <Grid container spacing={1.5}>
       {Array(8)
         .fill(0)
-        .map(() => {
+        .map((_, idx) => {
           return (
-            <Grid item xs={12} sm={6} md={4} lg={3} xl={2}>
+            <Grid
+              key={`project-list-shimmer-${idx}`}
+              item
+              xs={12}
+              sm={6}
+              md={4}
+              lg={3}
+              xl={2}
+            >
               <TeamCardShimmer />
             </Grid>
           );
@@ -39,7 +48,7 @@ const Project = () => {
         useFlexGap
         sx={{ marginBottom: '25px' }}
       >
-        <Typography variant="h4">Project</Typography>
+        <Typography variant="h4">{t('projectHeading')}</Typography>
         <Box>
           <IconButton aria-label="filter alt">
             <FilterAlt />
