@@ -4,6 +4,7 @@ import express, { Express } from 'express';
 import cors from 'cors';
 import swaggerUi from 'swagger-ui-express';
 import cookieParser from 'cookie-parser';
+import morgan from 'morgan';
 import specs from './swaggerConfig';
 // dotenv.config();
 
@@ -20,6 +21,9 @@ app.use(
   })
 );
 
+app.use(
+  morgan(':method :url :status :res[content-length] - :response-time ms')
+);
 // connectRedisClient();
 app.use(express.json());
 app.use(cookieParser());
