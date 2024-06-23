@@ -2,14 +2,30 @@
 
 ## Overview
 
-This task management app is designed to help individuals and teams organize, prioritize, and track their tasks efficiently. Whether you're managing personal projects or collaborating on work tasks, this app provides a user-friendly interface to streamline your workflow. The project aimed to create a centralized platform for team task management, enhancing collaboration and productivity.
+This Task Management App is designed to help individuals and teams organize, prioritize, and track their tasks efficiently. Whether you're managing personal projects or collaborating on work tasks, this app provides a user-friendly interface to streamline your workflow. The project aims to create a centralized platform for team task management, enhancing collaboration and productivity through real-time updates and notifications.
 
 ## Technologies Used
 
-- **Frontend**: React.js, RTKQuery, Redux, socket.io, MUI.
-- **Backend**: Node.js, Express.js, MongoDB, Redis, socket.io, onesignal, winston
-- **Authentication**: JSON Web Tokens (JWT)
-- **Real-Time Communication**: socket.io (for real-time updates)
+- **Frontend**:
+
+  - **React.js**: A JavaScript library for building user interfaces.
+  - **RTK Query**: A data fetching and caching tool for Redux.
+  - **Redux**: A state management library.
+  - **socket.io**: A library for real-time web applications.
+  - **MUI (Material-UI)**: A popular React UI framework.
+
+- **Backend**:
+
+  - **Node.js**: A JavaScript runtime built on Chrome's V8 JavaScript engine.
+  - **Express.js**: A minimal and flexible Node.js web application framework.
+  - **MongoDB**: A NoSQL database for storing task and project data.
+  - **Redis**: An in-memory data structure store, used as a database, cache, and message broker.
+  - **socket.io**: Enables real-time, bidirectional, and event-based communication.
+  - **OneSignal**: A service for sending push notifications.
+  - **Winston**: A logging library.
+
+- **Authentication**:
+  - **JSON Web Tokens (JWT)**: A compact, URL-safe means of representing claims to be transferred between two parties.
 
 ## Installation
 
@@ -17,9 +33,10 @@ This task management app is designed to help individuals and teams organize, pri
 2. Navigate to the project directory: `cd TMS`
 3. Install dependencies for server: `npm install --prefix server`
 4. Install dependencies for client: `npm install --prefix client`
-5. Set up environment variables in their root directory (e.g., MongoDB connection URI, JWT secret)
-6. RUN `npm run dev` in both root folder to start the backend and client server
-7. Access the app in your browser: `http://localhost:5173`
+5. Create a .env file in both server and client directories.
+6. Set up environment variables in their root directory (refrence from example.env)
+7. RUN `npm run dev` in both root folder to start the backend and client server
+8. Access the app in your browser: `http://localhost:5173`
 
 ## Usage
 

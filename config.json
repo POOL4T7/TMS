@@ -24,7 +24,6 @@
     }
   ],
   "TBD": [
-    "integrate whiteboard with download functinality",
     "implement image compression for all the images",
     "❌ implement elastic search on project and users listing",
     "save the socket id to redis instead to mongodb"
