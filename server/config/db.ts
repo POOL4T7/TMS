@@ -11,4 +11,12 @@ const connectDB = async () => {
   }
 };
 
+export const disconnectDB = async () => {
+  try {
+    await mongoose.disconnect();
+  } catch (e: any) {
+    Logger.error('Mongodb Error: ', e.message);
+  }
+};
+
 export default connectDB;

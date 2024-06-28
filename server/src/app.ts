@@ -29,15 +29,18 @@ app.use(express.json());
 app.use(cookieParser());
 app.use(express.urlencoded({ extended: false }));
 
-// app.get("/", (req, res) => {
-//   const { myHttpOnlyCookie } = req.cookies;
-//   console.log("myHttpOnlyCookie", myHttpOnlyCookie);
-//   // console.log("res.cookie.length", res.cookie.length);
-//   console.log("Cookies: ", req.cookies);
-//   // console.log("signedCookies", cookieParser.signedCookies);
-//   // res.cookie("myHttpOnlyCookie", "cookieValue", { httpOnly: true });
-//   return res.status(200).json(req.cookies);
-// });
+app.get('/', (req, res) => {
+  // const { myHttpOnlyCookie } = req.cookies;
+  // console.log("myHttpOnlyCookie", myHttpOnlyCookie);
+  // console.log("res.cookie.length", res.cookie.length);
+  // console.log("Cookies: ", req.cookies);
+  // console.log("signedCookies", cookieParser.signedCookies);
+  // res.cookie("myHttpOnlyCookie", "cookieValue", { httpOnly: true });
+  return res.status(200).json({
+    data: [],
+    success: true,
+  });
+});
 // const port = process.env.PORT;
 if (process.env.NODE_ENV != 'production') {
   app.use('/swagger-api-docs', swaggerUi.serve, swaggerUi.setup(specs));

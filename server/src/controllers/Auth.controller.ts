@@ -1,13 +1,13 @@
 // controllers/AuthController.ts
 
-import { Request, Response } from "express";
-import CompanyService from "../services/Company.service";
-import TokenService from "../services/Token.service";
-import UserService from "../services/User.service";
-import EmailService from "../services/Email.service";
-import { UserCompany } from "../interfaces/User.interface";
-import BcryptJs from "bcryptjs";
-import Logger from "../helpers/Logger";
+import { Request, Response } from 'express';
+import CompanyService from '../services/Company.service';
+import TokenService from '../services/Token.service';
+import UserService from '../services/User.service';
+import EmailService from '../services/Email.service';
+import { UserCompany } from '../interfaces/User.interface';
+import BcryptJs from 'bcryptjs';
+import Logger from '../helpers/Logger';
 
 // const waitFiveSeconds = () => {
 //   return new Promise((resolve) => {
@@ -36,27 +36,27 @@ class CompanyController {
         status: req.body.status,
       };
       const company = await CompanyService.create(body);
-      company.password = "";
+      company.password = '';
       const accessToken = TokenService.generateToken({
         email: body.email,
         _id: company._id?.toString(),
-        role: "company",
+        role: 'company',
         companyId: company._id?.toString(),
       });
       return res.status(201).json({
         success: true,
         data: {
           accessToken: accessToken,
-          type: "company",
+          type: 'company',
           status: company.status,
         },
-        message: "New Company created",
+        message: 'New Company created',
       });
     } catch (e: any) {
       return res.status(500).json({
         success: false,
         error: e.message,
-        message: "server error",
+        message: 'server error',
       });
     }
   }
@@ -67,40 +67,40 @@ class CompanyController {
       if (!company) {
         return res.status(404).json({
           success: false,
-          messsage: "invalid credentials",
+          messsage: 'invalid credentials',
         });
       }
       const accessToken = TokenService.generateToken({
         email: company.email,
         _id: company._id?.toString(),
-        role: "company",
+        role: 'company',
         companyId: company._id?.toString(),
       });
       return res.status(201).json({
         success: true,
         data: {
           accessToken: accessToken,
-          type: "company",
+          type: 'company',
           status: company.status,
         },
-        message: "loggedin as a company",
+        message: 'loggedin as a company',
       });
     } catch (e: any) {
       return res.status(500).json({
         success: false,
         error: e.message,
-        message: "server error",
+        message: 'server error',
       });
     }
   }
   async userLogin(req: Request, res: Response): Promise<Response> {
     try {
       // await waitFiveSeconds();
-      const user = await UserService.findOne({ email: req.body.email }, "");
+      const user = await UserService.findOne({ email: req.body.email }, '');
       if (!user) {
         return res.status(404).json({
           success: false,
-          messsage: "invalid credentials",
+          messsage: 'invalid credentials',
         });
       }
       const accessToken = TokenService.generateToken({
@@ -121,7 +121,7 @@ class CompanyController {
       return res.status(500).json({
         success: false,
         error: e.message,
-        message: "server error",
+        message: 'server error',
       });
     }
   }
@@ -129,8 +129,8 @@ class CompanyController {
     try {
       // await waitFiveSeconds();
       let user, role, accessToken;
-      user = await UserService.findOne({ email: req.body.email }, "");
-      role = user?.role || "user";
+      user = await UserService.findOne({ email: req.body.email }, '');
+      role = user?.role || 'user';
       if (user) {
         accessToken = TokenService.generateToken({
           email: user.email,
@@ -140,11 +140,11 @@ class CompanyController {
         });
       } else {
         user = await CompanyService.findOne({ email: req.body.email });
-        role = "company";
+        role = 'company';
         if (!user) {
           return res.status(400).json({
             success: false,
-            messsage: "invalid credentials",
+            messsage: 'invalid credentials',
           });
         }
         accessToken = TokenService.generateToken({
@@ -162,19 +162,19 @@ class CompanyController {
             type: role,
             status: user.status,
           },
-          message: "successfully logged-In",
+          message: 'successfully logged-In',
         });
       } else {
         return res.status(400).json({
           success: false,
-          message: "invalid credentials",
+          message: 'invalid credentials',
         });
       }
     } catch (e: any) {
       return res.status(500).json({
         success: false,
         error: e.message,
-        message: "server error",
+        message: 'server error',
       });
     }
   }
@@ -182,10 +182,10 @@ class CompanyController {
   async sendLink(req: Request, res: Response): Promise<Response> {
     try {
       const { email } = req.body;
-      const isExists = await UserService.findOne({ email, status: "active" });
+      const isExists = await UserService.findOne({ email, status: 'active' });
       if (isExists) {
         const token = TokenService.generateToken({ email });
-        const subject = "Reset Password Link";
+        const subject = 'Reset Password Link';
         const textPart = `Dear ${isExists?.firstName}, don't worry we are here.`;
         const link = `${process.env.WEB_URL}/reset-password?token=${token}`;
         const html = `Please click on link for reset password <br/><br/> ${link}`;
@@ -193,19 +193,19 @@ class CompanyController {
 
         return res.status(200).json({
           success: true,
-          message: "Email is sended to your registred email",
+          message: 'Email is sended to your registred email',
         });
       } else {
         return res.status(404).json({
           success: false,
-          message: "User not found",
+          message: 'User not found',
         });
       }
     } catch (e: any) {
       return res.status(500).json({
         success: false,
         error: e.message,
-        message: "server error",
+        message: 'server error',
       });
     }
   }
@@ -219,7 +219,7 @@ class CompanyController {
       let user;
       const resetToken = Math.random().toString(36).substring(2, 8);
       // mail info
-      user = await UserService.findOne({ email }, "");
+      user = await UserService.findOne({ email }, '');
       if (user) {
         await UserService.updateUser(
           { _id: user._id?.toString() },
@@ -227,7 +227,7 @@ class CompanyController {
         );
       } else {
         user = await CompanyService.findOne({ email });
-        if (!user) return res.status(404).json({ message: "User not found" });
+        if (!user) return res.status(404).json({ message: 'User not found' });
         await CompanyService.updateCompany(
           { _id: user._id?.toString() },
           { resetToken }
@@ -235,17 +235,17 @@ class CompanyController {
       }
 
       const recipient = email;
-      const subject = "Action Required: Reset Your Password";
+      const subject = 'Action Required: Reset Your Password';
       const textPart = `To reset your password, click on this link: ${process.env.WEB_URL}/auth/reset-password?resetToken=${resetToken}`;
-      await EmailService.sendEmail(recipient, subject, textPart, "");
+      await EmailService.sendEmail(recipient, subject, textPart, '');
       return res
         .status(200)
-        .json({ message: "Password reset link sent successfully" });
+        .json({ message: 'Password reset link sent successfully' });
     } catch (e: any) {
       return res.status(500).json({
         success: false,
         error: e.message,
-        message: "server error",
+        message: 'server error',
       });
     }
   }
@@ -263,20 +263,20 @@ class CompanyController {
       } else {
         user = await CompanyService.findOne({ resetToken });
         if (!user) {
-          return res.status(404).json({ message: "Invalid or expired token" });
+          return res.status(404).json({ message: 'Invalid or expired token' });
         }
         await CompanyService.updatePassword(
           { resetToken },
           { password: password, resetToken: null }
         );
       }
-      return res.status(200).json({ message: "Password reset successful" });
+      return res.status(200).json({ message: 'Password reset successful' });
     } catch (e: any) {
       Logger.error(`Reset password error: ${e.message}`);
       return res.status(500).json({
         success: false,
         error: e.message,
-        message: "server error",
+        message: 'server error',
       });
     }
   }

@@ -1,5 +1,6 @@
-import mongoose, { Document, Query, Schema, Types } from "mongoose";
-import BcryptJs from "bcryptjs";
+import mongoose, { Document, Query, Schema, Types } from 'mongoose';
+import BcryptJs from 'bcryptjs';
+import Industry from './Industry.model';
 
 export interface ICompany extends Document {
   _id?: Types.ObjectId;
@@ -23,7 +24,7 @@ const companySchema = new Schema<ICompany>(
     industry: [
       {
         type: Schema.Types.ObjectId,
-        ref: "Industry",
+        ref: Industry,
         required: true,
       },
     ],
@@ -43,23 +44,23 @@ const companySchema = new Schema<ICompany>(
     },
     status: {
       type: String,
-      enum: ["active", "inactive", "blocked", "suspended"],
-      default: "inactive",
+      enum: ['active', 'inactive', 'blocked', 'suspended'],
+      default: 'inactive',
     },
     resetToken: {
       type: String,
-      default: undefined
-    }
+      default: undefined,
+    },
   },
-  { timestamps: true },
+  { timestamps: true }
 );
 
-companySchema.pre<ICompany>("save", async function (next) {
-  if (!this.isModified("password")) return next();
+companySchema.pre<ICompany>('save', async function (next) {
+  if (!this.isModified('password')) return next();
 
   try {
     const salt = await BcryptJs.genSalt(10);
-    const hash = await BcryptJs.hash(this.password || "", salt);
+    const hash = await BcryptJs.hash(this.password || '', salt);
     this.password = hash;
     next();
   } catch (error: any) {
@@ -67,10 +68,10 @@ companySchema.pre<ICompany>("save", async function (next) {
   }
 });
 
-companySchema.pre<ICompany>("findOneAndUpdate", async function (next) {
+companySchema.pre<ICompany>('findOneAndUpdate', async function (next) {
   const query: Query<ICompany | null, ICompany> = this as unknown as Query<
-  ICompany | null,
-  ICompany
+    ICompany | null,
+    ICompany
   >;
   const update = query.getUpdate() as any;
   if (!update || !update.password) return next();
@@ -85,4 +86,4 @@ companySchema.pre<ICompany>("findOneAndUpdate", async function (next) {
   }
 });
 
-export default mongoose.model<ICompany>("Company", companySchema);
+export default mongoose.model<ICompany>('Company', companySchema);

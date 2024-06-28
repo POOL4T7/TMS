@@ -11,7 +11,9 @@
     "format": "npx prettier --write .",
     "dep-secure": "snyk monitor --all-projects --org=008ccb8c-c162-4bf0-b43c-65e095b91334",
     "importData": "node dist/src/seeder.js",
-    "test": "jest --watch"
+    "test": "jest --watch",
+    "test:unit": "jest --testPathPattern=__tests__/unit",
+    "test:integration": "jest --testPathPattern=__tests__/integration"
   },
   "keywords": [],
   "author": "",
@@ -32,6 +34,7 @@
     "node-mailjet": "^6.0.5",
     "redis": "^4.6.13",
     "redis-om": "^0.4.3",
+    "supertest": "^7.0.0",
     "ts-jest": "^29.1.5"
   },
   "devDependencies": {
@@ -43,6 +46,7 @@
     "@types/morgan": "^1.9.9",
     "@types/multer": "^1.4.11",
     "@types/node": "^20.11.5",
+    "@types/supertest": "^6.0.2",
     "@types/swagger-jsdoc": "^6.0.4",
     "@types/swagger-ui-express": "^4.1.6",
     "@typescript-eslint/eslint-plugin": "^7.0.2",

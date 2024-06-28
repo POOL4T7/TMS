@@ -1,4 +1,4 @@
-import mongoose, { Schema, Document } from "mongoose";
+import mongoose, { Schema, Document } from 'mongoose';
 
 export interface IIndustry extends Document {
   name: string;
@@ -14,9 +14,10 @@ const industrySchema = new Schema<IIndustry>(
   },
   {
     timestamps: true,
-  },
+    collection: 'industries',
+  }
 );
 
-const Industry = mongoose.model<IIndustry>("Industry", industrySchema);
+const Industry = mongoose.model<IIndustry>('Industry', industrySchema);
 
 export default Industry;
