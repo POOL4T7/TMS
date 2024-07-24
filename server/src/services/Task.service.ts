@@ -1,6 +1,6 @@
 import { ITask, TaskFilter } from '../interfaces/Task.interface';
 import Task from '../models/Task.model';
-import { elasticsearchService } from './ElasticSearch.service';
+import EsClient from './EsClient';
 
 interface TaskWithPagination {
   taskList: ITask[];
@@ -34,7 +34,7 @@ class TaskService {
   }
   static async assignedTask(filter: TaskFilter): Promise<TaskWithPagination> {
     try {
-      elasticsearchService.getClient();
+      EsClient.getClient();
       const counts = await Task.countDocuments(filter);
       const data = await Task.aggregate([
         {
