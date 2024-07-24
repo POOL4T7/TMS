@@ -129,7 +129,7 @@ const OwnTaskList = () => {
       onDragOver={handleDragOver}
       onDrop={() => handleDrop(status)}
     >
-      <Typography variant="h5" align="center" bgcolor={getStatusColor(status)}>
+      <Typography variant='h5' align='center' bgcolor={getStatusColor(status)}>
         {title}
       </Typography>
       <Box sx={{ overflow: 'scroll', maxHeight: 'calc(100vh - 100px)' }}>
@@ -182,15 +182,15 @@ const OwnTaskList = () => {
         useFlexGap
         sx={{ marginBottom: '25px' }}
       >
-        <Typography variant="h4">Own Task</Typography>
+        <Typography variant='h4'>Own Task</Typography>
         <Box>
-          <IconButton aria-label="filter alt">
+          <IconButton aria-label='filter alt'>
             <FilterAlt />
           </IconButton>
-          <IconButton aria-label="autorenew alt">
+          <IconButton aria-label='autorenew alt'>
             <Autorenew />
           </IconButton>
-          <IconButton aria-label="add alt" onClick={toggleDrawer(true)}>
+          <IconButton aria-label='add alt' onClick={toggleDrawer(true)}>
             <Add />
           </IconButton>
         </Box>
@@ -215,10 +215,10 @@ const OwnTaskList = () => {
         anchor={'right'}
         open={drawerOpen}
         onClose={toggleDrawer(false)}
-        className="drawer-testing"
+        className='drawer-testing'
       >
-        <Box sx={{ maxWidth: '100vw', width: '100%' }} role="presentation">
-          <TaskForm taskId="" />
+        <Box sx={{ maxWidth: '100vw', width: '100%' }} role='presentation'>
+          <TaskForm taskId='' />
         </Box>
       </Drawer>
     </>
