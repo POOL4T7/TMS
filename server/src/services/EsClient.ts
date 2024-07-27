@@ -7,16 +7,19 @@ class ElasticsearchService {
 
   private constructor() {
     // Initialize Elasticsearch client
+    console.log(process.env.ES_URL, process.env.ES_PASSWORD);
     this.es_client = new Client({
-      node: process.env.ES_URL,
+      node: process.env.ES_URL || 'https://localhost:9200',
       auth: {
-        username: process.env.ES_USERNAME!,
-        password: process.env.ES_PASSWORD!,
+        username: process.env.ES_USERNAME! || 'elastic',
+        password: process.env.ES_PASSWORD! || 'elastic-tms',
+      },
+      nodes: ['https://localhost:9200'],
+      tls: {
+        rejectUnauthorized: false,
       },
     });
-    console.log('ElasticsearchService called: ');
   }
-
   public static getInstance(): ElasticsearchService {
     if (!ElasticsearchService.instance) {
       ElasticsearchService.instance = new ElasticsearchService();
@@ -28,7 +31,7 @@ class ElasticsearchService {
     try {
       this.es_client
         .ping()
-        .then(() => console.log('elastic search'))
+        .then(() => console.log('elasticsearch connected'))
         .catch((e) => console.log('error', e));
 
       return this.es_client;

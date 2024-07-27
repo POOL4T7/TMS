@@ -3,7 +3,7 @@ import TaskService from '../services/Task.service';
 import { ITask, TaskLog, TaskFilter } from '../interfaces/Task.interface';
 import Custom from '../helpers/custom';
 import mongoose from 'mongoose';
-import { elasticsearchService } from '../services/EsClient';
+import EsClient from '../services/EsClient';
 
 class TaskController {
   async addTask(req: Request, res: Response): Promise<Response> {
@@ -173,7 +173,7 @@ class TaskController {
       const filter: TaskFilter = {};
       filter.assignedTo = Custom.getSessionDetails(req)._id;
       const list = await TaskService.assignedTask(filter);
-      elasticsearchService.getClient();
+      EsClient.getClient();
 
       return res.status(200).json({
         success: true,

@@ -31,3 +31,5 @@ Please let me know if you need any additional information.
 
 Best regards,
 Gulshan Gupta
+
+docker compose -p tms-dev -f docker-compose.dev.yml up frontend  -d

@@ -2,3 +2,4 @@ others/
 .vagrant/
 ecosystem.config.js
 certs/
+db/

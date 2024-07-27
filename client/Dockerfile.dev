@@ -1,0 +1,15 @@
+# Build the client app
+FROM node:18-alpine
+
+WORKDIR /usr/app
+
+COPY ./package*.json ./
+RUN npm install
+
+COPY ./ ./
+
+ENV VITE_SERVER_URL="http://localhost:9876"
+
+EXPOSE 8000
+
+CMD [ "npm", "run", "dev" ]

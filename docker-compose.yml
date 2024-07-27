@@ -49,7 +49,7 @@ services:
     ports:
       - 27017:27017
     volumes:
-      - 'mongodb_server:/data/db'
+      - './db/mongodb:/data/db'
 
   es01:
     # depends_on:
@@ -61,7 +61,7 @@ services:
       co.elastic.logs/module: elasticsearch
     volumes:
       - ./certs:/usr/share/elasticsearch/config/certs
-    # - esdata01:/usr/share/elasticsearch/data
+      - ./db/es:/usr/share/elasticsearch/data
     ports:
       - 9200:9200
       - 9300:9300
