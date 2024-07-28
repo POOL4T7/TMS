@@ -1,5 +1,10 @@
 import { Client } from '@elastic/elasticsearch';
-import { IndicesCreateResponse } from '@elastic/elasticsearch/lib/api/types';
+import {
+  BulkResponse,
+  IndicesCreateResponse,
+} from '@elastic/elasticsearch/lib/api/types';
+import dotenv from 'dotenv';
+dotenv.config({ path: '../../../.env' });
 
 class ElasticsearchService {
   private static instance: ElasticsearchService;
@@ -7,7 +12,6 @@ class ElasticsearchService {
 
   private constructor() {
     // Initialize Elasticsearch client
-    console.log(process.env.ES_URL, process.env.ES_PASSWORD);
     this.es_client = new Client({
       node: process.env.ES_URL || 'https://localhost:9200',
       auth: {
@@ -41,14 +45,68 @@ class ElasticsearchService {
     }
   }
 
-  public addToES(index: string, id: string, body: any): void {
+  public async addToES(index: string, id: string, body: any): Promise<void> {
     try {
-      this.es_client.index({
+      await this.es_client.index({
         index: index,
         id: id,
         body: body,
       });
       this.es_client.indices.refresh();
+    } catch (e: any) {
+      throw Error(`ES error while adding data of ${index} in es: ${e.message}`);
+    }
+  }
+  public async bulkUpload(
+    index: string,
+    operations: any
+  ): Promise<BulkResponse> {
+    try {
+      const bulkResponse = await this.es_client.bulk({
+        refresh: true,
+        operations,
+      });
+      if (bulkResponse.errors) {
+        const erroredDocuments: {
+          // If the status is 429 it means that you can retry the document,
+          // otherwise it's very likely a mapping error, and you should
+          // fix the document before to try it again.
+          status: any;
+          error: any;
+          operation: any;
+          document: any;
+        }[] = [];
+        bulkResponse.items.forEach((action, i) => {
+          type Operation = 'create' | 'index' | 'update' | 'delete';
+
+          const validOperations: Operation[] = [
+            'create',
+            'index',
+            'update',
+            'delete',
+          ];
+
+          const operation: string = Object.keys(action)[0];
+          console.log(operation, i);
+
+          if (validOperations.includes(operation as Operation)) {
+            const res = action[operation as Operation];
+
+            if (res?.error) {
+              erroredDocuments.push({
+                status: res.status,
+                error: res.error,
+                operation: operations[i * 2],
+                document: operations[i * 2 + 1],
+              });
+            }
+          } else {
+            console.error(`Invalid operation: ${operation}`);
+          }
+        });
+        console.log(JSON.stringify(erroredDocuments, null, 2));
+      }
+      return bulkResponse;
     } catch (e: any) {
       throw Error(`ES error while adding data of ${index} in es: ${e.message}`);
     }

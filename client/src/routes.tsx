@@ -22,6 +22,7 @@ import ResetPassword from './screens/Auth/ResetPassword';
 import CreateTask from './screens/Company/Task/CreateTask';
 import TaskList from './screens/Company/Task/TaskList';
 import OwnTaskList from './screens/Employee/Task/OwnTaskList';
+import VideoPlayer from './screens/VideoPlayer';
 
 const router = (authState: AuthState) => {
   return createBrowserRouter([
@@ -100,6 +101,12 @@ const router = (authState: AuthState) => {
       path: '/auth/reset-password',
       element: <ResetPassword />,
     },
+
+    {
+      path: '/video-player',
+      element: <VideoPlayer />,
+    },
+
     {
       path: '/404',
       element: <NotFound />,
