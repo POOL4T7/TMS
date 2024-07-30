@@ -2,7 +2,7 @@ import Box from "@mui/material/Box";
 import Card from "@mui/material/Card";
 import Stack from "@mui/material/Stack";
 import Typography from "@mui/material/Typography";
-import { toInternationalNumberSystem } from "../../utils/Helper";
+import { toInternationalNumberSystem } from "@/utils/Helper";
 
 interface PropType {
   title: string;

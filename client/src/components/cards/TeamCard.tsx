@@ -5,7 +5,7 @@ import Typography from '@mui/material/Typography';
 import { Button, CardActionArea, CardActions } from '@mui/material';
 import { Group, RemoveRedEye } from '@mui/icons-material';
 import AddUpdateTeam from '../Team/AddUpdateTeam';
-import { getColor } from '../../utils/Helper';
+import { getColor } from '@/utils/Helper';
 
 interface propTypes {
   image: string;

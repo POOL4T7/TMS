@@ -12,9 +12,9 @@ import {
   ProjectGetApiData,
   ProjectGetApiResponse,
   ReturnObject,
-} from "../../models/Project";
+} from "@/models/Project";
 // import { toast } from "react-toastify";
-import { ErrorType } from "../../models/custom";
+import { ErrorType } from "@/models/custom";
 
 interface Pagination {
   page: number;

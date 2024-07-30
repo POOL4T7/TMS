@@ -19,12 +19,12 @@ import {
 } from "@mui/material";
 import { Add, ModeEdit } from "@mui/icons-material";
 import Loader from "../Loader";
-import { useCompanyProfileQuery } from "../../redux/services/company";
+import { useCompanyProfileQuery } from "@/redux/services/company";
 import {
   useCreateTeamMutation,
   useUpdateTeamMutation,
-} from "../../redux/services/teams";
-import { useUploadImageMutation } from "../../redux/services/custom";
+} from "@/redux/services/teams";
+import { useUploadImageMutation } from "@/redux/services/custom";
 import { OverridableComponent } from "@mui/material/OverridableComponent";
 
 interface PropTypes {

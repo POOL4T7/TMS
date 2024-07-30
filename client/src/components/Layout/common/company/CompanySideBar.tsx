@@ -19,8 +19,8 @@ import {
   Assignment,
 } from '@mui/icons-material';
 import { NavLink, useNavigate } from 'react-router-dom';
-import { useCompanyProfileQuery } from '../../../../redux/services/company';
-import Loader from '../../../Loader';
+import { useCompanyProfileQuery } from '@/redux/services/company';
+import Loader from '@/components/Loader';
 import { t } from 'i18next';
 
 const CompanySideBar = () => {
@@ -28,7 +28,7 @@ const CompanySideBar = () => {
   const { data, isLoading } = useCompanyProfileQuery();
 
   return (
-    <Stack direction="row" spacing={2}>
+    <Stack direction='row' spacing={2}>
       <Box
         flex={2}
         sx={{
@@ -52,7 +52,7 @@ const CompanySideBar = () => {
             display: 'flex',
             alignItems: 'center',
           }}
-          className="profile-card"
+          className='profile-card'
           onClick={() => navigate('/profile')}
         >
           <Avatar alt={'User'} src={'/'} sx={{ marginRight: '10px' }} />

@@ -23,15 +23,15 @@ import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { DateTimePicker } from '@mui/x-date-pickers/DateTimePicker';
 import { useEffect } from 'react';
 import dayjs, { Dayjs } from 'dayjs';
-import { Task } from '../../models/Task';
+import { Task } from '@/models/Task';
 import {
   useAddTaskMutation,
   useGetTaskDetailsQuery,
   useUpdateTaskMutation,
-} from '../../redux/services/task';
-import { labelList } from '../../data';
-import { useProjectListQuery } from '../../redux/services/project';
-import { useUserListQuery } from '../../redux/services/user';
+} from '@/redux/services/task';
+import { labelList } from '@/data';
+import { useProjectListQuery } from '@/redux/services/project';
+import { useUserListQuery } from '@/redux/services/user';
 import Loader from '../Loader';
 
 const ITEM_HEIGHT = 48;

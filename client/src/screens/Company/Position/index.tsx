@@ -17,11 +17,11 @@ import { Delete } from '@mui/icons-material';
 import {
   useDeletePostMutation,
   usePositionListQuery,
-} from '../../../redux/services/position';
-import TableToolBar from '../../../components/TableToolBar';
-import Loader from '../../../components/Loader';
-import AddPosition from '../../../components/Position/AddPosition';
-import { ErrorType } from '../../../models/custom';
+} from '@/redux/services/position';
+import TableToolBar from '@/components/TableToolBar';
+import Loader from '@/components/Loader';
+import AddPosition from '@/components/Position/AddPosition';
+import { ErrorType } from '@/models/custom';
 
 interface Column {
   // sno: 'sno';

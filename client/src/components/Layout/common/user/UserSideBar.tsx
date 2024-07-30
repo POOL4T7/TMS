@@ -16,8 +16,8 @@ import {
   ChecklistRtl,
 } from '@mui/icons-material';
 import { NavLink, useNavigate } from 'react-router-dom';
-import Loader from '../../../Loader';
-import { useOwnProfileQuery } from '../../../../redux/services/user';
+import Loader from '@/components/Loader';
+import { useOwnProfileQuery } from '@/redux/services/user';
 import { t } from 'i18next';
 
 const UserSideBar = () => {
@@ -25,7 +25,7 @@ const UserSideBar = () => {
   const { data, isLoading } = useOwnProfileQuery();
 
   return (
-    <Stack direction="row" spacing={2}>
+    <Stack direction='row' spacing={2}>
       <Box
         flex={2}
         sx={{
@@ -49,7 +49,7 @@ const UserSideBar = () => {
             display: 'flex',
             alignItems: 'center',
           }}
-          className="profile-card"
+          className='profile-card'
           onClick={() => navigate('/profile')}
         >
           <Avatar alt={'User'} src={'/'} sx={{ marginRight: '10px' }} />

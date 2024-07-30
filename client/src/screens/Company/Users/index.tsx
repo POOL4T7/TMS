@@ -8,11 +8,11 @@ import TableHead from '@mui/material/TableHead';
 import TablePagination from '@mui/material/TablePagination';
 import TableRow from '@mui/material/TableRow';
 import { Alert, Box, TableSortLabel } from '@mui/material';
-import TableToolBar from '../../../components/TableToolBar';
-import Loader from '../../../components/Loader';
-import { useUserListQuery } from '../../../redux/services/user';
-import AddUpdate from '../../../components/Users/AddUpdate';
-import { ErrorType } from '../../../models/custom';
+import TableToolBar from '@/components/TableToolBar';
+import Loader from '@/components/Loader';
+import { useUserListQuery } from '@/redux/services/user';
+import AddUpdate from '@/components/Users/AddUpdate';
+import { ErrorType } from '@/models/custom';
 
 interface Column {
   id:

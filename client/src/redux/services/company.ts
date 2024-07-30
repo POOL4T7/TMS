@@ -7,7 +7,7 @@ import {
   CompanyDashboardCountResponse,
   CompanyPostApiResponse,
   PostCompany,
-} from "../../models/company";
+} from "@/models/company";
 
 // Create our baseQuery instance
 const baseQuery = fetchBaseQuery({

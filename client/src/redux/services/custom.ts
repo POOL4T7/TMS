@@ -1,6 +1,6 @@
 import { createApi, fetchBaseQuery, retry } from "@reduxjs/toolkit/query/react";
 import { RootState } from "../store";
-import { FileUpload } from "../../models/custom";
+import { FileUpload } from "@/models/custom";
 
 const baseQuery = fetchBaseQuery({
   baseUrl: `${import.meta.env.VITE_SERVER_URL}/custom`,

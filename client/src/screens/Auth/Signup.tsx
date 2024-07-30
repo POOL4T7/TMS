@@ -12,8 +12,8 @@ import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
 import { useNavigate } from "react-router-dom";
-import { useCreateCompanyMutation } from "../../redux/services/auth";
-import { useIndustryListQuery } from "../../redux/services/industry";
+import { useCreateCompanyMutation } from "@/redux/services/auth";
+import { useIndustryListQuery } from "@/redux/services/industry";
 import {
   Chip,
   FormControl,
@@ -24,12 +24,12 @@ import {
   Select,
   SelectChangeEvent,
 } from "@mui/material";
-import { useAppDispatch } from "../../redux/store";
-import { userInfo } from "../../redux/features/authSlice";
-import { useTypedSelector } from "../../redux/store";
-import { addToStrorage } from "../../utils/storage";
+import { useAppDispatch } from "@/redux/store";
+import { userInfo } from "@/redux/features/authSlice";
+import { useTypedSelector } from "@/redux/store";
+import { addToStrorage } from "@/utils/storage";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { signupSchema } from "../../schema/authSchema";
+import { signupSchema } from "@/schema/authSchema";
 import { useForm } from "react-hook-form";
 
 const ITEM_HEIGHT = 48;

@@ -9,13 +9,13 @@ import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
 import { Link } from "react-router-dom";
-import { useTypedSelector } from "../../redux/store";
+import { useTypedSelector } from "@/redux/store";
 import { useNavigate } from "react-router-dom";
-import Loader from "../../components/Loader";
+import Loader from "@/components/Loader";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { forgotPasswordSchema } from "../../schema/authSchema";
-import { useForgotPasswordMutation } from "../../redux/services/auth";
+import { forgotPasswordSchema } from "@/schema/authSchema";
+import { useForgotPasswordMutation } from "@/redux/services/auth";
 
 type ForgotPassword = {
   email: string;

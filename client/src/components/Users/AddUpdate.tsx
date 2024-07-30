@@ -16,14 +16,14 @@ import {
   SelectChangeEvent,
 } from "@mui/material";
 import { Add, ModeEdit } from "@mui/icons-material";
-import { useAllTeamsQuery } from "../../redux/services/teams";
+import { useAllTeamsQuery } from "@/redux/services/teams";
 import Loader from "../Loader";
 import {
   useUserDetailsQuery,
   useUpdateUserMutation,
   useRegisterUserMutation,
-} from "../../redux/services/user";
-import { usePositionListByTeamIdQuery } from "../../redux/services/position";
+} from "@/redux/services/user";
+import { usePositionListByTeamIdQuery } from "@/redux/services/position";
 
 interface PropTypes {
   userId: string;

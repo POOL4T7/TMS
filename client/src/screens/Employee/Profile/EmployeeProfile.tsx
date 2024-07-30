@@ -8,11 +8,11 @@ import Box from "@mui/material/Box";
 import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
-import Loader from "../../../components/Loader";
+import Loader from "@/components/Loader";
 import {
   useOwnProfileQuery,
   useUpdateUserMutation,
-} from "../../../redux/services/user";
+} from "@/redux/services/user";
 
 const EmployeeProfile = () => {
   const { data, isLoading } = useOwnProfileQuery();

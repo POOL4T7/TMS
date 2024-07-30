@@ -1,5 +1,5 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
-import { PostCompany } from '../../models/company';
+import { PostCompany } from '@/models/company';
 import {
   LoginData,
   AuthResponse,
@@ -7,7 +7,7 @@ import {
   ForgotPasswordResponse,
   ResetPasswordBody,
   ResetPasswordResponse,
-} from '../../models/auth';
+} from '@/models/auth';
 
 const baseQuery = fetchBaseQuery({
   baseUrl: `${import.meta.env.VITE_SERVER_URL}/auth/`,

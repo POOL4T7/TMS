@@ -12,12 +12,12 @@ import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import { Link } from "react-router-dom";
-import { useLoginMutation } from "../../redux/services/auth";
-import { useAppDispatch, useTypedSelector } from "../../redux/store";
-import { userInfo } from "../../redux/features/authSlice";
+import { useLoginMutation } from "@/redux/services/auth";
+import { useAppDispatch, useTypedSelector } from "@/redux/store";
+import { userInfo } from "@/redux/features/authSlice";
 import { useNavigate } from "react-router-dom";
-import Loader from "../../components/Loader";
-import { addToStrorage } from "../../utils/storage";
+import Loader from "@/components/Loader";
+import { addToStrorage } from "@/utils/storage";
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 function Copyright(props: any) {

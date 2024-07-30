@@ -19,8 +19,8 @@ import {
 } from '@mui/icons-material';
 import { NavLink, useNavigate } from 'react-router-dom';
 import { Avatar, Typography } from '@mui/material';
-import Loader from '../../../Loader';
-import { useCompanyProfileQuery } from '../../../../redux/services/company';
+import Loader from '@/components/Loader';
+import { useCompanyProfileQuery } from '@/redux/services/company';
 import { t } from 'i18next';
 
 type Anchor = 'left';
@@ -49,7 +49,7 @@ export default function CompanyMobileSideBar() {
   const list = (anchor: Anchor) => (
     <Box
       sx={{ width: 250 }}
-      role="presentation"
+      role='presentation'
       onClick={toggleDrawer(anchor, false)}
       onKeyDown={toggleDrawer(anchor, false)}
     >
@@ -62,7 +62,7 @@ export default function CompanyMobileSideBar() {
           display: 'flex',
           alignItems: 'center',
         }}
-        className="profile-card"
+        className='profile-card'
         onClick={() => navigate('/profile')}
       >
         <Avatar alt={'User'} src={'/'} sx={{ marginRight: '10px' }} />

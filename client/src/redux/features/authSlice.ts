@@ -1,6 +1,6 @@
 import { createSlice } from '@reduxjs/toolkit';
 import type { RootState } from '../store';
-import { getCookie, getSessionStorage } from '../../utils/storage';
+import { getCookie, getSessionStorage } from '@/utils/storage';
 
 interface AuthInitialState {
   accessToken: string;

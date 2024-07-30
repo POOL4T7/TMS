@@ -15,7 +15,7 @@ import {
   SelectChangeEvent,
 } from '@mui/material';
 import { useForm } from 'react-hook-form';
-import { useTypedSelector } from '../../../redux/store';
+import { useTypedSelector } from '@/redux/store';
 import AssignmentIcon from '@mui/icons-material/Assignment';
 
 type TaskCreate = {

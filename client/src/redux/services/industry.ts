@@ -1,4 +1,4 @@
-// import { Industry } from "../../models/Industry";
+// import { Industry } from "@/models/Industry";
 import { createApi, fetchBaseQuery, retry } from "@reduxjs/toolkit/query/react";
 // import { RootState } from "../store";
 

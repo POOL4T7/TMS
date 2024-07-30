@@ -12,12 +12,12 @@ import Tooltip from "@mui/material/Tooltip";
 import MenuItem from "@mui/material/MenuItem";
 import AdbIcon from "@mui/icons-material/Adb";
 import { Link, NavLink } from "react-router-dom";
-import { useAppDispatch, useTypedSelector } from "../../../redux/store";
-import { userInfo } from "../../../redux/features/authSlice";
-import { emptyStorage, setLocalStorage } from "../../../utils/storage";
+import { useAppDispatch, useTypedSelector } from "@/redux/store";
+import { userInfo } from "@/redux/features/authSlice";
+import { emptyStorage, setLocalStorage } from "@/utils/storage";
 import { Theme, useMediaQuery } from "@mui/material";
-import logo from "../../../assets/logo.gif";
-import { changeLanguage } from "../../../redux/features/languageSlice";
+import logo from "@/assets/logo.gif";
+import { changeLanguage } from "@/redux/features/languageSlice";
 import { useTranslation } from "react-i18next";
 
 const pages: string[] = [];

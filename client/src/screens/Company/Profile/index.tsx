@@ -9,7 +9,7 @@ import Box from "@mui/material/Box";
 import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
-import { useIndustryListQuery } from "../../../redux/services/industry";
+import { useIndustryListQuery } from "@/redux/services/industry";
 import {
   Chip,
   FormControl,
@@ -23,8 +23,8 @@ import {
 import {
   useCompanyProfileQuery,
   useUpdateProfileMutation,
-} from "../../../redux/services/company";
-import Loader from "../../../components/Loader";
+} from "@/redux/services/company";
+import Loader from "@/components/Loader";
 const ITEM_HEIGHT = 48;
 const ITEM_PADDING_TOP = 8;
 const MenuProps = {

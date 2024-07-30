@@ -1,11 +1,11 @@
 import { Add, Autorenew, FilterAlt } from '@mui/icons-material';
 import { Alert, Box, Grid, IconButton, Stack, Typography } from '@mui/material';
-import { useProjectListQuery } from '../../../redux/services/project';
-// import Loader from "../../../components/Loader";
-import { ErrorType } from '../../../models/custom';
-import ProjectCard from '../../../components/cards/ProjectCard';
+import { useProjectListQuery } from '@/redux/services/project';
+// import Loader from "@/components/Loader";
+import { ErrorType } from '@/models/custom';
+import ProjectCard from '@/components/cards/ProjectCard';
 import { Link, useNavigate } from 'react-router-dom';
-import TeamCardShimmer from '../../../components/Shimmer/CardShimmer';
+import TeamCardShimmer from '@/components/Shimmer/CardShimmer';
 
 const ShimmerEffect = () => {
   return (

@@ -10,8 +10,8 @@ import {
   TeamAddData,
   TeamList,
   TeamUpdateData,
-} from "../../models/Team";
-import { ErrorType } from "../../models/custom";
+} from "@/models/Team";
+import { ErrorType } from "@/models/custom";
 
 interface ResponseObject {
   success: boolean;

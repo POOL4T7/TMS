@@ -13,8 +13,8 @@ import {
   UserDetailsResponse,
   UserGetApiData,
   UserGetApiResponse,
-} from "../../models/users";
-import { ErrorType } from "../../models/custom";
+} from "@/models/users";
+import { ErrorType } from "@/models/custom";
 
 interface Pagination {
   page: number;

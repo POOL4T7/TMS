@@ -7,15 +7,15 @@ import {
   Stack,
   Typography,
 } from '@mui/material';
-import TaskCard from '../../../components/Task/TaskCard';
+import TaskCard from '@/components/Task/TaskCard';
 import { Add, Autorenew, FilterAlt } from '@mui/icons-material';
 import {
   useOwnTaskQuery,
   useUpdateTaskMutation,
-} from '../../../redux/services/task';
+} from '@/redux/services/task';
 
-import { Task } from '../../../models/Task';
-import TaskForm from '../../../components/Task/TaskForm';
+import { Task } from '@/models/Task';
+import TaskForm from '@/components/Task/TaskForm';
 
 interface TaskListProps {
   pending: Task[];

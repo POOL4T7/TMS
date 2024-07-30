@@ -12,8 +12,8 @@ import {
   Task,
   TaskDetailsGetApiResponse,
   TaskDetailsGetApiData,
-} from '../../models/Task';
-import { ErrorType } from '../../models/custom';
+} from '@/models/Task';
+import { ErrorType } from '@/models/custom';
 
 // interface Pagination {
 //   page: number;

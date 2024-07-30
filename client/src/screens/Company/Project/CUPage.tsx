@@ -14,22 +14,22 @@ import {
   Typography,
 } from "@mui/material";
 import { useEffect, useRef, useState } from "react";
-import { useFilteredUserListQuery } from "../../../redux/services/user";
-import Loader from "../../../components/Loader";
-import { useAllTeamsQuery } from "../../../redux/services/teams";
-import { usePositionListByTeamIdQuery } from "../../../redux/services/position";
-import { ProjectAddData, ProjectTeamData } from "../../../models/Project";
-import TeamList from "../../../components/Project/TeamList";
+import { useFilteredUserListQuery } from "@/redux/services/user";
+import Loader from "@/components/Loader";
+import { useAllTeamsQuery } from "@/redux/services/teams";
+import { usePositionListByTeamIdQuery } from "@/redux/services/position";
+import { ProjectAddData, ProjectTeamData } from "@/models/Project";
+import TeamList from "@/components/Project/TeamList";
 import {
   useCreateProjectMutation,
   useGetProjectDetailQuery,
   useUpdateProjectDetailsMutation,
-} from "../../../redux/services/project";
+} from "@/redux/services/project";
 import { useParams, useNavigate } from "react-router-dom";
-import { ErrorType } from "../../../models/custom";
+import { ErrorType } from "@/models/custom";
 import { Add, Edit } from "@mui/icons-material";
 import { format } from "date-fns";
-import { useUploadImageMutation } from "../../../redux/services/custom";
+import { useUploadImageMutation } from "@/redux/services/custom";
 
 interface User {
   _id: string;

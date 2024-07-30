@@ -1,5 +1,5 @@
 import { Dispatch } from "react";
-import { ProjectTeamData } from "../../models/Project";
+import { ProjectTeamData } from "@/models/Project";
 import {
   IconButton,
   Paper,

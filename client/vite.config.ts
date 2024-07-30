@@ -47,4 +47,9 @@ const manifestForPlugin: Partial<VitePWAOptions> = {
 export default defineConfig({
   plugins: [react(), VitePWA(manifestForPlugin)],
   publicDir: 'public',
+  resolve: {
+    alias: {
+      '@': '/src',
+    },
+  },
 });

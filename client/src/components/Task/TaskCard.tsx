@@ -16,8 +16,8 @@ import {
 import MoreVertIcon from '@mui/icons-material/MoreVert';
 import AccessTimeIcon from '@mui/icons-material/AccessTime';
 import { useState, useCallback, useEffect, Suspense, lazy } from 'react';
-import { Task } from '../../models/Task';
-import { User } from '../../models/users';
+import { Task } from '@/models/Task';
+import { User } from '@/models/users';
 
 const TaskForm = lazy(() => import('./TaskForm'));
 

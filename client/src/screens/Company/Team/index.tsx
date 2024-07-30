@@ -1,10 +1,10 @@
 import { Autorenew, FilterAlt } from '@mui/icons-material';
 import { Alert, Box, Grid, IconButton, Stack, Typography } from '@mui/material';
-import TeamCard from '../../../components/cards/TeamCard';
-import { useTeamListQuery } from '../../../redux/services/teams';
-import { ErrorType } from '../../../models/custom';
-import AddUpdateTeam from '../../../components/Team/AddUpdateTeam';
-import TeamCardShimmer from '../../../components/Shimmer/CardShimmer';
+import TeamCard from '@/components/cards/TeamCard';
+import { useTeamListQuery } from '@/redux/services/teams';
+import { ErrorType } from '@/models/custom';
+import AddUpdateTeam from '@/components/Team/AddUpdateTeam';
+import TeamCardShimmer from '@/components/Shimmer/CardShimmer';
 
 const ShimmerEffect = () => {
   return (
