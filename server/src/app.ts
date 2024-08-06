@@ -1,18 +1,47 @@
-import express, { Express } from 'express';
-// import dotenv from "dotenv";
-// import connectDB from "../config/db";
+import express, { Express, NextFunction, Request, Response } from 'express';
+import { ApolloServer } from '@apollo/server';
+import { expressMiddleware } from '@apollo/server/express4';
+import { ApolloServerPluginDrainHttpServer } from '@apollo/server/plugin/drainHttpServer';
+import http from 'http';
 import cors from 'cors';
 import swaggerUi from 'swagger-ui-express';
 import cookieParser from 'cookie-parser';
 import morgan from 'morgan';
 import specs from './swaggerConfig';
-// dotenv.config();
+
+import { typeDefs } from './graphql/schema/user.schema';
+import { resolvers } from './graphql/resolvers/user.resolver';
 
 const app: Express = express();
-// connectDB();
+const httpServer = http.createServer(app);
+
+// Set up Apollo Server
+const server = new ApolloServer({
+  typeDefs,
+  resolvers,
+  plugins: [ApolloServerPluginDrainHttpServer({ httpServer })],
+});
+
+server
+  .start()
+  .then(() => {
+    console.log('apollo server started');
+    app.use(
+      '/graphql',
+      cors(),
+      express.json(),
+      expressMiddleware(server, {
+        context: async ({ req }) => ({ token: req.headers.token }),
+      })
+    );
+  })
+  .catch((e) => {
+    Logger.error(`apollo server starting error: ${e.message}`);
+  });
 
 import routesV1 from './routesV1';
 import path from 'path';
+import Logger from './helpers/Logger';
 
 app.use(
   cors({
@@ -49,8 +78,16 @@ if (process.env.NODE_ENV != 'production') {
 app.use('/uploads', express.static(path.join(__dirname, '../uploads/')));
 routesV1(app);
 
-// app.listen(port, () => {
-//   console.log(`⚡️[server]: Server is running at http://localhost:${port}`);
-// });
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+app.use('*', (err: Error, req: Request, res: Response, _next: NextFunction) => {
+  console.log(err);
+  if (err) {
+    return res.status(500).json({
+      success: false,
+      message: err.message,
+      stack: err.stack,
+    });
+  }
+});
 
-export default app;
+export default httpServer;
