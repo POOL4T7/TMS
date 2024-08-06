@@ -6,7 +6,17 @@ export const typeDefs = `#graphql
     name: String!
   }
 
-  union DepartmentId = Department
+  input FilterInput {
+    _id: ID
+    email: String
+    companyId: ID
+    role: String
+    departmentId: ID
+    positionId: ID
+    employeeId: String
+    status: String
+    resetToken: String
+  }
 
   type User {
     _id: ID!
@@ -26,7 +36,7 @@ export const typeDefs = `#graphql
   }
 
   type Query {
-    users: [User]
+    users(filter:FilterInput): [User]
     user(id: ID!): User
     isHealty:String!
   }

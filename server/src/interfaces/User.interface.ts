@@ -38,3 +38,15 @@ export interface UserPaginationData {
   userList?: IUser[];
   totalCount: number;
 }
+
+export interface UserFilter {
+  _id?: string;
+  email?: string;
+  companyId?: Types.ObjectId | string;
+  role?: string;
+  departmentId?: Types.ObjectId | string;
+  positionId?: Types.ObjectId | string;
+  employeeId?: string;
+  status?: string;
+  resetToken?: string | null;
+}

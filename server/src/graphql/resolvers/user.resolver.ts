@@ -1,11 +1,12 @@
 import { GraphQLError } from 'graphql';
 import User from '../../models/User.model';
+import { UserFilter } from 'src/interfaces/User.interface';
 
 export const resolvers = {
   Query: {
-    users: async () => {
+    users: async (_: any, { filter }: { filter: UserFilter }) => {
       try {
-        return await User.find().populate({ path: 'departmentId' });
+        return await User.find(filter).populate({ path: 'departmentId' });
       } catch (e) {
         throw new GraphQLError('Invalid argument value', {
           extensions: {
