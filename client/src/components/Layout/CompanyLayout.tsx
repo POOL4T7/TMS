@@ -8,11 +8,10 @@ const CompanyLayout = () => {
   const isMobile = useMediaQuery((theme: Theme) =>
     theme.breakpoints.down('md')
   );
-
   return (
     <>
       <Header SideBar={CompanyMobileSideBar} />
-      <Stack direction="row" spacing={0.5}>
+      <Stack direction='row' spacing={0.5}>
         <CompanySideBar />
         <Box
           flex={8}

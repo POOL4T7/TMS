@@ -25,7 +25,6 @@
   ],
   "TBD": [
     "implement image compression for all the images",
-    "❌ implement elastic search on project and users listing",
     "save the socket id to redis instead to mongodb"
   ],
   "completed": [
@@ -40,6 +39,7 @@
     "winston setup for logging of server",
     "swagger integrated for api documentation",
     "linting is added with eslint",
-    "implement Internationalization"
+    "implement Internationalization",
+    "❌ implement elastic search on project and users listing"
   ]
 }

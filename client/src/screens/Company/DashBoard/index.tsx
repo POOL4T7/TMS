@@ -7,7 +7,6 @@ import { Info } from '@mui/icons-material';
 
 const DashBoard = () => {
   const { data } = useDashboardCountQuery();
-  console.log('data', data);
   return (
     <Container maxWidth='xl'>
       <Typography variant='h4' sx={{ mt: 5, mb: 3 }}>

@@ -12,7 +12,7 @@ const EmployeeLayout = () => {
   return (
     <>
       <Header SideBar={UserMobileSideBar} />
-      <Stack direction="row" spacing={0.5}>
+      <Stack direction='row' spacing={0.5}>
         <UserSideBar />
         <Box
           flex={8}
